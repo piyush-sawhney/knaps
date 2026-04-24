@@ -1,0 +1,129 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-24 18:03:53.035389",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_nrvt",
+  "holder_type",
+  "holder_name",
+  "column_break_qqmf",
+  "holding_type",
+  "second_holder",
+  "section_break_iplt",
+  "bank_name",
+  "bank_account_number",
+  "column_break_qxaw",
+  "ifsc",
+  "bank_branch"
+ ],
+ "fields": [
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bank Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "bank_account_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Bank Account Number",
+   "mask": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "bank_branch",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Bank Branch"
+  },
+  {
+   "fieldname": "ifsc",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "IFSC",
+   "length": 11,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_qxaw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_nrvt",
+   "fieldtype": "Section Break",
+   "label": "Holder Details"
+  },
+  {
+   "fieldname": "column_break_qqmf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "holding_type",
+   "fieldtype": "Link",
+   "label": "Holding Type",
+   "options": "KNAPS Holding Type"
+  },
+  {
+   "depends_on": "eval: doc.holding_type != 'Single' && doc.holder_type === 'KNAPS Person';",
+   "fieldname": "second_holder",
+   "fieldtype": "Link",
+   "label": "Second Holder",
+   "link_filters": "[[\"KNAPS Person\",\"name\",\"!=\",\"eval: doc.holder_name\"]]",
+   "mandatory_depends_on": "eval: doc.holding_type != 'Single' && doc.holder_type === 'KNAPS Person';",
+   "options": "KNAPS Person"
+  },
+  {
+   "fieldname": "section_break_iplt",
+   "fieldtype": "Section Break",
+   "label": "Bank Details"
+  },
+  {
+   "fieldname": "holder_type",
+   "fieldtype": "Link",
+   "label": "Holder Type",
+   "link_filters": "[[\"DocType\",\"name\",\"in\",[\"KNAPS Person\",\"KNAPS Non Individual\"]]]",
+   "options": "DocType",
+   "reqd": 1
+  },
+  {
+   "fieldname": "holder_name",
+   "fieldtype": "Dynamic Link",
+   "label": "Holder Name",
+   "options": "holder_type",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-24 18:15:45.718994",
+ "modified_by": "Administrator",
+ "module": "KNAPS",
+ "name": "KNAPS Bank",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

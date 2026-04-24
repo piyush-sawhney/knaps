@@ -7,7 +7,9 @@
  "field_order": [
   "household_name",
   "column_break_hfhn",
-  "head_of_household"
+  "head_of_household",
+  "section_break_fllw",
+  "members"
  ],
  "fields": [
   {
@@ -27,12 +29,22 @@
   {
    "fieldname": "column_break_hfhn",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_fllw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "members",
+   "fieldtype": "Table",
+   "label": "Members",
+   "options": "KNAPS Household Member"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-24 17:13:53.472312",
+ "modified": "2026-04-24 18:01:54.793970",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Household",

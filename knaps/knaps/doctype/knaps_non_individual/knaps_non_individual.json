@@ -1,0 +1,194 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-24 16:11:38.867267",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "non_individual_name",
+  "column_break_rrng",
+  "primary_household",
+  "column_break_wopj",
+  "status",
+  "section_break_dsno",
+  "non_individual_type",
+  "pan",
+  "legal_entity_identifier",
+  "column_break_pgji",
+  "date_of_incoporation",
+  "place_of_incorporation",
+  "country_of_incorporation",
+  "column_break_ygzq",
+  "primary_contact",
+  "primary_contact_phone",
+  "primary_contact_email",
+  "section_break_mhjm",
+  "phone_numbers",
+  "email_addresses",
+  "address_html",
+  "owner_details_section",
+  "owners"
+ ],
+ "fields": [
+  {
+   "fieldname": "non_individual_name",
+   "fieldtype": "Data",
+   "label": "Name",
+   "options": "Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "non_individual_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "KNAPS Non Individual Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_pgji",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pan",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "PAN",
+   "length": 10
+  },
+  {
+   "fieldname": "date_of_incoporation",
+   "fieldtype": "Date",
+   "label": "Date of Incoporation"
+  },
+  {
+   "fieldname": "place_of_incorporation",
+   "fieldtype": "Data",
+   "label": "Place of Incorporation"
+  },
+  {
+   "fieldname": "legal_entity_identifier",
+   "fieldtype": "Data",
+   "label": "Legal Entity Identifier"
+  },
+  {
+   "fieldname": "primary_contact",
+   "fieldtype": "Link",
+   "label": "Primary Contact",
+   "options": "KNAPS Person",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "primary_contact.primary_phone",
+   "fieldname": "primary_contact_phone",
+   "fieldtype": "Phone",
+   "label": "Primary Contact Phone",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "primary_contact.primary_email",
+   "fieldname": "primary_contact_email",
+   "fieldtype": "Phone",
+   "label": "Primary Contact Email",
+   "read_only": 1
+  },
+  {
+   "fieldname": "country_of_incorporation",
+   "fieldtype": "Data",
+   "label": "Country of Incorporation",
+   "mask": 1
+  },
+  {
+   "fieldname": "column_break_ygzq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "owner_details_section",
+   "fieldtype": "Section Break",
+   "label": "Owner Details"
+  },
+  {
+   "fieldname": "section_break_mhjm",
+   "fieldtype": "Section Break",
+   "label": "Contact Details"
+  },
+  {
+   "fieldname": "phone_numbers",
+   "fieldtype": "Table",
+   "label": "Phone Numbers",
+   "options": "KNAPS Phone Number"
+  },
+  {
+   "fieldname": "email_addresses",
+   "fieldtype": "Table",
+   "label": "Email Addresses",
+   "options": "KNAPS Email"
+  },
+  {
+   "fieldname": "address_html",
+   "fieldtype": "HTML",
+   "label": "Address HTML"
+  },
+  {
+   "fieldname": "owners",
+   "fieldtype": "Table",
+   "label": "Owners",
+   "options": "KNAPS Non Individual Owner",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_rrng",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "primary_household",
+   "fieldtype": "Link",
+   "label": "Primary Household",
+   "options": "KNAPS Household",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_wopj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "\nActive\nInactive",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_dsno",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-24 17:10:25.599687",
+ "modified_by": "Administrator",
+ "module": "KNAPS",
+ "name": "KNAPS Non Individual",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "non_individual_name"
+}

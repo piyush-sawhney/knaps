@@ -1,0 +1,58 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-24 17:22:35.285271",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "member_type",
+  "member_name",
+  "relation_with_head",
+  "membership_type"
+ ],
+ "fields": [
+  {
+   "fieldname": "member_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "DocType",
+   "reqd": 1
+  },
+  {
+   "fieldname": "member_name",
+   "fieldtype": "Dynamic Link",
+   "label": "Name",
+   "options": "member_type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "relation_with_head",
+   "fieldtype": "Link",
+   "label": "Relation with Head",
+   "options": "KNAPS Relationship"
+  },
+  {
+   "fieldname": "membership_type",
+   "fieldtype": "Select",
+   "label": "Membership Type",
+   "options": "\nPrimary\nSecondary\nBeneficial"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-04-24 17:27:08.843027",
+ "modified_by": "Administrator",
+ "module": "KNAPS",
+ "name": "KNAPS Household Member",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

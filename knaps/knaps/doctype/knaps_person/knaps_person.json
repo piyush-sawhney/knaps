@@ -1,0 +1,231 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "KNAPS-CL-.#####",
+ "creation": "2026-04-24 15:32:22.577228",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "column_break_uhnk",
+  "full_name",
+  "column_break_rmhb",
+  "primary_household",
+  "column_break_buzd",
+  "status",
+  "basic_details_section",
+  "first_name",
+  "middle_name",
+  "last_name",
+  "column_break_ftpf",
+  "pan",
+  "gender",
+  "date_of_birth",
+  "column_break_vatb",
+  "primary_phone",
+  "primary_whatsapp",
+  "primary_email",
+  "section_break_vuxa",
+  "phone_numbers",
+  "email_address",
+  "address_html",
+  "additional_details_tab",
+  "place_of_birth",
+  "column_break_eevv",
+  "occupation",
+  "column_break_zjeb",
+  "income_slab"
+ ],
+ "fields": [
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "First Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "middle_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Middle Name"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_ftpf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
+  },
+  {
+   "fieldname": "column_break_vatb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "label": "Last Name"
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Select",
+   "label": "Gender",
+   "options": "\nMale\nFemale\nOthers",
+   "reqd": 1
+  },
+  {
+   "fieldname": "primary_phone",
+   "fieldtype": "Phone",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Primary Phone",
+   "read_only": 1
+  },
+  {
+   "fieldname": "primary_whatsapp",
+   "fieldtype": "Phone",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Primary Whatsapp",
+   "read_only": 1
+  },
+  {
+   "fieldname": "primary_email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Primary Email",
+   "options": "Email",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_vuxa",
+   "fieldtype": "Section Break",
+   "label": "Contact Details"
+  },
+  {
+   "fieldname": "phone_numbers",
+   "fieldtype": "Table",
+   "label": "Phone Numbers",
+   "options": "KNAPS Phone Number"
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Table",
+   "label": "Email Address",
+   "options": "KNAPS Email"
+  },
+  {
+   "fieldname": "basic_details_section",
+   "fieldtype": "Section Break",
+   "label": "Basic Details"
+  },
+  {
+   "fieldname": "address_html",
+   "fieldtype": "HTML",
+   "label": "Address HTML"
+  },
+  {
+   "fieldname": "column_break_uhnk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_buzd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Active",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Active\nPassive\nDeceased",
+   "reqd": 1
+  },
+  {
+   "fieldname": "primary_household",
+   "fieldtype": "Link",
+   "label": "Primary Household",
+   "options": "KNAPS Household",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_rmhb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pan",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "PAN",
+   "length": 10
+  },
+  {
+   "fieldname": "additional_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Additional Details"
+  },
+  {
+   "fieldname": "place_of_birth",
+   "fieldtype": "Data",
+   "label": "Place of Birth"
+  },
+  {
+   "fieldname": "occupation",
+   "fieldtype": "Select",
+   "label": "Occupation",
+   "options": "Business\nServices\nProfessional\nAgriculture\nRetired\nHousewife\nStudent\nOthers"
+  },
+  {
+   "fieldname": "column_break_eevv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_zjeb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "income_slab",
+   "fieldtype": "Select",
+   "label": "Income Slab",
+   "mask": 1,
+   "options": "\nBelow 1 Lakh\n1 - 5 Lakh\n5-10 Lakh\n10-25 Lakh\n25 -50 Lakh\n50 - 99 Lakh\nAbove 1 Cr"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-24 16:07:32.571647",
+ "modified_by": "Administrator",
+ "module": "KNAPS",
+ "name": "KNAPS Person",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "full_name"
+}

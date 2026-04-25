@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "KNAPS-CL-.#####",
+ "autoname": "KNAPS-PR-.#####",
  "creation": "2026-04-24 15:32:22.577228",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -13,6 +13,7 @@
   "column_break_buzd",
   "status",
   "basic_details_section",
+  "salutation",
   "first_name",
   "middle_name",
   "last_name",
@@ -20,6 +21,7 @@
   "pan",
   "gender",
   "date_of_birth",
+  "marital_status",
   "column_break_vatb",
   "primary_phone",
   "primary_whatsapp",
@@ -28,12 +30,7 @@
   "phone_numbers",
   "email_address",
   "address_html",
-  "additional_details_tab",
-  "place_of_birth",
-  "column_break_eevv",
-  "occupation",
-  "column_break_zjeb",
-  "income_slab"
+  "connections_tab"
  ],
  "fields": [
   {
@@ -75,9 +72,9 @@
   },
   {
    "fieldname": "gender",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "label": "Gender",
-   "options": "\nMale\nFemale\nOthers",
+   "options": "Gender",
    "reqd": 1
   },
   {
@@ -168,41 +165,29 @@
    "length": 10
   },
   {
-   "fieldname": "additional_details_tab",
+   "fieldname": "salutation",
+   "fieldtype": "Link",
+   "label": "Salutation",
+   "options": "Salutation",
+   "reqd": 1
+  },
+  {
+   "fieldname": "marital_status",
+   "fieldtype": "Select",
+   "label": "Marital Status",
+   "options": "\nSingle\nMarried\nWidowed\nDivorced"
+  },
+  {
+   "fieldname": "connections_tab",
    "fieldtype": "Tab Break",
-   "label": "Additional Details"
-  },
-  {
-   "fieldname": "place_of_birth",
-   "fieldtype": "Data",
-   "label": "Place of Birth"
-  },
-  {
-   "fieldname": "occupation",
-   "fieldtype": "Select",
-   "label": "Occupation",
-   "options": "Business\nServices\nProfessional\nAgriculture\nRetired\nHousewife\nStudent\nOthers"
-  },
-  {
-   "fieldname": "column_break_eevv",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_zjeb",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "income_slab",
-   "fieldtype": "Select",
-   "label": "Income Slab",
-   "mask": 1,
-   "options": "\nBelow 1 Lakh\n1 - 5 Lakh\n5-10 Lakh\n10-25 Lakh\n25 -50 Lakh\n50 - 99 Lakh\nAbove 1 Cr"
+   "label": "Connections",
+   "show_dashboard": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-24 18:17:54.533562",
+ "modified": "2026-04-25 17:05:29.541189",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Person",

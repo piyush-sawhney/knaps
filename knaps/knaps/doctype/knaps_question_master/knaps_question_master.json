@@ -10,13 +10,10 @@
   "weight",
   "section_break_xmmb",
   "question_type",
-  "answer_mode",
   "column_break_gyvg",
-  "is_mandatory",
+  "answer_mode",
   "section_break_oeoq",
   "module_type",
-  "column_break_dqbv",
-  "question_category",
   "section_break_zutl",
   "configuration",
   "section_break_szef",
@@ -46,14 +43,6 @@
   {
    "fieldname": "section_break_xmmb",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "question_category",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Question Category",
-   "options": "KNAPS Question Category",
-   "reqd": 1
   },
   {
    "fieldname": "section_break_oeoq",
@@ -88,16 +77,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "column_break_dqbv",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "0",
-   "fieldname": "is_mandatory",
-   "fieldtype": "Check",
-   "label": "Is Mandatory?"
-  },
-  {
    "fieldname": "section_break_zutl",
    "fieldtype": "Section Break"
   },
@@ -127,7 +106,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-25 11:43:42.487089",
+ "modified": "2026-04-25 15:18:56.395141",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Question Master",

@@ -1,0 +1,70 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-25 15:12:11.076602",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "question_code",
+  "question_text",
+  "question_section",
+  "question_section_order_number",
+  "is_mandatory"
+ ],
+ "fields": [
+  {
+   "fieldname": "question_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Question Code",
+   "options": "KNAPS Question Master",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "question_code.question_text",
+   "fieldname": "question_text",
+   "fieldtype": "Long Text",
+   "in_list_view": 1,
+   "label": "Question Text"
+  },
+  {
+   "fieldname": "question_section",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Question Section",
+   "options": "\nFinancial Capacity\nInvestment Horizon\nRisk Appetite\nInvestment Experience\nInvestment Objective\nLiquidity Requirement\nCompliance/Suitability\nBehavioral Profile\nFamily Dynamics",
+   "sort_options": 1
+  },
+  {
+   "fieldname": "question_section_order_number",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Question Section Order Number",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_mandatory",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Mandatory?"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-04-25 15:23:37.308915",
+ "modified_by": "Administrator",
+ "module": "KNAPS",
+ "name": "KNAPS Risk Profile Template Question",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

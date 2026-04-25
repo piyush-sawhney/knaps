@@ -1,0 +1,151 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-25 14:24:45.959271",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_qz57",
+  "template_name",
+  "version",
+  "column_break_snqf",
+  "applicable_for",
+  "category_code",
+  "section_break_bpek",
+  "scoring_method",
+  "column_break_cfxi",
+  "effective_from",
+  "effective_to",
+  "is_active",
+  "section_break_lypb",
+  "questions",
+  "section_break_hryg",
+  "notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_qz57",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "KNAPS Risk Profile Template",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "template_name",
+   "fieldtype": "Data",
+   "label": "Template Name",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "applicable_for.category_code",
+   "fieldname": "category_code",
+   "fieldtype": "Data",
+   "label": "Category Code"
+  },
+  {
+   "fieldname": "column_break_snqf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "applicable_for",
+   "fieldtype": "Link",
+   "label": "Applicable For",
+   "options": "KNAPS Investor Category",
+   "reqd": 1
+  },
+  {
+   "fieldname": "version",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Version",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_hryg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_bpek",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "scoring_method",
+   "fieldtype": "JSON",
+   "label": "Scoring Method",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_cfxi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "effective_from",
+   "fieldtype": "Date",
+   "label": "Effective From"
+  },
+  {
+   "fieldname": "effective_to",
+   "fieldtype": "Date",
+   "label": "Effective To"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active?"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text Editor",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "section_break_lypb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "questions",
+   "fieldtype": "Table",
+   "label": "Questions",
+   "options": "KNAPS Risk Profile Template Question"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-04-25 15:16:31.062855",
+ "modified_by": "Administrator",
+ "module": "KNAPS",
+ "name": "KNAPS Risk Profile Template",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

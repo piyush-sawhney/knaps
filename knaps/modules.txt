@@ -1,1 +1,12 @@
 KNAPS
+KNAPS PO
+KNAPS Life Insurance
+KNAPS Health Insurance
+KNAPS MF
+KNAPS General Insurance
+KNAPS NPS
+KNAPS Fixed Income
+KNAPS Equity
+KNAPS SIF
+KNAPS PMS
+KNAPS AIF

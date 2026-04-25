@@ -1,0 +1,154 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-25 10:41:28.922559",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "question_text",
+  "help_text",
+  "weight",
+  "section_break_xmmb",
+  "question_type",
+  "answer_mode",
+  "column_break_gyvg",
+  "is_mandatory",
+  "section_break_oeoq",
+  "module_type",
+  "column_break_dqbv",
+  "question_category",
+  "section_break_zutl",
+  "configuration",
+  "section_break_szef",
+  "options",
+  "section_break_cdsh",
+  "internal_notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "question_text",
+   "fieldtype": "Long Text",
+   "label": "Question Text"
+  },
+  {
+   "fieldname": "help_text",
+   "fieldtype": "Small Text",
+   "label": "Help Text"
+  },
+  {
+   "fieldname": "weight",
+   "fieldtype": "Float",
+   "label": "Question Weight",
+   "non_negative": 1,
+   "options": "\nSingle Select\nMulti Select\nYes/No\nNumber\nPercentage\nRating",
+   "precision": "2"
+  },
+  {
+   "fieldname": "section_break_xmmb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "question_category",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Question Category",
+   "options": "KNAPS Question Category",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_oeoq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "question_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Question Type",
+   "options": "\nSingle Select\nMulti Select\nYes/No\nNumber\nCurrency\nPercentage\nText\nDate\nRating\nFile Upload\nDeclaration",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_cdsh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "internal_notes",
+   "fieldtype": "Text Editor",
+   "label": "Internal Notes"
+  },
+  {
+   "fieldname": "column_break_gyvg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "module_type",
+   "fieldtype": "Table MultiSelect",
+   "label": "Module Type",
+   "options": "KNAPS Question Module Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_dqbv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_mandatory",
+   "fieldtype": "Check",
+   "label": "Is Mandatory?"
+  },
+  {
+   "fieldname": "section_break_zutl",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "configuration",
+   "fieldtype": "JSON",
+   "label": "Configuration"
+  },
+  {
+   "fieldname": "section_break_szef",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "options",
+   "fieldtype": "Table",
+   "label": "Options",
+   "options": "KNAPS Question Option"
+  },
+  {
+   "fieldname": "answer_mode",
+   "fieldtype": "Select",
+   "label": "Answer Mode",
+   "options": "\nNative Input\nOptions Needed",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-25 11:43:42.487089",
+ "modified_by": "Administrator",
+ "module": "KNAPS",
+ "name": "KNAPS Question Master",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

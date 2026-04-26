@@ -1,0 +1,161 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-26 13:21:57.427927",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_details_section",
+  "client",
+  "through_us",
+  "through_partner",
+  "partner",
+  "column_break_zpnh",
+  "entry_date",
+  "existing_investment",
+  "column_break_nqwo",
+  "status",
+  "passbook_status",
+  "account_number",
+  "extend_investment",
+  "scheme_details_section",
+  "scheme_name",
+  "scheme_code",
+  "period_in_months",
+  "rate_of_interest"
+ ],
+ "fields": [
+  {
+   "fieldname": "client",
+   "fieldtype": "Link",
+   "label": "Client",
+   "options": "KNAPS Client"
+  },
+  {
+   "default": "1",
+   "description": "Check if we are the agent.",
+   "fieldname": "through_us",
+   "fieldtype": "Check",
+   "label": "Through Us?"
+  },
+  {
+   "fieldname": "column_break_zpnh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "entry_date",
+   "fieldtype": "Date",
+   "label": "Entry Date",
+   "options": "Today"
+  },
+  {
+   "fieldname": "column_break_nqwo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status"
+  },
+  {
+   "fieldname": "passbook_status",
+   "fieldtype": "Select",
+   "label": "Passbook Status"
+  },
+  {
+   "default": "0",
+   "description": "Check if client servicing is done by the partner.",
+   "fieldname": "through_partner",
+   "fieldtype": "Check",
+   "label": "Through Partner?"
+  },
+  {
+   "fieldname": "partner",
+   "fieldtype": "Link",
+   "label": "Partner",
+   "options": "KNAPS Partner"
+  },
+  {
+   "default": "0",
+   "description": "Check if at the date of entry investment is already created",
+   "fieldname": "existing_investment",
+   "fieldtype": "Check",
+   "label": "Existing Investment?"
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Account Number"
+  },
+  {
+   "default": "0",
+   "fieldname": "extend_investment",
+   "fieldtype": "Check",
+   "label": "Extend Investment?"
+  },
+  {
+   "fieldname": "basic_details_section",
+   "fieldtype": "Section Break",
+   "label": "Basic Details"
+  },
+  {
+   "fieldname": "scheme_details_section",
+   "fieldtype": "Section Break",
+   "label": "Scheme Details"
+  },
+  {
+   "fieldname": "scheme_name",
+   "fieldtype": "Link",
+   "label": "Scheme Name",
+   "options": "KNAPS PO Scheme"
+  },
+  {
+   "fieldname": "scheme_code",
+   "fieldtype": "Data",
+   "label": "Scheme Code"
+  },
+  {
+   "fieldname": "period_in_months",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Period in Months",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "rate_of_interest",
+   "fieldtype": "Percent",
+   "label": "Rate of Interest",
+   "non_negative": 1,
+   "precision": "2",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-26 13:42:48.976002",
+ "modified_by": "Administrator",
+ "module": "KNAPS PO",
+ "name": "KNAPS PO Investment",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

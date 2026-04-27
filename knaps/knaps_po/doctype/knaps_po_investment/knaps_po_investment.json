@@ -18,11 +18,16 @@
   "passbook_status",
   "account_number",
   "extend_investment",
+  "section_break_cbjw",
+  "extensions",
   "scheme_details_section",
   "scheme_name",
   "scheme_code",
+  "column_break_zdow",
   "period_in_months",
-  "rate_of_interest"
+  "rate_of_interest",
+  "payment_details_tab",
+  "payments"
  ],
  "fields": [
   {
@@ -58,9 +63,11 @@
    "label": "Status"
   },
   {
+   "description": "Who currently has the passbook?",
    "fieldname": "passbook_status",
    "fieldtype": "Select",
-   "label": "Passbook Status"
+   "label": "Passbook Status",
+   "options": "\nAwaited from Post Office\nWith Us\nWith Client"
   },
   {
    "default": "0",
@@ -77,7 +84,7 @@
   },
   {
    "default": "0",
-   "description": "Check if at the date of entry investment is already created",
+   "description": "Check if at the date of entry, investment is already created",
    "fieldname": "existing_investment",
    "fieldtype": "Check",
    "label": "Existing Investment?"
@@ -107,14 +114,17 @@
    "fieldname": "scheme_name",
    "fieldtype": "Link",
    "label": "Scheme Name",
-   "options": "KNAPS PO Scheme"
+   "options": "KNAPS PO Scheme",
+   "reqd": 1
   },
   {
    "fieldname": "scheme_code",
    "fieldtype": "Data",
-   "label": "Scheme Code"
+   "label": "Scheme Code",
+   "read_only": 1
   },
   {
+   "description": "If 1 year enter 12 months.",
    "fieldname": "period_in_months",
    "fieldtype": "Int",
    "in_list_view": 1,
@@ -129,12 +139,38 @@
    "non_negative": 1,
    "precision": "2",
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_zdow",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "payment_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Payment Details"
+  },
+  {
+   "fieldname": "section_break_cbjw",
+   "fieldtype": "Section Break",
+   "label": "Extension Details"
+  },
+  {
+   "fieldname": "extensions",
+   "fieldtype": "Table",
+   "label": "Extensions",
+   "options": "KNAPS PO Extension"
+  },
+  {
+   "fieldname": "payments",
+   "fieldtype": "Table",
+   "label": "Payments",
+   "options": "KNAPS Payment"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-26 13:42:48.976002",
+ "modified": "2026-04-27 12:55:29.358741",
  "modified_by": "Administrator",
  "module": "KNAPS PO",
  "name": "KNAPS PO Investment",

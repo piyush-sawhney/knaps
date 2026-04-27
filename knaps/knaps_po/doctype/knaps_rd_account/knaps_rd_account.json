@@ -1,0 +1,223 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-27 12:58:09.548065",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "po_rd_investment",
+  "client_name",
+  "column_break_xcal",
+  "account_number",
+  "amount",
+  "column_break_svly",
+  "status",
+  "start_date",
+  "section_break_ncty",
+  "card_number",
+  "extension_card_number",
+  "is_updated",
+  "column_break_rskj",
+  "effective_card_number",
+  "bank",
+  "portal_details_section",
+  "holder_name",
+  "account_opening_date",
+  "denomination",
+  "currency",
+  "column_break_rauf",
+  "default_installments",
+  "rebate",
+  "default_fee",
+  "column_break_bdpo",
+  "pending_installments",
+  "last_deposit_date",
+  "total_months_paid",
+  "total_deposit_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "po_rd_investment",
+   "fieldtype": "Link",
+   "label": "PO RD Investment",
+   "options": "KNAPS PO Investment"
+  },
+  {
+   "fieldname": "client_name",
+   "fieldtype": "Data",
+   "label": "Client Name"
+  },
+  {
+   "fieldname": "column_break_xcal",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Account Number"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "column_break_svly",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "label": "Status"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "portal_details_section",
+   "fieldtype": "Section Break",
+   "label": "Portal Details"
+  },
+  {
+   "fieldname": "holder_name",
+   "fieldtype": "Data",
+   "label": "Holder Name"
+  },
+  {
+   "fieldname": "account_opening_date",
+   "fieldtype": "Date",
+   "label": "Account Opening Date"
+  },
+  {
+   "fieldname": "denomination",
+   "fieldtype": "Currency",
+   "label": "Denomination",
+   "non_negative": 1,
+   "options": "currency",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_rauf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rebate",
+   "fieldtype": "Currency",
+   "label": "Rebate",
+   "non_negative": 1,
+   "options": "currency",
+   "precision": "2"
+  },
+  {
+   "fieldname": "default_fee",
+   "fieldtype": "Currency",
+   "label": "Default Fee",
+   "non_negative": 1,
+   "options": "currency",
+   "precision": "2"
+  },
+  {
+   "fieldname": "default_installments",
+   "fieldtype": "Int",
+   "label": "Default Installments",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "total_deposit_amount",
+   "fieldtype": "Currency",
+   "label": "Total Deposit Amount",
+   "options": "currency"
+  },
+  {
+   "default": "INR",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "last_deposit_date",
+   "fieldtype": "Date",
+   "label": "Last Deposit Date"
+  },
+  {
+   "fieldname": "total_months_paid",
+   "fieldtype": "Int",
+   "label": "Total Months Paid"
+  },
+  {
+   "fieldname": "pending_installments",
+   "fieldtype": "Int",
+   "label": " Pending Installments "
+  },
+  {
+   "fieldname": "column_break_bdpo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_ncty",
+   "fieldtype": "Section Break",
+   "label": "Card and Bank Details"
+  },
+  {
+   "fieldname": "card_number",
+   "fieldtype": "Data",
+   "label": "Card Number"
+  },
+  {
+   "fieldname": "extension_card_number",
+   "fieldtype": "Data",
+   "label": "Extension Card Number"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_updated",
+   "fieldtype": "Check",
+   "label": "Is Updated?"
+  },
+  {
+   "fieldname": "column_break_rskj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "effective_card_number",
+   "fieldtype": "Data",
+   "label": "Effective Card Number"
+  },
+  {
+   "fieldname": "bank",
+   "fieldtype": "Link",
+   "label": "Bank",
+   "options": "KNAPS Bank"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-27 13:07:26.883137",
+ "modified_by": "Administrator",
+ "module": "KNAPS PO",
+ "name": "KNAPS RD Account",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

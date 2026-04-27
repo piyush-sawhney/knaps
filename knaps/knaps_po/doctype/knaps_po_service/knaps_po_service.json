@@ -1,0 +1,117 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-27 13:17:22.043219",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "column_break_tgyk",
+  "request_type",
+  "column_break_gevl",
+  "request_date",
+  "column_break_ohpa",
+  "status",
+  "section_break_ndal",
+  "po_investment",
+  "column_break_azwv",
+  "client_name",
+  "column_break_mznh",
+  "scheme_type",
+  "section_break_nrve",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "column_break_tgyk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_gevl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_ohpa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status"
+  },
+  {
+   "fieldname": "section_break_ndal",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "po_investment",
+   "fieldtype": "Link",
+   "label": "PO Investment",
+   "options": "KNAPS PO Investment"
+  },
+  {
+   "fieldname": "column_break_azwv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "client_name",
+   "fieldtype": "Data",
+   "label": "Client Name"
+  },
+  {
+   "fieldname": "column_break_mznh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "scheme_type",
+   "fieldtype": "Data",
+   "label": "Scheme Type"
+  },
+  {
+   "fieldname": "request_type",
+   "fieldtype": "Select",
+   "label": "Request Type",
+   "options": "\nForm 121\nForm 15 G/H\nTransmission Request\nPre-Maturity Request\nCheque Book Request\nInternet Banking Requet\nATM Request\nMaturity Request"
+  },
+  {
+   "fieldname": "section_break_nrve",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text Editor",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "request_date",
+   "fieldtype": "Date",
+   "label": "Request Date"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-27 13:21:23.342633",
+ "modified_by": "Administrator",
+ "module": "KNAPS PO",
+ "name": "KNAPS PO Service",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

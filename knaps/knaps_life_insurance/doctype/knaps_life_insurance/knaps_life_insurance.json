@@ -1,0 +1,198 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-27 13:29:24.447530",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "client",
+  "is_self_life_assured",
+  "column_break_youf",
+  "life_assured",
+  "column_break_ixjt",
+  "status",
+  "section_break_cwta",
+  "insurance_company",
+  "insurance_policy_name",
+  "insurance_policy_code",
+  "insurance_policy_isin",
+  "column_break_nlqz",
+  "sum_insured",
+  "premium_amount",
+  "currency",
+  "column_break_osob",
+  "policy_period_in_years",
+  "premium_payment_mode",
+  "policy_document",
+  "rider_details_section",
+  "riders",
+  "nominee_details_tab",
+  "nominees",
+  "payment_tab",
+  "payments"
+ ],
+ "fields": [
+  {
+   "fieldname": "client",
+   "fieldtype": "Link",
+   "label": "Proposer",
+   "options": "KNAPS Client"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_self_life_assured",
+   "fieldtype": "Check",
+   "label": "Is Self Life Assured?"
+  },
+  {
+   "fieldname": "life_assured",
+   "fieldtype": "Link",
+   "label": "Life Assured",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status"
+  },
+  {
+   "fieldname": "section_break_cwta",
+   "fieldtype": "Section Break",
+   "label": "Insurance Details"
+  },
+  {
+   "fieldname": "insurance_company",
+   "fieldtype": "Link",
+   "label": "Insurance Company",
+   "options": "KNAPS LI Principal"
+  },
+  {
+   "fieldname": "sum_insured",
+   "fieldtype": "Currency",
+   "label": "Sum Insured",
+   "non_negative": 1,
+   "options": "currency",
+   "precision": "2"
+  },
+  {
+   "fieldname": "insurance_policy_name",
+   "fieldtype": "Data",
+   "label": "Insurance Policy Name"
+  },
+  {
+   "fieldname": "insurance_policy_code",
+   "fieldtype": "Data",
+   "label": "Insurance Policy Code"
+  },
+  {
+   "fieldname": "insurance_policy_isin",
+   "fieldtype": "Data",
+   "label": "Insurance Policy ISIN"
+  },
+  {
+   "fieldname": "column_break_nlqz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "policy_period_in_years",
+   "fieldtype": "Int",
+   "label": "Policy Period in Years",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "premium_payment_mode",
+   "fieldtype": "Select",
+   "label": "Premium Payment Mode",
+   "options": "\nSingle\nMonthly\nQuarterly\nHalf-Yearly\nYearly"
+  },
+  {
+   "fieldname": "premium_amount",
+   "fieldtype": "Currency",
+   "label": "Premium Amount",
+   "options": "currency"
+  },
+  {
+   "fieldname": "column_break_youf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_ixjt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_osob",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rider_details_section",
+   "fieldtype": "Section Break",
+   "label": "Rider Details"
+  },
+  {
+   "fieldname": "riders",
+   "fieldtype": "Table",
+   "label": "Riders",
+   "options": "KNAPS LI Rider"
+  },
+  {
+   "fieldname": "payment_tab",
+   "fieldtype": "Tab Break",
+   "label": "Payment Details"
+  },
+  {
+   "fieldname": "payments",
+   "fieldtype": "Table",
+   "label": "Payments",
+   "options": "KNAPS Payment"
+  },
+  {
+   "fieldname": "policy_document",
+   "fieldtype": "Attach",
+   "label": "Policy Kit"
+  },
+  {
+   "fieldname": "nominee_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Nominee Details"
+  },
+  {
+   "fieldname": "nominees",
+   "fieldtype": "Table",
+   "label": "Nominees",
+   "options": "KNAPS Nominee"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-27 17:07:50.114371",
+ "modified_by": "Administrator",
+ "module": "KNAPS Life Insurance",
+ "name": "KNAPS Life Insurance",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,57 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-27 13:43:51.350818",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "rider_name",
+  "rider_sum_assured",
+  "rider_premium",
+  "currency"
+ ],
+ "fields": [
+  {
+   "fieldname": "rider_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Rider Name"
+  },
+  {
+   "fieldname": "rider_sum_assured",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Rider Sum Assured"
+  },
+  {
+   "fieldname": "rider_premium",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Rider Premium"
+  },
+  {
+   "default": "INR",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Currency",
+   "options": "Currency"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-04-27 13:45:20.753444",
+ "modified_by": "Administrator",
+ "module": "KNAPS Life Insurance",
+ "name": "KNAPS LI Rider",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

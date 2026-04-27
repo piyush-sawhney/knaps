@@ -1,0 +1,71 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-27 17:01:39.239305",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "nominee_name",
+  "nominee_date_of_birth",
+  "nominee_relation",
+  "nominee_percent",
+  "guardian",
+  "is_minor"
+ ],
+ "fields": [
+  {
+   "fieldname": "nominee_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Nominee Name",
+   "options": "KNAPS Person"
+  },
+  {
+   "fieldname": "nominee_date_of_birth",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Nominee Date of Birth"
+  },
+  {
+   "fieldname": "nominee_relation",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Nominee Relation",
+   "options": "KNAPS Relationship"
+  },
+  {
+   "fieldname": "nominee_percent",
+   "fieldtype": "Percent",
+   "in_list_view": 1,
+   "label": "Nominee Percent"
+  },
+  {
+   "fieldname": "guardian",
+   "fieldtype": "Link",
+   "label": "Guardian",
+   "options": "KNAPS Person"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_minor",
+   "fieldtype": "Check",
+   "label": "Is Minor?"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-04-27 17:04:58.548957",
+ "modified_by": "Administrator",
+ "module": "KNAPS",
+ "name": "KNAPS Nominee",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

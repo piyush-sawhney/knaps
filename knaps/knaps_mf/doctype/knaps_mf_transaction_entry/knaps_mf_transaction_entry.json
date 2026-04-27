@@ -1,0 +1,161 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-27 17:15:28.727763",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "folio_number",
+  "first_holder_name",
+  "scheme_name",
+  "column_break_yofl",
+  "entry_date",
+  "column_break_hubg",
+  "status",
+  "rejection_reason",
+  "section_break_wvdm",
+  "transaction_type",
+  "start_date",
+  "mode",
+  "column_break_vkrb",
+  "amount",
+  "all_units",
+  "units",
+  "currency",
+  "payment_details_tab",
+  "payments"
+ ],
+ "fields": [
+  {
+   "fieldname": "folio_number",
+   "fieldtype": "Link",
+   "label": "Folio Number",
+   "options": "KNAPS MF Folio Entry"
+  },
+  {
+   "fieldname": "payment_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Payment Details"
+  },
+  {
+   "fieldname": "payments",
+   "fieldtype": "Table",
+   "label": "Payments",
+   "options": "KNAPS Payment"
+  },
+  {
+   "fieldname": "first_holder_name",
+   "fieldtype": "Data",
+   "label": "First Holder Name"
+  },
+  {
+   "fieldname": "column_break_yofl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "entry_date",
+   "fieldtype": "Date",
+   "label": "Entry Date"
+  },
+  {
+   "fieldname": "column_break_hubg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status"
+  },
+  {
+   "fieldname": "rejection_reason",
+   "fieldtype": "Small Text",
+   "label": "Rejection Reason"
+  },
+  {
+   "fieldname": "section_break_wvdm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "transaction_type",
+   "fieldtype": "Link",
+   "label": "Transaction Type",
+   "options": "KNAPS MF Transaction Type"
+  },
+  {
+   "fieldname": "column_break_vkrb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "label": "Amount",
+   "options": "currency"
+  },
+  {
+   "default": "0",
+   "fieldname": "all_units",
+   "fieldtype": "Check",
+   "label": "All Units?"
+  },
+  {
+   "fieldname": "units",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Units",
+   "non_negative": 1,
+   "precision": "3",
+   "reqd": 1
+  },
+  {
+   "default": "INR",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "mode",
+   "fieldtype": "Select",
+   "label": "Mode",
+   "options": "\nDaily\nFortnightly\nMonthly\nQuarterly\nHalf-Yearly"
+  },
+  {
+   "fieldname": "scheme_name",
+   "fieldtype": "Link",
+   "label": "Scheme Name",
+   "options": "KNAPS MF Scheme"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-27 17:37:18.193251",
+ "modified_by": "Administrator",
+ "module": "KNAPS MF",
+ "name": "KNAPS MF Transaction Entry",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

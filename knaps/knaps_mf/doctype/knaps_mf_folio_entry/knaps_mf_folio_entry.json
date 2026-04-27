@@ -1,0 +1,151 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-27 17:08:21.302328",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "folio_number",
+  "column_break_iasb",
+  "entry_date",
+  "column_break_mrvx",
+  "status",
+  "section_break_quma",
+  "first_holder",
+  "is_minor",
+  "guardian",
+  "column_break_edvf",
+  "second_holder",
+  "third_holder",
+  "column_break_ldnr",
+  "through_us",
+  "through_broker",
+  "is_existing_folio",
+  "nominee_details_tab",
+  "nominees"
+ ],
+ "fields": [
+  {
+   "fieldname": "first_holder",
+   "fieldtype": "Link",
+   "label": "First Holder",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "second_holder",
+   "fieldtype": "Link",
+   "label": "Second Holder",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "column_break_edvf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "third_holder",
+   "fieldtype": "Link",
+   "label": "Third Holder",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "guardian",
+   "fieldtype": "Link",
+   "label": "Guardian",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "column_break_ldnr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "folio_number",
+   "fieldtype": "Data",
+   "label": "Folio Number"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_minor",
+   "fieldtype": "Check",
+   "label": "Is Minor?"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status"
+  },
+  {
+   "fieldname": "entry_date",
+   "fieldtype": "Date",
+   "label": "Entry Date"
+  },
+  {
+   "fieldname": "column_break_iasb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_mrvx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_quma",
+   "fieldtype": "Section Break",
+   "label": "Holder Details"
+  },
+  {
+   "fieldname": "nominees",
+   "fieldtype": "Table",
+   "label": "Nominees",
+   "options": "KNAPS Nominee"
+  },
+  {
+   "default": "1",
+   "fieldname": "through_us",
+   "fieldtype": "Check",
+   "label": "Through Us?"
+  },
+  {
+   "default": "0",
+   "fieldname": "through_broker",
+   "fieldtype": "Check",
+   "label": "Through Broker?"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_existing_folio",
+   "fieldtype": "Check",
+   "label": "Is Existing Folio?"
+  },
+  {
+   "fieldname": "nominee_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Nominee Details"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-27 17:14:34.212112",
+ "modified_by": "Administrator",
+ "module": "KNAPS MF",
+ "name": "KNAPS MF Folio Entry",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

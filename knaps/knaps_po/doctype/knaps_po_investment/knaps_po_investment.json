@@ -5,20 +5,26 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "basic_details_section",
-  "client",
+  "account_number",
+  "column_break_uowo",
+  "entry_date",
+  "column_break_btkw",
+  "status",
+  "section_break_ohyq",
+  "holding_nature",
+  "primary_holder",
+  "second_holder",
+  "third_holder",
+  "column_break_znoy",
   "through_us",
   "through_partner",
   "partner",
-  "column_break_zpnh",
-  "entry_date",
-  "existing_investment",
-  "column_break_nqwo",
-  "status",
+  "po_branch",
+  "column_break_vopc",
   "passbook_status",
-  "account_number",
-  "extend_investment",
+  "existing_investment",
   "section_break_cbjw",
+  "extend_investment",
   "extensions",
   "scheme_details_section",
   "scheme_name",
@@ -26,16 +32,12 @@
   "column_break_zdow",
   "period_in_months",
   "rate_of_interest",
+  "nominee_details_tab",
+  "nominees",
   "payment_details_tab",
   "payments"
  ],
  "fields": [
-  {
-   "fieldname": "client",
-   "fieldtype": "Link",
-   "label": "Client",
-   "options": "KNAPS Client"
-  },
   {
    "default": "1",
    "description": "Check if we are the agent.",
@@ -44,18 +46,10 @@
    "label": "Through Us?"
   },
   {
-   "fieldname": "column_break_zpnh",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "entry_date",
    "fieldtype": "Date",
    "label": "Entry Date",
    "options": "Today"
-  },
-  {
-   "fieldname": "column_break_nqwo",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "status",
@@ -96,14 +90,10 @@
   },
   {
    "default": "0",
+   "description": "Check if investment is in extension period.",
    "fieldname": "extend_investment",
    "fieldtype": "Check",
    "label": "Extend Investment?"
-  },
-  {
-   "fieldname": "basic_details_section",
-   "fieldtype": "Section Break",
-   "label": "Basic Details"
   },
   {
    "fieldname": "scheme_details_section",
@@ -124,7 +114,7 @@
    "read_only": 1
   },
   {
-   "description": "If 1 year enter 12 months.",
+   "description": "If 1 year enter 12 for months.",
    "fieldname": "period_in_months",
    "fieldtype": "Int",
    "in_list_view": 1,
@@ -165,12 +155,72 @@
    "fieldtype": "Table",
    "label": "Payments",
    "options": "KNAPS Payment"
+  },
+  {
+   "fieldname": "po_branch",
+   "fieldtype": "Data",
+   "label": "Post Office Branch"
+  },
+  {
+   "fieldname": "holding_nature",
+   "fieldtype": "Link",
+   "label": "Holding Nature",
+   "options": "KNAPS Holding Type"
+  },
+  {
+   "fieldname": "column_break_znoy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "primary_holder",
+   "fieldtype": "Link",
+   "label": "First Holder",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "second_holder",
+   "fieldtype": "Link",
+   "label": "Second Holder",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "third_holder",
+   "fieldtype": "Link",
+   "label": "Third Holder",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "column_break_vopc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_uowo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_btkw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_ohyq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "nominee_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Nominee Details"
+  },
+  {
+   "fieldname": "nominees",
+   "fieldtype": "Table",
+   "label": "Nominees",
+   "options": "KNAPS Nominee"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-27 12:55:29.358741",
+ "modified": "2026-04-27 17:06:05.026035",
  "modified_by": "Administrator",
  "module": "KNAPS PO",
  "name": "KNAPS PO Investment",

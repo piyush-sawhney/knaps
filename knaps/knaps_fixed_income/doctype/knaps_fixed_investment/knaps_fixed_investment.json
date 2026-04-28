@@ -1,0 +1,308 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-28 16:31:30.551941",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "account_number",
+  "column_break_uowo",
+  "entry_date",
+  "column_break_btkw",
+  "status",
+  "fd_status",
+  "section_break_qzwl",
+  "old_investment_type",
+  "column_break_fuqt",
+  "old_investment",
+  "section_break_ohyq",
+  "holding_nature",
+  "primary_holder",
+  "second_holder",
+  "third_holder",
+  "column_break_znoy",
+  "through_us",
+  "existing_investment",
+  "through_partner",
+  "partner",
+  "column_break_vopc",
+  "submitted_through_broker",
+  "broker_details",
+  "sub_broker_code",
+  "scheme_details_section",
+  "investment_type",
+  "investment_company",
+  "scheme_name",
+  "column_break_zdow",
+  "investment_amount",
+  "currency",
+  "period_type",
+  "period",
+  "column_break_oapg",
+  "interest_payment_type",
+  "rate_of_interest",
+  "nominee_details_tab",
+  "nominees",
+  "payment_details_tab",
+  "payments"
+ ],
+ "fields": [
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "label": "Account Number"
+  },
+  {
+   "fieldname": "column_break_uowo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "entry_date",
+   "fieldtype": "Date",
+   "label": "Entry Date",
+   "options": "Today"
+  },
+  {
+   "fieldname": "column_break_btkw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status"
+  },
+  {
+   "fieldname": "section_break_ohyq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "holding_nature",
+   "fieldtype": "Link",
+   "label": "Holding Nature",
+   "options": "KNAPS Holding Type"
+  },
+  {
+   "fieldname": "primary_holder",
+   "fieldtype": "Link",
+   "label": "First Holder",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "second_holder",
+   "fieldtype": "Link",
+   "label": "Second Holder",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "third_holder",
+   "fieldtype": "Link",
+   "label": "Third Holder",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "column_break_znoy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "description": "Check if we are the agent.",
+   "fieldname": "through_us",
+   "fieldtype": "Check",
+   "label": "Through Us?"
+  },
+  {
+   "default": "0",
+   "description": "Check if client servicing is done by the partner.",
+   "fieldname": "through_partner",
+   "fieldtype": "Check",
+   "label": "Through Partner?"
+  },
+  {
+   "fieldname": "partner",
+   "fieldtype": "Link",
+   "label": "Partner",
+   "options": "KNAPS Partner"
+  },
+  {
+   "fieldname": "column_break_vopc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Check if at the date of entry, investment is already created",
+   "fieldname": "existing_investment",
+   "fieldtype": "Check",
+   "label": "Existing Investment?"
+  },
+  {
+   "fieldname": "scheme_details_section",
+   "fieldtype": "Section Break",
+   "label": "Scheme Details"
+  },
+  {
+   "fieldname": "column_break_zdow",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rate_of_interest",
+   "fieldtype": "Percent",
+   "label": "Rate of Interest",
+   "non_negative": 1,
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "nominee_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Nominee Details"
+  },
+  {
+   "fieldname": "nominees",
+   "fieldtype": "Table",
+   "label": "Nominees",
+   "options": "KNAPS Nominee"
+  },
+  {
+   "fieldname": "payment_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Payment Details"
+  },
+  {
+   "fieldname": "payments",
+   "fieldtype": "Table",
+   "label": "Payments",
+   "options": "KNAPS Payment"
+  },
+  {
+   "default": "0",
+   "fieldname": "submitted_through_broker",
+   "fieldtype": "Check",
+   "label": "Submitted Through Broker?"
+  },
+  {
+   "description": "Who currently has the FD/Bond?",
+   "fieldname": "fd_status",
+   "fieldtype": "Select",
+   "label": "FD Status"
+  },
+  {
+   "fieldname": "broker_details",
+   "fieldtype": "Link",
+   "label": "Broker Details",
+   "options": "KNAPS Fixed Investment Principal"
+  },
+  {
+   "fieldname": "sub_broker_code",
+   "fieldtype": "Data",
+   "label": "Sub Broker Code"
+  },
+  {
+   "fieldname": "investment_type",
+   "fieldtype": "Select",
+   "label": "Investment Type",
+   "options": "\nFixed Deposit (FD)\nBonds\nNon-Convertible Debenture (NCD)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "interest_payment_type",
+   "fieldtype": "Select",
+   "label": "Interest Payment Type",
+   "options": "\nMonthly\nQuarterly\nHalf-Yearly\nYearly\nCumulative",
+   "reqd": 1
+  },
+  {
+   "fieldname": "investment_company",
+   "fieldtype": "Link",
+   "label": "Investment Company",
+   "options": "KNAPS Fixed Investment Principal",
+   "reqd": 1
+  },
+  {
+   "fieldname": "scheme_name",
+   "fieldtype": "Small Text",
+   "label": "Scheme Name"
+  },
+  {
+   "fieldname": "investment_amount",
+   "fieldtype": "Currency",
+   "label": "Investment Amount",
+   "non_negative": 1,
+   "options": "currency",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "default": "INR",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "default": "Months",
+   "fieldname": "period_type",
+   "fieldtype": "Select",
+   "label": "Period Type",
+   "options": "\nDays\nMonths\nYears"
+  },
+  {
+   "fieldname": "period",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Period",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_oapg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "old_investment",
+   "fieldtype": "Dynamic Link",
+   "label": "Old Investment",
+   "options": "old_investment_type"
+  },
+  {
+   "fieldname": "section_break_qzwl",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "old_investment_type",
+   "fieldtype": "Link",
+   "label": "Old Investment Type",
+   "options": "DocType"
+  },
+  {
+   "fieldname": "column_break_fuqt",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-28 17:12:31.288383",
+ "modified_by": "Administrator",
+ "module": "KNAPS Fixed Income",
+ "name": "KNAPS Fixed Investment",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

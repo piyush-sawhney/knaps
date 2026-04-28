@@ -26,6 +26,7 @@
   "primary_phone",
   "primary_whatsapp",
   "primary_email",
+  "display_picture",
   "section_break_vuxa",
   "phone_numbers",
   "email_address",
@@ -182,12 +183,17 @@
    "fieldtype": "Tab Break",
    "label": "Connections",
    "show_dashboard": 1
+  },
+  {
+   "fieldname": "display_picture",
+   "fieldtype": "Attach Image",
+   "label": "Display Picture"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-25 17:05:29.541189",
+ "modified": "2026-04-28 16:00:08.299098",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Person",

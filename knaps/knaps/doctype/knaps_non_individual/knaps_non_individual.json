@@ -26,8 +26,8 @@
   "phone_numbers",
   "email_addresses",
   "address_html",
-  "owner_details_section",
-  "owners"
+  "owner_details_tab",
+  "principals"
  ],
  "fields": [
   {
@@ -73,10 +73,9 @@
   },
   {
    "fieldname": "primary_contact",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Primary Contact",
-   "options": "KNAPS Person",
-   "reqd": 1
+   "options": "KNAPS Person"
   },
   {
    "fetch_from": "primary_contact.primary_phone",
@@ -103,11 +102,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "owner_details_section",
-   "fieldtype": "Section Break",
-   "label": "Owner Details"
-  },
-  {
    "fieldname": "section_break_mhjm",
    "fieldtype": "Section Break",
    "label": "Contact Details"
@@ -128,13 +122,6 @@
    "fieldname": "address_html",
    "fieldtype": "HTML",
    "label": "Address HTML"
-  },
-  {
-   "fieldname": "owners",
-   "fieldtype": "Table",
-   "label": "Owners",
-   "options": "KNAPS Non Individual Owner",
-   "reqd": 1
   },
   {
    "fieldname": "column_break_rrng",
@@ -161,12 +148,23 @@
   {
    "fieldname": "section_break_dsno",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "owner_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Owner Details"
+  },
+  {
+   "fieldname": "principals",
+   "fieldtype": "Table",
+   "label": "Principals",
+   "options": "KNAPS Entity Principal"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-24 17:10:25.599687",
+ "modified": "2026-04-28 16:16:55.106804",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual",

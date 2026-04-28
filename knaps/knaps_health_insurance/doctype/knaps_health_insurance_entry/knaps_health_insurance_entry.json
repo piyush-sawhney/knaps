@@ -5,9 +5,31 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "entry_date",
+  "column_break_avjt",
+  "status",
+  "section_break_hmho",
   "proposer",
   "is_policy_for_self",
+  "policy_type",
+  "column_break_msyh",
+  "plan_name",
+  "insurer",
+  "column_break_liky",
+  "through_us",
+  "thorugh_partner",
+  "partner",
+  "section_break_ypix",
+  "policy_number",
+  "policy_document",
+  "column_break_fozu",
+  "period_type",
+  "period",
+  "column_break_dkao",
+  "start_date",
+  "end_date",
   "section_break_zqcl",
+  "floater_sum_assured",
   "members"
  ],
  "fields": [
@@ -32,12 +54,121 @@
    "fieldtype": "Table",
    "label": "Members",
    "options": "KNAPS Health Insurance Member"
+  },
+  {
+   "fieldname": "policy_type",
+   "fieldtype": "Select",
+   "label": "Policy Type",
+   "options": "\nIndividual\nFloater\nMulti-Individual"
+  },
+  {
+   "fetch_from": "plan_name.insurer",
+   "fieldname": "insurer",
+   "fieldtype": "Data",
+   "label": "Insurer"
+  },
+  {
+   "fieldname": "column_break_msyh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "floater_sum_assured",
+   "fieldtype": "Currency",
+   "label": "Floater Sum Assured"
+  },
+  {
+   "fieldname": "plan_name",
+   "fieldtype": "Link",
+   "label": "Plan Name",
+   "options": "KNAPS Health Insurance Plan"
+  },
+  {
+   "fieldname": "entry_date",
+   "fieldtype": "Date",
+   "label": "Entry Date"
+  },
+  {
+   "fieldname": "column_break_avjt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status"
+  },
+  {
+   "fieldname": "section_break_hmho",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_liky",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "through_us",
+   "fieldtype": "Check",
+   "label": "Through Us?"
+  },
+  {
+   "default": "0",
+   "fieldname": "thorugh_partner",
+   "fieldtype": "Check",
+   "label": "Thorugh Partner?"
+  },
+  {
+   "fieldname": "partner",
+   "fieldtype": "Link",
+   "label": "Partner",
+   "options": "KNAPS Partner"
+  },
+  {
+   "fieldname": "section_break_ypix",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "policy_number",
+   "fieldtype": "Data",
+   "label": "Policy Number"
+  },
+  {
+   "fieldname": "policy_document",
+   "fieldtype": "Attach",
+   "label": "Policy Document"
+  },
+  {
+   "fieldname": "period_type",
+   "fieldtype": "Select",
+   "label": "Period Type"
+  },
+  {
+   "fieldname": "period",
+   "fieldtype": "Int",
+   "label": "Period"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "column_break_fozu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_dkao",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-28 17:58:39.027173",
+ "modified": "2026-04-28 19:43:24.189491",
  "modified_by": "Administrator",
  "module": "KNAPS Health Insurance",
  "name": "KNAPS Health Insurance Entry",

@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class KNAPSEntityPrincipalRole(Document):
+class KNAPSFixedInvestmentProvider(Document):
 	pass

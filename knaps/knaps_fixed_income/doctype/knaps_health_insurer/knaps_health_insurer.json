@@ -5,28 +5,14 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "principal",
-  "principal_name",
+  "insurer",
+  "insurer_name",
   "column_break_utku",
   "code_with_principal",
   "section_break_josn",
   "associated_persons"
  ],
  "fields": [
-  {
-   "description": "Health Insurance Company",
-   "fieldname": "principal",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Principal",
-   "options": "KNAPS Non Individual",
-   "reqd": 1
-  },
-  {
-   "fieldname": "principal_name",
-   "fieldtype": "Data",
-   "label": "Principal Name"
-  },
   {
    "fieldname": "column_break_utku",
    "fieldtype": "Column Break"
@@ -35,7 +21,7 @@
    "description": "Enter our sub-broker/agent Code",
    "fieldname": "code_with_principal",
    "fieldtype": "Data",
-   "label": "Code with Principal"
+   "label": "Code with Insurer"
   },
   {
    "fieldname": "section_break_josn",
@@ -46,15 +32,29 @@
    "fieldtype": "Table",
    "label": "Associated Persons",
    "options": "KNAPS Associated Person"
+  },
+  {
+   "description": "Health Insurance Company",
+   "fieldname": "insurer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Insurer",
+   "options": "KNAPS Non Individual",
+   "reqd": 1
+  },
+  {
+   "fieldname": "insurer_name",
+   "fieldtype": "Data",
+   "label": "Insurer Name"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-28 19:30:19.571951",
+ "modified": "2026-04-29 17:36:22.684667",
  "modified_by": "Administrator",
  "module": "KNAPS Fixed Income",
- "name": "KNAPS Health Insurance Principal",
+ "name": "KNAPS Health Insurer",
  "owner": "Administrator",
  "permissions": [
   {

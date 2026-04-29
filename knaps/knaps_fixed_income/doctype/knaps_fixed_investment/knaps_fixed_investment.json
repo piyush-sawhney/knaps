@@ -121,7 +121,7 @@
    "fieldname": "partner",
    "fieldtype": "Link",
    "label": "Partner",
-   "options": "KNAPS Partner"
+   "options": "KNAPS Channel Partner"
   },
   {
    "fieldname": "column_break_vopc",
@@ -189,7 +189,7 @@
    "fieldname": "broker_details",
    "fieldtype": "Link",
    "label": "Broker Details",
-   "options": "KNAPS Fixed Investment Principal"
+   "options": "KNAPS Fixed Investment Provider"
   },
   {
    "fieldname": "sub_broker_code",
@@ -214,7 +214,7 @@
    "fieldname": "investment_company",
    "fieldtype": "Link",
    "label": "Investment Company",
-   "options": "KNAPS Fixed Investment Principal",
+   "options": "KNAPS Fixed Investment Provider",
    "reqd": 1
   },
   {
@@ -281,7 +281,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-28 17:12:31.288383",
+ "modified": "2026-04-29 17:36:50.006809",
  "modified_by": "Administrator",
  "module": "KNAPS Fixed Income",
  "name": "KNAPS Fixed Investment",

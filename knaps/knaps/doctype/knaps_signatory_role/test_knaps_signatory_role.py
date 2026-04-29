@@ -13,9 +13,9 @@ IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 
 
 
-class IntegrationTestKNAPSPartner(IntegrationTestCase):
+class IntegrationTestKNAPSSignatoryRole(IntegrationTestCase):
 	"""
-	Integration tests for KNAPSPartner.
+	Integration tests for KNAPSSignatoryRole.
 	Use this class for testing interactions between multiple components.
 	"""
 

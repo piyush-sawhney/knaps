@@ -1,45 +1,27 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2026-04-25 12:50:02.571437",
+ "creation": "2026-04-27 13:34:46.009185",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "partner_type",
-  "column_break_qomj",
-  "partner",
-  "partner_name"
+  "insurance_company"
  ],
  "fields": [
   {
-   "fieldname": "partner_type",
+   "fieldname": "insurance_company",
    "fieldtype": "Link",
-   "label": "Partner Type",
-   "options": "DocType"
-  },
-  {
-   "fieldname": "column_break_qomj",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "partner",
-   "fieldtype": "Dynamic Link",
-   "label": "Partner",
-   "options": "partner_type"
-  },
-  {
-   "fieldname": "partner_name",
-   "fieldtype": "Data",
-   "label": "Partner Name"
+   "label": "Insurance Company",
+   "options": "KNAPS Non Individual"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-25 12:51:26.930797",
+ "modified": "2026-04-27 13:35:38.939957",
  "modified_by": "Administrator",
- "module": "KNAPS",
- "name": "KNAPS Partner",
+ "module": "KNAPS Life Insurance",
+ "name": "KNAPS Life Insurer",
  "owner": "Administrator",
  "permissions": [
   {

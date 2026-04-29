@@ -74,7 +74,7 @@
    "fieldname": "partner",
    "fieldtype": "Link",
    "label": "Partner",
-   "options": "KNAPS Partner"
+   "options": "KNAPS Channel Partner"
   },
   {
    "default": "0",
@@ -220,7 +220,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-27 17:06:05.026035",
+ "modified": "2026-04-29 17:22:26.860018",
  "modified_by": "Administrator",
  "module": "KNAPS PO",
  "name": "KNAPS PO Investment",

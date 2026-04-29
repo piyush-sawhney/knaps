@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class KNAPSLIPrincipal(Document):
+class KNAPSLifeInsurer(Document):
 	pass

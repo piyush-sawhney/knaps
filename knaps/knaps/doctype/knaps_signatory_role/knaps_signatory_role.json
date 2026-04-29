@@ -1,27 +1,26 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2026-04-27 13:34:46.009185",
+ "creation": "2026-04-28 16:08:43.238606",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "insurance_company"
+  "name1"
  ],
  "fields": [
   {
-   "fieldname": "insurance_company",
-   "fieldtype": "Link",
-   "label": "Insurance Company",
-   "options": "KNAPS Non Individual"
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-27 13:35:38.939957",
+ "modified": "2026-04-28 16:08:50.686861",
  "modified_by": "Administrator",
- "module": "KNAPS Life Insurance",
- "name": "KNAPS LI Principal",
+ "module": "KNAPS",
+ "name": "KNAPS Signatory Role",
  "owner": "Administrator",
  "permissions": [
   {

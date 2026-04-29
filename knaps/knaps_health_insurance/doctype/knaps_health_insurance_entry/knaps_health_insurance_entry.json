@@ -120,7 +120,7 @@
    "fieldname": "partner",
    "fieldtype": "Link",
    "label": "Partner",
-   "options": "KNAPS Partner"
+   "options": "KNAPS Channel Partner"
   },
   {
    "fieldname": "section_break_ypix",
@@ -168,7 +168,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-28 19:43:24.189491",
+ "modified": "2026-04-29 17:22:26.401179",
  "modified_by": "Administrator",
  "module": "KNAPS Health Insurance",
  "name": "KNAPS Health Insurance Entry",

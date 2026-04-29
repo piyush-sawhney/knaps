@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class KNAPSEntityPrincipal(Document):
+class KNAPSAuthorisedSignatory(Document):
 	pass

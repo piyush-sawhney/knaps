@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class KNAPSHealthInsurancePrincipal(Document):
+class KNAPSSignatoryRole(Document):
 	pass

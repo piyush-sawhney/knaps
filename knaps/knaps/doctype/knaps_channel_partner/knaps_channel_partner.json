@@ -1,52 +1,52 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2026-04-28 19:34:37.663307",
+ "creation": "2026-04-25 12:50:02.571437",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "insurer",
-  "plan_name",
-  "plan_code",
-  "plan_isin",
-  "is_plan_active"
+  "partner_type",
+  "is_upstream",
+  "column_break_qomj",
+  "partner",
+  "partner_name"
  ],
  "fields": [
   {
-   "fieldname": "insurer",
+   "fieldname": "partner_type",
    "fieldtype": "Link",
-   "label": "Insurer",
-   "options": "KNAPS Health Insurer"
+   "label": "Partner Type",
+   "options": "DocType"
   },
   {
-   "fieldname": "plan_name",
+   "fieldname": "column_break_qomj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "partner",
+   "fieldtype": "Dynamic Link",
+   "label": "Partner",
+   "options": "partner_type"
+  },
+  {
+   "fieldname": "partner_name",
    "fieldtype": "Data",
-   "label": "Plan Name"
+   "label": "Partner Name"
   },
   {
-   "fieldname": "plan_code",
-   "fieldtype": "Data",
-   "label": "Plan Code"
-  },
-  {
-   "fieldname": "plan_isin",
-   "fieldtype": "Data",
-   "label": "Plan ISIN"
-  },
-  {
-   "default": "1",
-   "fieldname": "is_plan_active",
+   "default": "0",
+   "fieldname": "is_upstream",
    "fieldtype": "Check",
-   "label": "Is Plan Active?"
+   "label": "Is Upstream?"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-29 17:35:56.254512",
+ "modified": "2026-04-29 17:23:59.213180",
  "modified_by": "Administrator",
- "module": "KNAPS Health Insurance",
- "name": "KNAPS Health Insurance Plan",
+ "module": "KNAPS",
+ "name": "KNAPS Channel Partner",
  "owner": "Administrator",
  "permissions": [
   {

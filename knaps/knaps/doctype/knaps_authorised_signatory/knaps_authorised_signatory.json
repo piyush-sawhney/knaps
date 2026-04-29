@@ -10,8 +10,7 @@
   "role",
   "principal_holding_percent",
   "is_primary_contact",
-  "is_active",
-  "is_signatory"
+  "is_active"
  ],
  "fields": [
   {
@@ -39,14 +38,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Role",
-   "options": "KNAPS Entity Principal Role"
-  },
-  {
-   "default": "0",
-   "fieldname": "is_signatory",
-   "fieldtype": "Check",
-   "in_list_view": 1,
-   "label": "Is Signatory?"
+   "options": "KNAPS Signatory Role"
   },
   {
    "default": "1",
@@ -60,10 +52,10 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-28 16:17:44.904061",
+ "modified": "2026-04-29 17:34:30.221429",
  "modified_by": "Administrator",
  "module": "KNAPS",
- "name": "KNAPS Entity Principal",
+ "name": "KNAPS Authorised Signatory",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",

@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class KNAPSPartner(Document):
+class KNAPSHealthInsurer(Document):
 	pass

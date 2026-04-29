@@ -6,7 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "associated_person",
+  "representative_name",
   "role",
   "is_active"
  ],
@@ -25,10 +25,10 @@
    "label": "Is Active?"
   },
   {
-   "fieldname": "associated_person",
+   "fieldname": "representative_name",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Associated Person",
+   "label": "Name",
    "options": "KNAPS Person"
   }
  ],
@@ -36,10 +36,10 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-28 16:40:27.330047",
+ "modified": "2026-04-29 17:40:30.710327",
  "modified_by": "Administrator",
  "module": "KNAPS",
- "name": "KNAPS Associated Person",
+ "name": "KNAPS Representative",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",

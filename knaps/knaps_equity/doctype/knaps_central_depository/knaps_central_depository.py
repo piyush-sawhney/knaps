@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class KNAPSLIRider(Document):
+class KNAPSCentralDepository(Document):
 	pass

@@ -1,39 +1,27 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2026-04-27 13:34:46.009185",
+ "creation": "2026-04-29 17:52:55.239104",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "insurance_company",
-  "section_break_rvhc",
-  "representatives"
+  "rta_name"
  ],
  "fields": [
   {
-   "fieldname": "insurance_company",
+   "fieldname": "rta_name",
    "fieldtype": "Link",
-   "label": "Insurance Company",
+   "label": "Name",
    "options": "KNAPS Non Individual"
-  },
-  {
-   "fieldname": "section_break_rvhc",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "representatives",
-   "fieldtype": "Table",
-   "label": "Representatives",
-   "options": "KNAPS Representative"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-29 17:49:07.650079",
+ "modified": "2026-04-29 17:53:21.797161",
  "modified_by": "Administrator",
- "module": "KNAPS Life Insurance",
- "name": "KNAPS Life Insurer",
+ "module": "KNAPS MF",
+ "name": "KNAPS MF RTA",
  "owner": "Administrator",
  "permissions": [
   {

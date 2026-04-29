@@ -31,7 +31,7 @@
    "fieldname": "associated_persons",
    "fieldtype": "Table",
    "label": "Associated Persons",
-   "options": "KNAPS Associated Person"
+   "options": "KNAPS Representative"
   },
   {
    "description": "Health Insurance Company",
@@ -51,7 +51,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-29 17:36:22.684667",
+ "modified": "2026-04-29 17:40:02.567260",
  "modified_by": "Administrator",
  "module": "KNAPS Fixed Income",
  "name": "KNAPS Health Insurer",

@@ -1,0 +1,140 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-04-29 18:00:00.524044",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "depository_participant",
+  "central_depository",
+  "dp_id",
+  "client_id",
+  "trading_id",
+  "column_break_hjmp",
+  "status",
+  "demat_account_number",
+  "holding_type",
+  "default_bank",
+  "section_break_gyje",
+  "client",
+  "second_holder",
+  "third_holder",
+  "nominee_details_tab",
+  "nominees"
+ ],
+ "fields": [
+  {
+   "fieldname": "client",
+   "fieldtype": "Link",
+   "label": "Client",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "central_depository",
+   "fieldtype": "Link",
+   "label": "Central Depository",
+   "options": "KNAPS Central Depository"
+  },
+  {
+   "fieldname": "depository_participant",
+   "fieldtype": "Link",
+   "label": "Depository Participant",
+   "options": "KNAPS Depository Participant"
+  },
+  {
+   "fieldname": "dp_id",
+   "fieldtype": "Data",
+   "label": "DP ID"
+  },
+  {
+   "fieldname": "client_id",
+   "fieldtype": "Data",
+   "label": "Client ID"
+  },
+  {
+   "fieldname": "trading_id",
+   "fieldtype": "Data",
+   "label": "Trading ID"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status"
+  },
+  {
+   "fieldname": "demat_account_number",
+   "fieldtype": "Data",
+   "label": "Demat Account Number"
+  },
+  {
+   "fieldname": "second_holder",
+   "fieldtype": "Link",
+   "label": "Second Holder",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "third_holder",
+   "fieldtype": "Link",
+   "label": "Third Holder",
+   "options": "KNAPS Client"
+  },
+  {
+   "fieldname": "column_break_hjmp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_gyje",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "holding_type",
+   "fieldtype": "Link",
+   "label": "Holding Type",
+   "options": "KNAPS Holding Type"
+  },
+  {
+   "fieldname": "default_bank",
+   "fieldtype": "Link",
+   "label": "Default Bank",
+   "options": "KNAPS Bank"
+  },
+  {
+   "fieldname": "nominee_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Nominee Details"
+  },
+  {
+   "fieldname": "nominees",
+   "fieldtype": "Link",
+   "label": "Nominees",
+   "options": "KNAPS Nominee"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-04-29 18:05:59.764089",
+ "modified_by": "Administrator",
+ "module": "KNAPS Equity",
+ "name": "KNAPS Demat",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

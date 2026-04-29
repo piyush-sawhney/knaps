@@ -17,8 +17,10 @@
   "insurer",
   "column_break_liky",
   "through_us",
-  "thorugh_partner",
+  "through_partner",
   "partner",
+  "through_broker",
+  "broker",
   "section_break_ypix",
   "policy_number",
   "policy_document",
@@ -111,12 +113,6 @@
    "label": "Through Us?"
   },
   {
-   "default": "0",
-   "fieldname": "thorugh_partner",
-   "fieldtype": "Check",
-   "label": "Thorugh Partner?"
-  },
-  {
    "fieldname": "partner",
    "fieldtype": "Link",
    "label": "Partner",
@@ -163,12 +159,30 @@
   {
    "fieldname": "column_break_dkao",
    "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "through_partner",
+   "fieldtype": "Check",
+   "label": "Through Partner?"
+  },
+  {
+   "default": "0",
+   "fieldname": "through_broker",
+   "fieldtype": "Check",
+   "label": "Through Broker?"
+  },
+  {
+   "fieldname": "broker",
+   "fieldtype": "Link",
+   "label": "Broker",
+   "options": "KNAPS Channel Partner"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-29 17:22:26.401179",
+ "modified": "2026-04-29 17:45:10.478908",
  "modified_by": "Administrator",
  "module": "KNAPS Health Insurance",
  "name": "KNAPS Health Insurance Entry",

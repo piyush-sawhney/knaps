@@ -1,26 +1,27 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2026-04-28 16:14:11.453077",
+ "creation": "2026-04-29 18:01:40.850288",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "role_name"
+  "name1"
  ],
  "fields": [
   {
-   "fieldname": "role_name",
-   "fieldtype": "Data",
-   "label": "Name"
+   "fieldname": "name1",
+   "fieldtype": "Link",
+   "label": "Name",
+   "options": "KNAPS Non Individual"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-28 16:14:26.338359",
+ "modified": "2026-04-29 18:02:03.836094",
  "modified_by": "Administrator",
- "module": "KNAPS",
- "name": "KNAPS Entity Person Role",
+ "module": "KNAPS Equity",
+ "name": "KNAPS Central Depository",
  "owner": "Administrator",
  "permissions": [
   {

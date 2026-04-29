@@ -1,23 +1,25 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2026-04-27 13:34:46.009185",
+ "creation": "2026-04-29 17:51:32.844026",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "insurance_company",
-  "section_break_rvhc",
+  "amc",
+  "column_break_wupx",
+  "rta",
+  "section_break_mose",
   "representatives"
  ],
  "fields": [
   {
-   "fieldname": "insurance_company",
+   "fieldname": "amc",
    "fieldtype": "Link",
-   "label": "Insurance Company",
+   "label": "AMC",
    "options": "KNAPS Non Individual"
   },
   {
-   "fieldname": "section_break_rvhc",
+   "fieldname": "section_break_mose",
    "fieldtype": "Section Break"
   },
   {
@@ -25,15 +27,25 @@
    "fieldtype": "Table",
    "label": "Representatives",
    "options": "KNAPS Representative"
+  },
+  {
+   "fieldname": "column_break_wupx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rta",
+   "fieldtype": "Link",
+   "label": "RTA",
+   "options": "KNAPS MF RTA"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-29 17:49:07.650079",
+ "modified": "2026-04-29 17:53:38.515818",
  "modified_by": "Administrator",
- "module": "KNAPS Life Insurance",
- "name": "KNAPS Life Insurer",
+ "module": "KNAPS MF",
+ "name": "KNAPS Asset Management Company",
  "owner": "Administrator",
  "permissions": [
   {

@@ -6,7 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "partner_type",
-  "is_upstream",
+  "relationship",
   "column_break_qomj",
   "partner",
   "partner_name"
@@ -34,16 +34,16 @@
    "label": "Partner Name"
   },
   {
-   "default": "0",
-   "fieldname": "is_upstream",
-   "fieldtype": "Check",
-   "label": "Is Upstream?"
+   "fieldname": "relationship",
+   "fieldtype": "Select",
+   "label": "Relationship",
+   "options": "\nPrincipal (Upstream)\nAssociate (Downstream)\nReferral (Horizontal)"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-29 17:23:59.213180",
+ "modified": "2026-04-29 17:42:31.309446",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Channel Partner",

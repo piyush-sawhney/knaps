@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class KNAPSAssociatedPerson(Document):
+class KNAPSDepositoryParticipant(Document):
 	pass

@@ -2,71 +2,52 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe.model.document import Document
 from frappe import _
+from frappe.model.document import Document
 
 
 class KNAPSClient(Document):
 	def validate(self):
-		self.sync_client_pan_from_link()
-		self.sync_client_name_from_link()
+		self.sync_all_from_link()
 		self.validate_required_links()
 		self.validate_pan_uniqueness()
 
-	def sync_client_pan_from_link(self):
-		"""Auto-fetch PAN from linked Person or Non Individual"""
+	def sync_all_from_link(self):
+		"""Sync all fields from linked Person or Non Individual in a single call"""
 		if self.investor_type in ["Individual", "Sole Proprietor"] and self.person:
-			self.client_pan = frappe.db.get_value(
-				"KNAPS Person", 
-				self.person, 
-				"pan"
-			) or ""
+			person = frappe.get_doc("KNAPS Person", self.person)
+			self.client_pan = person.pan or ""
+			if self.investor_type == "Individual":
+				self.client_name = person.full_name or ""
+			self.primary_phone = person.primary_phone or ""
+			self.primary_whatsapp = person.primary_whatsapp or ""
+			self.primary_email = person.primary_email or ""
+			self.status = person.status or ""
+			if self.investor_type == "Individual":
+				self.is_minor = 1 if person.age and person.age < 18 else 0
 		elif self.investor_type == "Non Individual" and self.non_individual:
-			self.client_pan = frappe.db.get_value(
-				"KNAPS Non Individual", 
-				self.non_individual, 
-				"pan"
-			) or ""
-
-	def sync_client_name_from_link(self):
-		"""Auto-fetch client name from linked Person or Non Individual"""
-		if self.investor_type == "Individual" and self.person:
-			self.client_name = frappe.db.get_value(
-				"KNAPS Person", 
-				self.person, 
-				"full_name"
-			) or ""
-		elif self.investor_type == "Non Individual" and self.non_individual:
-			self.client_name = frappe.db.get_value(
-				"KNAPS Non Individual", 
-				self.non_individual, 
-				"non_individual_name"
-			) or ""
-		# For Sole Proprietor: client_name is manually entered (no auto-fetch)
+			non_individual = frappe.get_doc("KNAPS Non Individual", self.non_individual)
+			self.client_pan = non_individual.pan or ""
+			self.client_name = non_individual.non_individual_name or ""
+			self.primary_phone = non_individual.primary_contact_phone or ""
+			self.primary_whatsapp = non_individual.primary_contact_whatsapp or ""
+			self.primary_email = non_individual.primary_contact_email or ""
+			self.status = non_individual.status or ""
 
 	def validate_required_links(self):
 		"""Ensure correct link field is selected based on client type"""
 		if self.investor_type in ["Individual", "Sole Proprietor"] and not self.person:
-			frappe.throw(
-				_("Person is required for Individual/Sole Proprietor"),
-				title=_("Validation Error")
-			)
-		
+			frappe.throw(_("Person is required for Individual/Sole Proprietor"), title=_("Validation Error"))
+
 		if self.investor_type == "Non Individual" and not self.non_individual:
-			frappe.throw(
-				_("Non Individual entity is required"),
-				title=_("Validation Error")
-			)
+			frappe.throw(_("Non Individual entity is required"), title=_("Validation Error"))
 
 	def validate_pan_uniqueness(self):
 		"""Validate PAN uniqueness based on investor type"""
 		if not self.client_pan:
 			return
 
-		filters = {
-			"client_pan": self.client_pan,
-			"name": ["!=", self.name]
-		}
+		filters = {"client_pan": self.client_pan, "name": ["!=", self.name]}
 
 		if self.investor_type == "Non Individual":
 			filters["investor_type"] = "Non Individual"
@@ -77,7 +58,4 @@ class KNAPSClient(Document):
 			filters["client_name"] = self.client_name
 
 		if frappe.db.exists("KNAPS Client", filters):
-			frappe.throw(
-				_("Client with this PAN already exists"),
-				title=_("Duplicate PAN")
-			)
+			frappe.throw(_("Client with this PAN already exists"), title=_("Duplicate PAN"))

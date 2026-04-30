@@ -2,20 +2,36 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe.model.document import Document
 from frappe import _
 from frappe.contacts.address_and_contact import (
 	delete_contact_and_address,
 	load_address_and_contact,
 )
+from frappe.model.document import Document
+
 
 class KNAPSNonIndividual(Document):
 	def onload(self):
 		load_address_and_contact(self)
-	
+
 	def on_trash(self):
 		delete_contact_and_address("Member", self.name)
-		
+
+	def on_update(self):
+		"""Update all linked Clients when Non Individual is saved"""
+		self.update_linked_clients()
+
+	def update_linked_clients(self):
+		"""Sync all linked Clients with latest Non Individual data"""
+		clients = frappe.get_all("KNAPS Client", filters={"non_individual": self.name}, pluck="name")
+		for client_name in clients:
+			try:
+				client = frappe.get_doc("KNAPS Client", client_name)
+				client.run_method("sync_all_from_link")
+				client.save(ignore_permissions=True)
+			except Exception:
+				frappe.logger().error(f"Error updating linked client {client_name}: {frappe.get_traceback()}")
+
 	def validate(self):
 		self.normalize_pan()
 		self.validate_pan_format()
@@ -35,10 +51,7 @@ class KNAPSNonIndividual(Document):
 		"""Validate PAN format for non-individual entities"""
 		if self.pan:
 			if len(self.pan) != 10:
-				frappe.throw(
-					_("PAN must be exactly 10 characters"),
-					title=_("Invalid PAN Format")
-				)
+				frappe.throw(_("PAN must be exactly 10 characters"), title=_("Invalid PAN Format"))
 
 			# Mapping of non_individual_type to 4th character
 			type_mapping = {
@@ -51,7 +64,7 @@ class KNAPSNonIndividual(Document):
 				"Trust": "T",
 				"Government Agency": "G",
 				"Local Authority": "L",
-				"Artificial Judicial Person": "J"
+				"Artificial Judicial Person": "J",
 			}
 
 			# Check 4th character matches entity type
@@ -61,66 +74,45 @@ class KNAPSNonIndividual(Document):
 					_("4th character of PAN must be '{0}' for {1}").format(
 						expected_4th, self.non_individual_type
 					),
-					title=_("Invalid PAN Format")
+					title=_("Invalid PAN Format"),
 				)
 
 			# Validate positions 1-3 are letters
 			if not self.pan[0:3].isalpha():
-				frappe.throw(
-					_("First 3 characters of PAN must be letters"),
-					title=_("Invalid PAN Format")
-				)
+				frappe.throw(_("First 3 characters of PAN must be letters"), title=_("Invalid PAN Format"))
 
 			# Validate position 5 is letter
 			if not self.pan[4].isalpha():
-				frappe.throw(
-					_("5th character of PAN must be a letter"),
-					title=_("Invalid PAN Format")
-				)
+				frappe.throw(_("5th character of PAN must be a letter"), title=_("Invalid PAN Format"))
 
 			# Validate positions 6-9 are digits
 			if not self.pan[5:9].isdigit():
-				frappe.throw(
-					_("Characters 6-9 of PAN must be digits"),
-					title=_("Invalid PAN Format")
-				)
+				frappe.throw(_("Characters 6-9 of PAN must be digits"), title=_("Invalid PAN Format"))
 
 			# Validate position 10 is letter
 			if not self.pan[9].isalpha():
-				frappe.throw(
-					_("10th character of PAN must be a letter"),
-					title=_("Invalid PAN Format")
-				)
+				frappe.throw(_("10th character of PAN must be a letter"), title=_("Invalid PAN Format"))
 
 	def validate_unique_pan(self):
 		"""Ensure PAN is unique if provided"""
 		if self.pan:
-			existing = frappe.db.exists(
-				"KNAPS Non Individual",
-				{
-					"pan": self.pan,
-					"name": ["!=", self.name]
-				}
-			)
+			existing = frappe.db.exists("KNAPS Non Individual", {"pan": self.pan, "name": ["!=", self.name]})
 			if existing:
 				frappe.throw(
 					_("PAN {0} is already linked to another entity").format(self.pan),
-					title=_("Duplicate PAN")
+					title=_("Duplicate PAN"),
 				)
 
 	def validate_date_of_incorporation(self):
 		"""Ensure date of incorporation is not in the future"""
 		if self.date_of_incoporation:
 			if self.date_of_incoporation > frappe.utils.today():
-				frappe.throw(
-					_("Date of Incorporation cannot be in the future"),
-					title=_("Invalid Date")
-				)
+				frappe.throw(_("Date of Incorporation cannot be in the future"), title=_("Invalid Date"))
 
 	def sync_primary_contact_from_signatories(self):
 		"""Sync primary contact from signatories table"""
 		primary_signatory = None
-		for signatory in (self.signatories or []):
+		for signatory in self.signatories or []:
 			if signatory.is_primary_contact:
 				primary_signatory = signatory
 				break
@@ -139,16 +131,10 @@ class KNAPSNonIndividual(Document):
 			primary_phones = [p for p in self.phone_numbers if p.is_primary]
 
 			if len(primary_phones) == 0:
-				frappe.throw(
-					_("At least one phone must be marked as Primary"),
-					title=_("Validation Error")
-				)
+				frappe.throw(_("At least one phone must be marked as Primary"), title=_("Validation Error"))
 
 			if len(primary_phones) > 1:
-				frappe.throw(
-					_("Only one phone can be marked as Primary"),
-					title=_("Validation Error")
-				)
+				frappe.throw(_("Only one phone can be marked as Primary"), title=_("Validation Error"))
 
 	def validate_email_primary(self):
 		"""Validate email addresses: at least one primary if rows exist, only one primary"""
@@ -156,16 +142,10 @@ class KNAPSNonIndividual(Document):
 			primary_emails = [e for e in self.email_addresses if e.is_primary]
 
 			if len(primary_emails) == 0:
-				frappe.throw(
-					_("At least one email must be marked as Primary"),
-					title=_("Validation Error")
-				)
+				frappe.throw(_("At least one email must be marked as Primary"), title=_("Validation Error"))
 
 			if len(primary_emails) > 1:
-				frappe.throw(
-					_("Only one email can be marked as Primary"),
-					title=_("Validation Error")
-				)
+				frappe.throw(_("Only one email can be marked as Primary"), title=_("Validation Error"))
 
 	def validate_signatories_primary(self):
 		"""Validate signatories: at least one primary if rows exist, only one primary"""
@@ -174,12 +154,10 @@ class KNAPSNonIndividual(Document):
 
 			if len(primary_signatories) == 0:
 				frappe.throw(
-					_("At least one signatory must be marked as Primary Contact"),
-					title=_("Validation Error")
+					_("At least one signatory must be marked as Primary Contact"), title=_("Validation Error")
 				)
 
 			if len(primary_signatories) > 1:
 				frappe.throw(
-					_("Only one signatory can be marked as Primary Contact"),
-					title=_("Validation Error")
+					_("Only one signatory can be marked as Primary Contact"), title=_("Validation Error")
 				)

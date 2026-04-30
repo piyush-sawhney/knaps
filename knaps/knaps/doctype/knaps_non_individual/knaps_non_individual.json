@@ -28,6 +28,7 @@
   "primary_contact_phone",
   "primary_contact_whatsapp",
   "primary_contact_email",
+  "primary_contact_name",
   "section_break_mhjm",
   "phone_numbers",
   "email_addresses",
@@ -201,13 +202,24 @@
    "fetch_from": "primary_contact.primary_whatsapp",
    "fieldname": "primary_contact_whatsapp",
    "fieldtype": "Phone",
-   "label": "Primary Contact Whatsapp"
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Primary Contact Whatsapp",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "primary_contact.full_name",
+   "fieldname": "primary_contact_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Primary Contact Name",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-30 18:16:56.199316",
+ "modified": "2026-04-30 20:43:24.656714",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual",
@@ -229,7 +241,7 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
- "search_fields": "pan, non_individual_type, primary_household, primary_contact",
+ "search_fields": "pan, non_individual_type, primary_household, primary_contact_name",
  "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",

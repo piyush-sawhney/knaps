@@ -9,22 +9,25 @@
   "column_break_rcwh",
   "column_break_tbma",
   "column_break_hojk",
-  "data_zpub",
+  "status",
   "section_break_mqop",
   "investor_type",
-  "is_minor",
-  "client_pan",
-  "column_break_tbeo",
   "person",
   "non_individual",
+  "is_minor",
+  "column_break_tbeo",
+  "client_pan",
   "client_name",
+  "section_break_oehr",
+  "primary_phone",
+  "column_break_dqiz",
+  "primary_whatsapp",
+  "column_break_yieb",
+  "primary_email",
   "section_break_yllo",
   "occupation",
-  "income_slab",
-  "column_break_dbvs",
-  "primary_phone",
-  "primary_whatsapp",
-  "primary_email"
+  "column_break_ktnf",
+  "income_slab"
  ],
  "fields": [
   {
@@ -59,10 +62,6 @@
   {
    "fieldname": "section_break_yllo",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "column_break_dbvs",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "primary_phone",
@@ -135,11 +134,6 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "data_zpub",
-   "fieldtype": "Data",
-   "label": "Status"
-  },
-  {
    "fieldname": "column_break_rcwh",
    "fieldtype": "Column Break"
   },
@@ -150,12 +144,34 @@
   {
    "fieldname": "column_break_hojk",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "label": "Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_oehr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_dqiz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_yieb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_ktnf",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-30 18:19:28.559797",
+ "modified": "2026-04-30 20:50:33.132102",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Client",

@@ -170,7 +170,7 @@ app_license = "mit"
 # Testing
 # -------
 
-# before_tests = "knaps.install.before_tests"
+fixtures = ["KNAPS Non Individual Type"]
 
 # Extend DocType Class
 # ------------------------------

@@ -1,15 +1,20 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "KNAPS-NIND-.#####",
  "creation": "2026-04-24 16:11:38.867267",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "non_individual_name",
+  "column_break_pias",
   "column_break_rrng",
-  "primary_household",
   "column_break_wopj",
   "status",
+  "section_break_fnph",
+  "column_break_uogc",
+  "non_individual_name",
+  "column_break_finr",
+  "primary_household",
   "section_break_dsno",
   "non_individual_type",
   "pan",
@@ -27,12 +32,14 @@
   "email_addresses",
   "address_html",
   "owner_details_tab",
-  "principals"
+  "signatories"
  ],
  "fields": [
   {
    "fieldname": "non_individual_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Name",
    "options": "Name",
    "reqd": 1
@@ -41,6 +48,7 @@
    "fieldname": "non_individual_type",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Type",
    "options": "KNAPS Non Individual Type",
    "reqd": 1
@@ -53,6 +61,7 @@
    "fieldname": "pan",
    "fieldtype": "Data",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "PAN",
    "length": 10
   },
@@ -73,28 +82,37 @@
   },
   {
    "fieldname": "primary_contact",
-   "fieldtype": "Data",
-   "label": "Primary Contact"
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Primary Contact",
+   "options": "KNAPS Person",
+   "read_only": 1
   },
   {
    "fetch_from": "primary_contact.primary_phone",
    "fieldname": "primary_contact_phone",
    "fieldtype": "Phone",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Primary Contact Phone",
    "read_only": 1
   },
   {
    "fetch_from": "primary_contact.primary_email",
    "fieldname": "primary_contact_email",
-   "fieldtype": "Phone",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Primary Contact Email",
+   "options": "Email",
    "read_only": 1
   },
   {
    "fieldname": "country_of_incorporation",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Country of Incorporation",
-   "mask": 1
+   "options": "Country"
   },
   {
    "fieldname": "column_break_ygzq",
@@ -129,6 +147,8 @@
   {
    "fieldname": "primary_household",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Primary Household",
    "options": "KNAPS Household",
    "read_only": 1
@@ -141,7 +161,7 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "\nActive\nInactive",
+   "options": "Active\nInactive",
    "reqd": 1
   },
   {
@@ -154,7 +174,24 @@
    "label": "Owner Details"
   },
   {
-   "fieldname": "principals",
+   "fieldname": "column_break_pias",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_fnph",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_finr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_uogc",
+   "fieldtype": "Column Break",
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "signatories",
    "fieldtype": "Table",
    "label": "Signatories",
    "options": "KNAPS Authorised Signatory"
@@ -163,10 +200,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-29 17:33:19.196357",
+ "modified": "2026-04-30 15:19:26.839321",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
@@ -184,8 +222,12 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "pan, non_individual_type, primary_household, primary_contact",
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
- "title_field": "non_individual_name"
+ "title_field": "non_individual_name",
+ "track_changes": 1,
+ "translated_doctype": 1
 }

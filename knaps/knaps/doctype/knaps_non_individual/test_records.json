@@ -1,0 +1,12 @@
+[
+  {"doctype": "KNAPS Non Individual Type", "non_individual_type": "Body of Individuals"},
+  {"doctype": "KNAPS Non Individual Type", "non_individual_type": "Association of Persons"},
+  {"doctype": "KNAPS Non Individual Type", "non_individual_type": "Hindu Undivided Family"},
+  {"doctype": "KNAPS Non Individual Type", "non_individual_type": "Company"},
+  {"doctype": "KNAPS Non Individual Type", "non_individual_type": "Limited Liability Partnership"},
+  {"doctype": "KNAPS Non Individual Type", "non_individual_type": "Partnership Firm"},
+  {"doctype": "KNAPS Non Individual Type", "non_individual_type": "Trust"},
+  {"doctype": "KNAPS Non Individual Type", "non_individual_type": "Government Agency"},
+  {"doctype": "KNAPS Non Individual Type", "non_individual_type": "Local Authority"},
+  {"doctype": "KNAPS Non Individual Type", "non_individual_type": "Artificial Judicial Person"}
+]

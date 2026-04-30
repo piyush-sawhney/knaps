@@ -1,0 +1,18 @@
+[
+  {
+    "doctype": "KNAPS Person",
+    "first_name": "Test",
+    "last_name": "Person 1",
+    "status": "Active",
+    "gender": "Male",
+    "salutation": "Mr"
+  },
+  {
+    "doctype": "KNAPS Person",
+    "first_name": "Test",
+    "last_name": "Person 2",
+    "status": "Active",
+    "gender": "Female",
+    "salutation": "Ms"
+  }
+]

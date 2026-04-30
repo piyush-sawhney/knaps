@@ -7,19 +7,21 @@
  "engine": "InnoDB",
  "field_order": [
   "column_break_uhnk",
-  "full_name",
   "column_break_rmhb",
-  "primary_household",
   "column_break_buzd",
   "status",
+  "section_break_wpzs",
+  "full_name",
+  "column_break_hssg",
+  "primary_household",
   "basic_details_section",
   "salutation",
   "first_name",
   "middle_name",
   "last_name",
   "column_break_ftpf",
-  "pan",
   "gender",
+  "pan",
   "date_of_birth",
   "marital_status",
   "column_break_vatb",
@@ -37,19 +39,21 @@
   {
    "fieldname": "first_name",
    "fieldtype": "Data",
-   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "First Name",
    "reqd": 1
   },
   {
    "fieldname": "middle_name",
    "fieldtype": "Data",
-   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Middle Name"
   },
   {
+   "alignment": "Left",
    "fieldname": "full_name",
    "fieldtype": "Data",
+   "in_standard_filter": 1,
    "label": "Full Name",
    "read_only": 1
   },
@@ -69,11 +73,14 @@
   {
    "fieldname": "last_name",
    "fieldtype": "Data",
+   "in_standard_filter": 1,
    "label": "Last Name"
   },
   {
    "fieldname": "gender",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Gender",
    "options": "Gender",
    "reqd": 1
@@ -149,6 +156,8 @@
   {
    "fieldname": "primary_household",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Primary Household",
    "options": "KNAPS Household",
    "read_only": 1
@@ -163,7 +172,8 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "PAN",
-   "length": 10
+   "length": 10,
+   "unique": 1
   },
   {
    "fieldname": "salutation",
@@ -187,14 +197,23 @@
   {
    "fieldname": "display_picture",
    "fieldtype": "Attach Image",
+   "hidden": 1,
    "label": "Display Picture"
+  },
+  {
+   "fieldname": "section_break_wpzs",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_hssg",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "image_field": "display_picture",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-30 12:47:22.002791",
+ "modified": "2026-04-30 14:18:10.548471",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Person",

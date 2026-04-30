@@ -10,3 +10,4 @@ KNAPS Equity
 KNAPS SIF
 KNAPS PMS
 KNAPS AIF
+KNAPS Lead Management

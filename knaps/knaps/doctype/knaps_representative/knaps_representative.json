@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "autoincrement",
  "creation": "2026-04-28 16:15:18.139511",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -8,6 +9,10 @@
  "field_order": [
   "representative_name",
   "role",
+  "designation",
+  "primary_phone",
+  "primary_whatsapp",
+  "primary_email",
   "is_active"
  ],
  "fields": [
@@ -16,7 +21,8 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Role",
-   "options": "KNAPS Entity Person Role"
+   "options": "KNAPS Representative Role",
+   "reqd": 1
   },
   {
    "default": "1",
@@ -29,17 +35,47 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Name",
-   "options": "KNAPS Person"
+   "options": "KNAPS Person",
+   "reqd": 1
+  },
+  {
+   "fieldname": "primary_phone",
+   "fieldtype": "Phone",
+   "is_virtual": 1,
+   "label": "Primary Phone"
+  },
+  {
+   "fieldname": "primary_whatsapp",
+   "fieldtype": "Phone",
+   "is_virtual": 1,
+   "label": "Primary Whatsapp",
+   "read_only": 1
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Designation"
+  },
+  {
+   "fieldname": "primary_email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "is_virtual": 1,
+   "label": "Primary Email",
+   "options": "Email",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-29 17:40:30.710327",
+ "modified": "2026-04-30 22:29:46.118148",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Representative",
+ "naming_rule": "Autoincrement",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",

@@ -9,7 +9,9 @@
   "relationship",
   "column_break_qomj",
   "partner",
-  "partner_name"
+  "partner_name",
+  "section_break_gegg",
+  "representatives"
  ],
  "fields": [
   {
@@ -38,12 +40,22 @@
    "fieldtype": "Select",
    "label": "Relationship",
    "options": "\nPrincipal (Upstream)\nAssociate (Downstream)\nReferral (Horizontal)"
+  },
+  {
+   "fieldname": "section_break_gegg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "representatives",
+   "fieldtype": "Table",
+   "label": "Representatives",
+   "options": "KNAPS Representative"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-29 17:42:31.309446",
+ "modified": "2026-04-30 22:18:22.175824",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Channel Partner",

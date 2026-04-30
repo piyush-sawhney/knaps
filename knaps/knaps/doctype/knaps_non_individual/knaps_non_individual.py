@@ -130,6 +130,7 @@ class KNAPSNonIndividual(Document):
 		else:
 			self.primary_contact = ""
 			self.primary_contact_phone = ""
+			self.primary_contact_whatsapp = ""
 			self.primary_contact_email = ""
 
 	def validate_phone_primary(self):

@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "KNAPS-PR-.#####",
+ "autoname": "KNAPS-IND-.#####",
  "creation": "2026-04-24 15:32:22.577228",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -191,9 +191,10 @@
   }
  ],
  "grid_page_length": 50,
+ "image_field": "display_picture",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-28 16:00:08.299098",
+ "modified": "2026-04-30 12:47:22.002791",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Person",

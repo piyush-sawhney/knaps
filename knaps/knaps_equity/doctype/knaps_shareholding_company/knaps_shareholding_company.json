@@ -1,34 +1,35 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2026-05-01 11:51:11.373762",
+ "creation": "2026-05-01 13:53:19.103175",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "title",
-  "description"
+  "company",
+  "cin"
  ],
  "fields": [
   {
-   "fieldname": "title",
-   "fieldtype": "Data",
+   "fieldname": "company",
+   "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "Title",
+   "label": "Name",
+   "options": "KNAPS Non Individual",
    "reqd": 1
   },
   {
-   "fieldname": "description",
-   "fieldtype": "Text Editor",
-   "label": "Description"
+   "fieldname": "cin",
+   "fieldtype": "Data",
+   "label": "CIN"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-01 11:51:39.541514",
+ "modified": "2026-05-01 13:53:59.457545",
  "modified_by": "Administrator",
- "module": "KNAPS",
- "name": "KNAPS Notes",
+ "module": "KNAPS Equity",
+ "name": "KNAPS Shareholding Company",
  "owner": "Administrator",
  "permissions": [
   {

@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class KNAPSNotes(Document):
+class KNAPSShareCertificateDetail(Document):
 	pass

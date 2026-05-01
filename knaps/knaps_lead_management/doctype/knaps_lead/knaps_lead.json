@@ -32,7 +32,9 @@
   "column_break_mwdk",
   "organisation_name",
   "section_break_jshq",
-  "address_html"
+  "address_html",
+  "additional_details_tab",
+  "internal_notes"
  ],
  "fields": [
   {
@@ -172,13 +174,23 @@
    "fieldname": "address_html",
    "fieldtype": "HTML",
    "label": "Address"
+  },
+  {
+   "fieldname": "additional_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Additional Details"
+  },
+  {
+   "fieldname": "internal_notes",
+   "fieldtype": "Text Editor",
+   "label": "Internal Notes"
   }
  ],
  "grid_page_length": 50,
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-01 12:38:14.995109",
+ "modified": "2026-05-01 13:37:49.370035",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Lead",

@@ -170,7 +170,10 @@ app_license = "mit"
 # Testing
 # -------
 
-fixtures = ["KNAPS Non Individual Type"]
+fixtures = [
+    "KNAPS Non Individual Type",
+    "KNAPS Product",
+    "KNAPS Product Category"]
 
 # Extend DocType Class
 # ------------------------------

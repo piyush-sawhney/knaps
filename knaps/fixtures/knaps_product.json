@@ -1,0 +1,74 @@
+[
+ {
+  "category": "Investment",
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-01 12:11:00.185320",
+  "name": "Mutual Funds",
+  "product_name": "Mutual Funds"
+ },
+ {
+  "category": "Investment",
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-01 12:13:32.264948",
+  "name": "Post Office Schemes",
+  "product_name": "Post Office Schemes"
+ },
+ {
+  "category": "Investment",
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-01 12:13:48.958433",
+  "name": "Corporate FDs",
+  "product_name": "Corporate FDs"
+ },
+ {
+  "category": "Insurance",
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-01 12:14:13.758894",
+  "name": "Life Insurance",
+  "product_name": "Life Insurance"
+ },
+ {
+  "category": "Insurance",
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-01 12:14:20.924368",
+  "name": "Health Insurance",
+  "product_name": "Health Insurance"
+ },
+ {
+  "category": "Insurance",
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-01 12:14:35.038642",
+  "name": "Overseas Travel Insurance",
+  "product_name": "Overseas Travel Insurance"
+ },
+ {
+  "category": "Loans",
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-01 12:14:48.149081",
+  "name": "Home Loan",
+  "product_name": "Home Loan"
+ },
+ {
+  "category": "Loans",
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-01 12:14:59.806328",
+  "name": "Loan Against Property",
+  "product_name": "Loan Against Property"
+ },
+ {
+  "category": "Loans",
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-01 12:15:07.178736",
+  "name": "Personal Loan",
+  "product_name": "Personal Loan"
+ }
+]

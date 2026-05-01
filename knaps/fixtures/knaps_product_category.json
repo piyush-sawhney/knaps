@@ -1,0 +1,23 @@
+[
+ {
+  "category_name": "Investment",
+  "docstatus": 0,
+  "doctype": "KNAPS Product Category",
+  "modified": "2026-05-01 12:02:12.590689",
+  "name": "Investment"
+ },
+ {
+  "category_name": "Loans",
+  "docstatus": 0,
+  "doctype": "KNAPS Product Category",
+  "modified": "2026-05-01 12:02:18.484589",
+  "name": "Loans"
+ },
+ {
+  "category_name": "Insurance",
+  "docstatus": 0,
+  "doctype": "KNAPS Product Category",
+  "modified": "2026-05-01 12:02:49.563295",
+  "name": "Insurance"
+ }
+]

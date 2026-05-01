@@ -1,0 +1,72 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Non Individual Type",
+  "modified": "2026-04-30 14:50:26.989994",
+  "name": "Body of Individuals",
+  "non_individual_type": "Body of Individuals"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Non Individual Type",
+  "modified": "2026-04-30 14:50:27.134776",
+  "name": "Association of Persons",
+  "non_individual_type": "Association of Persons"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Non Individual Type",
+  "modified": "2026-04-30 14:50:27.136693",
+  "name": "Hindu Undivided Family",
+  "non_individual_type": "Hindu Undivided Family"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Non Individual Type",
+  "modified": "2026-04-30 14:50:27.139882",
+  "name": "Limited Liability Partnership",
+  "non_individual_type": "Limited Liability Partnership"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Non Individual Type",
+  "modified": "2026-04-30 14:50:27.141365",
+  "name": "Partnership Firm",
+  "non_individual_type": "Partnership Firm"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Non Individual Type",
+  "modified": "2026-04-30 14:50:27.142946",
+  "name": "Trust",
+  "non_individual_type": "Trust"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Non Individual Type",
+  "modified": "2026-04-30 14:50:27.144651",
+  "name": "Government Agency",
+  "non_individual_type": "Government Agency"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Non Individual Type",
+  "modified": "2026-04-30 14:50:27.146394",
+  "name": "Local Authority",
+  "non_individual_type": "Local Authority"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Non Individual Type",
+  "modified": "2026-04-30 14:50:27.148114",
+  "name": "Artificial Judicial Person",
+  "non_individual_type": "Artificial Judicial Person"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Non Individual Type",
+  "modified": "2026-04-30 14:47:43.461441",
+  "name": "Company",
+  "non_individual_type": "Company"
+ }
+]

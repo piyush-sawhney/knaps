@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class KNAPSLeadSource(Document):
+class KNAPSLeadSourceCategory(Document):
 	pass

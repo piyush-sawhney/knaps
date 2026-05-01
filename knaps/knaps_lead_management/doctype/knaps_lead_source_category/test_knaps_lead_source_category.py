@@ -13,9 +13,9 @@ IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 
 
 
-class IntegrationTestKNAPSLeadSource(IntegrationTestCase):
+class IntegrationTestKNAPSLeadSourceCategory(IntegrationTestCase):
 	"""
-	Integration tests for KNAPSLeadSource.
+	Integration tests for KNAPSLeadSourceCategory.
 	Use this class for testing interactions between multiple components.
 	"""
 

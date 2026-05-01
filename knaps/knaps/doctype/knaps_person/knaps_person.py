@@ -169,20 +169,3 @@ class KNAPSPerson(Document):
 		if self.date_of_birth:
 			if self.date_of_birth > frappe.utils.today():
 				frappe.throw(_("Date of Birth cannot be in the future"), title=_("Invalid Date"))
-
-	@property
-	def age(self):
-		if not self.date_of_birth:
-			return None
-
-		from frappe.utils import getdate, today
-
-		dob = getdate(self.date_of_birth)
-		today_date = getdate(today())
-
-		age = today_date.year - dob.year
-
-		if (today_date.month, today_date.day) < (dob.month, dob.day):
-			age -= 1
-
-		return age

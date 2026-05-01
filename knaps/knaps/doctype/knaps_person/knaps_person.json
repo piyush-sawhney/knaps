@@ -23,6 +23,7 @@
   "gender",
   "pan",
   "date_of_birth",
+  "age_formatted",
   "age",
   "column_break_vatb",
   "primary_phone",
@@ -211,22 +212,30 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "age",
-   "fieldtype": "Int",
-   "is_virtual": 1,
-   "label": "Age",
-   "non_negative": 1
-  },
-  {
    "fieldname": "section_break_sobx",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "age_formatted",
+   "fieldtype": "Data",
+   "is_virtual": 1,
+   "label": "Full Age",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "age",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Age",
+   "non_negative": 1
   }
  ],
  "grid_page_length": 50,
  "image_field": "display_picture",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-30 22:26:56.686120",
+ "modified": "2026-05-01 13:31:18.622737",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Person",

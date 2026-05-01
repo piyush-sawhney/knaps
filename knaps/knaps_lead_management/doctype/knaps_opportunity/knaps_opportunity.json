@@ -8,7 +8,14 @@
   "client",
   "column_break_hsfl",
   "opportunity_type",
-  "opportunity_category"
+  "column_break_ymrq",
+  "status",
+  "section_break_nchk",
+  "phone",
+  "column_break_goyu",
+  "whatsapp",
+  "column_break_ieea",
+  "email"
  ],
  "fields": [
   {
@@ -21,9 +28,9 @@
   },
   {
    "fieldname": "opportunity_type",
-   "fieldtype": "Link",
-   "label": "Opportunity Type",
-   "options": "KNAPS Product",
+   "fieldtype": "Table MultiSelect",
+   "label": "Client Interested In",
+   "options": "KNAPS Lead Interest",
    "reqd": 1
   },
   {
@@ -31,17 +38,53 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "opportunity_type.category",
-   "fieldname": "opportunity_category",
-   "fieldtype": "Data",
-   "label": "Opportunity Category",
+   "fieldname": "column_break_ymrq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "New\nQualified\nNurture\nProspect\nWon\nLost\nJunk",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_nchk",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "client.primary_phone",
+   "fieldname": "phone",
+   "fieldtype": "Phone",
+   "label": "Phone",
    "read_only": 1
+  },
+  {
+   "fetch_from": "client.primary_whatsapp",
+   "fieldname": "whatsapp",
+   "fieldtype": "Phone",
+   "label": "Whatsapp",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "client.primary_email",
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "column_break_goyu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_ieea",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-01 12:06:00.548088",
+ "modified": "2026-05-01 13:27:23.797675",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Opportunity",

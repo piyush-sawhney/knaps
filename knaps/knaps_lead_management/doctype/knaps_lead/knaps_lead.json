@@ -25,6 +25,7 @@
   "column_break_ecte",
   "date_of_birth",
   "gender",
+  "pan",
   "column_break_vaic",
   "preferred_contact_mode",
   "phone",
@@ -268,13 +269,18 @@
    "label": "Gender",
    "options": "Gender",
    "reqd": 1
+  },
+  {
+   "fieldname": "pan",
+   "fieldtype": "Data",
+   "label": "PAN"
   }
  ],
  "grid_page_length": 50,
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-07 15:48:48.497198",
+ "modified": "2026-05-07 16:02:16.976087",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Lead",

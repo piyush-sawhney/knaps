@@ -20,10 +20,13 @@
   "contact_details_section",
   "salutation",
   "first_name",
-  "column_break_ecte",
   "middle_name",
   "last_name",
+  "column_break_ecte",
+  "date_of_birth",
+  "gender",
   "column_break_vaic",
+  "preferred_contact_mode",
   "phone",
   "whatsapp",
   "email",
@@ -34,6 +37,15 @@
   "section_break_jshq",
   "address_html",
   "additional_details_tab",
+  "marketing_metadata_section",
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "column_break_gafp",
+  "utm_term",
+  "utm_content",
+  "next_follow_up_date",
+  "section_break_qnxg",
   "internal_notes"
  ],
  "fields": [
@@ -48,7 +60,6 @@
   {
    "fieldname": "first_name",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "First Name",
    "options": "Name",
    "reqd": 1
@@ -56,13 +67,11 @@
   {
    "fieldname": "middle_name",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Middle Name"
   },
   {
    "fieldname": "last_name",
    "fieldtype": "Data",
-   "in_list_view": 1,
    "label": "Last Name",
    "options": "Name"
   },
@@ -80,6 +89,7 @@
    "label": "Contact Details"
   },
   {
+   "depends_on": "eval: doc.lead_type === \"Non-Individual\"",
    "fieldname": "section_break_ptar",
    "fieldtype": "Section Break",
    "label": "Organisation Details"
@@ -88,6 +98,7 @@
    "fieldname": "organisation_type",
    "fieldtype": "Link",
    "label": "Organisation Type",
+   "mandatory_depends_on": "eval: doc.lead_type === \"Non-Individual\"",
    "options": "KNAPS Non Individual Type"
   },
   {
@@ -98,29 +109,38 @@
    "fieldname": "organisation_name",
    "fieldtype": "Data",
    "label": "Organisation Name",
+   "mandatory_depends_on": "eval: doc.lead_type === \"Non-Individual\"",
    "options": "Name"
   },
   {
    "default": "+91-",
    "fieldname": "phone",
    "fieldtype": "Phone",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Phone",
    "reqd": 1
   },
   {
    "fieldname": "whatsapp",
    "fieldtype": "Phone",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Whatsapp"
   },
   {
    "fieldname": "email",
    "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Email",
    "options": "Email"
   },
   {
    "fieldname": "lead_type",
    "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Lead Type",
    "options": "\nIndividual\nNon-Individual",
    "reqd": 1
@@ -146,6 +166,7 @@
   {
    "fieldname": "lead_interested_in",
    "fieldtype": "Table MultiSelect",
+   "in_standard_filter": 1,
    "label": "Lead Interested In",
    "options": "KNAPS Lead Interest",
    "reqd": 1
@@ -158,6 +179,8 @@
   {
    "fieldname": "source",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Source",
    "options": "KNAPS Lead Source",
    "reqd": 1
@@ -184,13 +207,74 @@
    "fieldname": "internal_notes",
    "fieldtype": "Text Editor",
    "label": "Internal Notes"
+  },
+  {
+   "fieldname": "marketing_metadata_section",
+   "fieldtype": "Section Break",
+   "label": "Marketing Metadata"
+  },
+  {
+   "fieldname": "utm_source",
+   "fieldtype": "Data",
+   "label": "UTM Source"
+  },
+  {
+   "fieldname": "utm_medium",
+   "fieldtype": "Data",
+   "label": "UTM Medium"
+  },
+  {
+   "fieldname": "utm_campaign",
+   "fieldtype": "Data",
+   "label": "UTM Campaign"
+  },
+  {
+   "fieldname": "utm_term",
+   "fieldtype": "Data",
+   "label": "UTM Term"
+  },
+  {
+   "fieldname": "utm_content",
+   "fieldtype": "Data",
+   "label": "UTM Content"
+  },
+  {
+   "fieldname": "section_break_qnxg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_gafp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "preferred_contact_mode",
+   "fieldtype": "Select",
+   "label": "Preferred Contact Mode",
+   "options": "\nPhone\nWhatsapp\nEmail"
+  },
+  {
+   "fieldname": "next_follow_up_date",
+   "fieldtype": "Date",
+   "label": "Next Follow up Date"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth"
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Link",
+   "label": "Gender",
+   "options": "Gender",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-01 13:37:49.370035",
+ "modified": "2026-05-07 15:48:48.497198",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Lead",

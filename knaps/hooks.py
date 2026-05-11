@@ -173,7 +173,16 @@ app_license = "mit"
 fixtures = [
     "KNAPS Non Individual Type",
     "KNAPS Product",
-    "KNAPS Product Category"]
+    "KNAPS Product Category",
+    "KNAPS Lead Source",
+    {"dt": "Kanban Board", "filters": [
+        [
+            "name", "in", [
+                "KNAPS Lead",
+                "KNAPS Opportunity"
+            ]
+        ]
+    ]}]
 
 # Extend DocType Class
 # ------------------------------

@@ -1,11 +1,15 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
+ "autoname": "KNAPS-OPP-.#######",
  "creation": "2026-05-01 11:57:02.943717",
+ "default_view": "Kanban",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "client",
+  "client_name",
   "column_break_hsfl",
   "opportunity_type",
   "column_break_ymrq",
@@ -15,7 +19,18 @@
   "column_break_goyu",
   "whatsapp",
   "column_break_ieea",
-  "email"
+  "email",
+  "additional_details_tab",
+  "marketing_metadata_section",
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "column_break_ytmo",
+  "utm_term",
+  "utm_content",
+  "next_follow_up_date",
+  "notes_section",
+  "internal_notes"
  ],
  "fields": [
   {
@@ -70,7 +85,8 @@
    "fetch_from": "client.primary_email",
    "fieldname": "email",
    "fieldtype": "Data",
-   "label": "Email"
+   "label": "Email",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_goyu",
@@ -79,15 +95,75 @@
   {
    "fieldname": "column_break_ieea",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "client.client_name",
+   "fieldname": "client_name",
+   "fieldtype": "Data",
+   "label": "Client Name"
+  },
+  {
+   "fieldname": "additional_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Additional Details"
+  },
+  {
+   "fieldname": "utm_source",
+   "fieldtype": "Data",
+   "label": "UTM Source"
+  },
+  {
+   "fieldname": "utm_medium",
+   "fieldtype": "Data",
+   "label": "UTM Medium"
+  },
+  {
+   "fieldname": "utm_campaign",
+   "fieldtype": "Data",
+   "label": "UTM Campaign"
+  },
+  {
+   "fieldname": "column_break_ytmo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "utm_term",
+   "fieldtype": "Data",
+   "label": "UTM Term"
+  },
+  {
+   "fieldname": "utm_content",
+   "fieldtype": "Data",
+   "label": "UTM Content"
+  },
+  {
+   "fieldname": "next_follow_up_date",
+   "fieldtype": "Date",
+   "label": "Next Follow up Date"
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "internal_notes",
+   "fieldtype": "Text Editor",
+   "label": "Internal Notes"
+  },
+  {
+   "fieldname": "marketing_metadata_section",
+   "fieldtype": "Section Break",
+   "label": "Marketing Metadata"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-01 13:27:23.797675",
+ "modified": "2026-05-11 17:35:35.100281",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Opportunity",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
@@ -105,7 +181,11 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "phone, email",
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "client_name",
+ "track_changes": 1
 }

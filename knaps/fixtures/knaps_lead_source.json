@@ -1,0 +1,65 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Lead Source",
+  "modified": "2026-05-07 15:30:54.257663",
+  "name": "Facebook",
+  "source_name": "Facebook"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Lead Source",
+  "modified": "2026-05-11 17:38:49.210366",
+  "name": "Walk-In",
+  "source_name": "Walk-In"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Lead Source",
+  "modified": "2026-05-11 17:38:57.418860",
+  "name": "LinkedIn",
+  "source_name": "LinkedIn"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Lead Source",
+  "modified": "2026-05-11 17:49:52.250855",
+  "name": "Website",
+  "source_name": "Website"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Lead Source",
+  "modified": "2026-05-11 17:49:57.820970",
+  "name": "Instagram",
+  "source_name": "Instagram"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Lead Source",
+  "modified": "2026-05-11 17:50:23.841643",
+  "name": "Pamphlet Distribution",
+  "source_name": "Pamphlet Distribution"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Lead Source",
+  "modified": "2026-05-11 17:50:41.016657",
+  "name": "Email",
+  "source_name": "Email"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Lead Source",
+  "modified": "2026-05-11 17:50:46.795923",
+  "name": "Event",
+  "source_name": "Event"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Lead Source",
+  "modified": "2026-05-11 17:51:01.502533",
+  "name": "Blog",
+  "source_name": "Blog"
+ }
+]

@@ -47,7 +47,9 @@
   "utm_content",
   "next_follow_up_date",
   "section_break_qnxg",
-  "internal_notes"
+  "internal_notes",
+  "section_break_nhhy",
+  "created_by"
  ],
  "fields": [
   {
@@ -274,12 +276,22 @@
    "fieldname": "pan",
    "fieldtype": "Data",
    "label": "PAN"
+  },
+  {
+   "fieldname": "section_break_nhhy",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "created_by",
+   "fieldtype": "Data",
+   "label": "Created By",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-11 16:25:57.095978",
+ "modified": "2026-05-11 19:03:15.349656",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Lead",

@@ -6,6 +6,7 @@
  "autoname": "UUID",
  "creation": "2026-05-01 11:34:07.762207",
  "default_view": "Kanban",
+ "description": "Use this for creating and managing lead data",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -245,6 +246,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "depends_on": "eval: doc.age !== 0;",
    "fetch_from": "lead.age",
    "fieldname": "age",
    "fieldtype": "Int",
@@ -255,7 +257,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-12 18:15:34.120040",
+ "modified": "2026-05-12 19:34:32.392937",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Lead",
@@ -273,15 +275,56 @@
    "role": "System Manager",
    "share": 1,
    "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales User",
+   "select": 1,
+   "share": 1,
+   "write": 1
   }
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
- "search_fields": "source",
+ "search_fields": "source, phone, email",
  "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": [],
+ "states": [
+  {
+   "color": "Purple",
+   "title": "New"
+  },
+  {
+   "color": "Light Blue",
+   "title": "Qualified"
+  },
+  {
+   "color": "Blue",
+   "title": "Nurture"
+  },
+  {
+   "color": "Yellow",
+   "title": "Prospect"
+  },
+  {
+   "color": "Green",
+   "title": "Won"
+  },
+  {
+   "color": "Red",
+   "title": "Lost"
+  },
+  {
+   "color": "Gray",
+   "title": "Junk"
+  }
+ ],
  "title_field": "lead_name",
  "track_changes": 1
 }

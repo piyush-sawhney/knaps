@@ -26,6 +26,7 @@
   "age_formatted",
   "age",
   "column_break_vatb",
+  "preferred_contact_mode",
   "primary_phone",
   "primary_whatsapp",
   "primary_email",
@@ -229,13 +230,21 @@
    "hidden": 1,
    "label": "Age",
    "non_negative": 1
+  },
+  {
+   "fieldname": "preferred_contact_mode",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Preferred Contact Mode",
+   "options": "\nPhone\nWhatsapp\nEmail"
   }
  ],
  "grid_page_length": 50,
  "image_field": "display_picture",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-01 13:31:18.622737",
+ "modified": "2026-05-12 17:31:08.999495",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Person",

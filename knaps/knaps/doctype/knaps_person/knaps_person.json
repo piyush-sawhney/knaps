@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "KNAPS-IND-.#####",
+ "autoname": "UUID",
  "creation": "2026-04-24 15:32:22.577228",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -244,11 +244,11 @@
  "image_field": "display_picture",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-12 17:31:08.999495",
+ "modified": "2026-05-12 18:16:36.408062",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Person",
- "naming_rule": "Expression",
+ "naming_rule": "UUID",
  "owner": "Administrator",
  "permissions": [
   {

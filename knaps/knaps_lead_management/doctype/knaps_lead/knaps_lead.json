@@ -133,9 +133,10 @@
    "reqd": 1
   },
   {
-   "fetch_from": "lead.first_name",
+   "fetch_from": "lead.full_name",
    "fieldname": "lead_name",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Lead Name",
    "read_only": 1
   },
@@ -254,7 +255,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-12 18:10:29.850473",
+ "modified": "2026-05-12 18:15:34.120040",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Lead",

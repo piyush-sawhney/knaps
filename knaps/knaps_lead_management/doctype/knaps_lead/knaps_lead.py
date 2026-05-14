@@ -3,11 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
-
-from frappe.contacts.address_and_contact import (
-	delete_contact_and_address,
-	load_address_and_contact,
-)
+from frappe import _
 class KNAPSLead(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
@@ -39,4 +35,36 @@ class KNAPSLead(Document):
 		whatsapp: DF.Phone | None
 	# end: auto-generated types
 
-	pass
+	def validate(self):
+		self.validate_unique_lead_name()
+		self.validate_lead_type_and_organisation()
+	
+	def validate_lead_type_and_organisation(self):
+		if self.lead_type == "Individual" and self.organisation_name:
+			frappe.throw(
+				_("Organisation Name should be empty for Individual lead type."),
+				title=_("Invalid Lead Type")
+			)
+		elif self.lead_type == "Non-Individual" and not self.organisation_name:
+			frappe.throw(
+				_("Organisation Name is required for Non-Individual lead type."),
+				title=_("Invalid Lead Type")
+			)	
+	
+	def validate_unique_lead_name(self):
+		if self.lead_name:
+			exists = frappe.db.exists(
+				"KNAPS Lead",
+				{
+					"lead": self.lead,
+					"status": ["not in", ["Lost", "Won", "Junk"]],
+					"name": ["!=", self.name],
+					"lead_type": self.lead_type
+				}
+			)
+
+			if exists:
+				frappe.throw(
+					_(f"A lead with the name '{self.lead_name}' already exists."),
+					title=_("Duplicate Lead Name")
+				)

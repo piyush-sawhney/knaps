@@ -1,9 +1,10 @@
 # Copyright (c) 2026, KNAPS and Contributors and contributors
 # For license information, please see license.txt
 
-# import frappe
-from frappe.model.document import Document
 
+import frappe
+from frappe.model.document import Document
+from frappe import _
 
 class KNAPSOpportunity(Document):
 	# begin: auto-generated types
@@ -31,4 +32,22 @@ class KNAPSOpportunity(Document):
 		whatsapp: DF.Phone | None
 	# end: auto-generated types
 
-	pass
+	def validate(self):
+		self.validate_unique_opportunity()
+		
+	def validate_unique_opportunity(self):
+		if self.client:
+			exists = frappe.db.exists(
+				"KNAPS Opportunity",
+				{
+					"client": self.client,
+					"status": ["not in", ["Lost", "Won", "Junk"]],
+					"name": ["!=", self.name],
+				}
+			)
+
+			if exists:
+				frappe.throw(
+					_(f"An opportunity with the name '{self.client_name}' already exists."),
+					title=_("Duplicate Opportunity Name")
+				)

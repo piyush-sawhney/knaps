@@ -1,0 +1,52 @@
+{
+ "cards": [
+  {
+   "card": "New Leads Generated (Last 90 Days)"
+  },
+  {
+   "card": "Engaged Leads"
+  },
+  {
+   "card": "Leads Lost (Last 90 Days)"
+  },
+  {
+   "card": "New Opportunities (Last 90 Days)"
+  },
+  {
+   "card": "Engaged Opportunities"
+  },
+  {
+   "card": "Opportunities Lost (Last 90 Days)"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Lead Conversion Trend",
+   "width": "Half"
+  },
+  {
+   "chart": "Opportunity Conversion Trend",
+   "width": "Half"
+  },
+  {
+   "chart": "Lead Source Analystics",
+   "width": "Half"
+  },
+  {
+   "chart": "Opportunity Source Analystics",
+   "width": "Half"
+  }
+ ],
+ "creation": "2026-05-14 17:55:33.025847",
+ "dashboard_name": "Lead Dashboard",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 1,
+ "is_standard": 1,
+ "modified": "2026-05-14 19:03:27.014804",
+ "modified_by": "Administrator",
+ "module": "KNAPS Lead Management",
+ "name": "Lead Dashboard",
+ "owner": "Administrator"
+}

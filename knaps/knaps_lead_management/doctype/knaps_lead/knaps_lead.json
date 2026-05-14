@@ -257,7 +257,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-14 15:10:29.224139",
+ "modified": "2026-05-14 18:58:00.925207",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Lead",
@@ -348,5 +348,6 @@
   }
  ],
  "title_field": "lead_name",
- "track_changes": 1
+ "track_changes": 1,
+ "translated_doctype": 1
 }

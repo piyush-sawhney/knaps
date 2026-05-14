@@ -1,6 +1,8 @@
 # Copyright (c) 2026, KNAPS and Contributors and contributors
 # For license information, please see license.txt
 
+import re
+
 import frappe
 from frappe import _
 from frappe.contacts.address_and_contact import (
@@ -8,15 +10,47 @@ from frappe.contacts.address_and_contact import (
 	load_address_and_contact,
 )
 from frappe.model.document import Document
-
+from frappe.utils import getdate, today
+from dateutil.relativedelta import relativedelta
 
 class KNAPSPerson(Document):
+	# begin: auto-generated types
+	# This code is auto-generated. Do not modify anything in this block.
+
+	from typing import TYPE_CHECKING
+
+	if TYPE_CHECKING:
+		from frappe.types import DF
+		from knaps.knaps.doctype.knaps_email.knaps_email import KNAPSEmail
+		from knaps.knaps.doctype.knaps_phone_number.knaps_phone_number import KNAPSPhoneNumber
+
+		age: DF.Int
+		date_of_birth: DF.Date | None
+		display_picture: DF.AttachImage | None
+		email_address: DF.Table[KNAPSEmail]
+		first_name: DF.Data
+		full_name: DF.Data | None
+		gender: DF.Link
+		last_name: DF.Data | None
+		marital_status: DF.Literal["", "Single", "Married", "Widowed", "Divorced"]
+		middle_name: DF.Data | None
+		pan: DF.Data | None
+		phone_numbers: DF.Table[KNAPSPhoneNumber]
+		preferred_contact_mode: DF.Literal["", "Phone", "Whatsapp", "Email"]
+		primary_email: DF.Data | None
+		primary_household: DF.Link | None
+		primary_phone: DF.Phone | None
+		primary_whatsapp: DF.Phone | None
+		salutation: DF.Link
+		status: DF.Literal["Active", "Passive", "Deceased"]
+	# end: auto-generated types
 	def onload(self):
 		load_address_and_contact(self)
 
 	def on_trash(self):
 		delete_contact_and_address("Member", self.name)
 
+	
 	def on_update(self):
 		"""Update all linked Clients when Person is saved"""
 		self.update_linked_clients()
@@ -35,12 +69,42 @@ class KNAPSPerson(Document):
 	def validate(self):
 		self.update_full_name()
 		self.normalize_pan()
+		self.validate_unique_pan()
+		self.validate_pan_format()
+		self.validate_preferred_contact_mode()
 		self.sync_primary_fields_from_child_tables()
 		self.validate_single_primary()
 		self.validate_at_least_one_primary()
-		self.validate_unique_pan()
-		self.validate_pan_format()
 		self.validate_date_of_birth()
+		self.validate_age()
+
+	def validate_age(self):
+		if self.date_of_birth:
+			diff = relativedelta(
+				getdate(today()),
+				getdate(self.date_of_birth)
+			)
+
+			self.age_formatted = (
+				f"{diff.years} Years "
+				f"{diff.months} Months "
+				f"{diff.days} Days"
+			)
+
+			self.age = diff.years
+
+		else:
+			self.age = None
+			self.age_formatted = None
+
+	def validate_preferred_contact_mode(self):
+		if self.preferred_contact_mode:
+			if self.preferred_contact_mode == "Phone" and not self.primary_phone:
+				frappe.throw(_("Preferred contact mode is Phone but no primary phone number is set"), title=_("Validation Error"))
+			elif self.preferred_contact_mode == "Whatsapp" and not self.primary_whatsapp:
+				frappe.throw(_("Preferred contact mode is Whatsapp but no primary WhatsApp number is set"), title=_("Validation Error"))
+			elif self.preferred_contact_mode == "Email" and not self.primary_email:
+				frappe.throw(_("Preferred contact mode is Email but no primary email address is set"), title=_("Validation Error"))
 
 	def update_full_name(self):
 		"""Construct full name from first, middle, and last name"""
@@ -145,16 +209,18 @@ class KNAPSPerson(Document):
 		"""Validate PAN format: 1-3 letters, 4th='P', 5th letter, 6-9 digits, 10th letter"""
 		if self.pan and len(self.pan) == 10:
 			# Check 4th character is 'P'
+			if not self.pan[0:5].isalpha():
+				frappe.throw(
+					_("First 5 characters of PAN must be letters"),
+					title=_("Invalid PAN Format")
+				)
+
+			# 4th character must be P
 			if self.pan[3] != "P":
-				frappe.throw(_("4th character of PAN must be 'P'"), title=_("Invalid PAN Format"))
-
-			# Check 1-3 are letters
-			if not self.pan[0:3].isalpha():
-				frappe.throw(_("First 3 characters of PAN must be letters"), title=_("Invalid PAN Format"))
-
-			# Check 5th is letter
-			if not self.pan[4].isalpha():
-				frappe.throw(_("5th character of PAN must be a letter"), title=_("Invalid PAN Format"))
+				frappe.throw(
+					_("4th character of PAN must be 'P'"),
+					title=_("Invalid PAN Format")
+				)
 
 			# Check 6-9 are digits
 			if not self.pan[5:9].isdigit():
@@ -165,7 +231,9 @@ class KNAPSPerson(Document):
 				frappe.throw(_("10th character of PAN must be a letter"), title=_("Invalid PAN Format"))
 
 	def validate_date_of_birth(self):
-		"""Ensure date of birth is not in the future"""
 		if self.date_of_birth:
-			if self.date_of_birth > frappe.utils.today():
-				frappe.throw(_("Date of Birth cannot be in the future"), title=_("Invalid Date"))
+			if getdate(self.date_of_birth) > getdate(today()):
+				frappe.throw(
+					_("Date of Birth cannot be in the future"),
+					title=_("Invalid Date")
+				)

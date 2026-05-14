@@ -1,5 +1,5 @@
 app_name = "knaps"
-app_title = "KNAPS"
+app_title = "KNAPS Financial Services"
 app_publisher = "KNAPS and Contributors"
 app_description = "KNAPS Financial Services"
 app_email = "piyush.sawhney@knaps.in"
@@ -11,15 +11,15 @@ app_license = "mit"
 # required_apps = []
 
 # Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "knaps",
-# 		"logo": "/assets/knaps/logo.png",
-# 		"title": "KNAPS",
-# 		"route": "/knaps",
-# 		"has_permission": "knaps.api.permission.has_app_permission"
-# 	}
-# ]
+add_to_apps_screen = [
+	{
+		"name": app_name,
+		"logo": "/assets/knaps/images/logo.png",
+		"title": app_title,
+		"route": f"/{app_name}",
+		"has_permission": "knaps.api.permission.has_app_permission"
+	}
+]
 
 # Includes in <head>
 # ------------------

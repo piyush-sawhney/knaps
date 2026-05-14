@@ -10,6 +10,10 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "column_break_cxfn",
+  "column_break_uxgh",
+  "column_break_uhry",
+  "status",
   "lead_details_section",
   "lead_type",
   "column_break_eriv",
@@ -17,7 +21,6 @@
   "lead_name",
   "organisation_name",
   "column_break_ceht",
-  "status",
   "source",
   "lead_interested_in",
   "contact_details_section",
@@ -222,6 +225,7 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval: !doc.__islocal",
    "fieldname": "section_break_cwrs",
    "fieldtype": "Section Break"
   },
@@ -236,12 +240,24 @@
    "fieldtype": "Int",
    "label": "Age",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_cxfn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_uxgh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_uhry",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-14 14:04:43.551172",
+ "modified": "2026-05-14 15:10:29.224139",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Lead",

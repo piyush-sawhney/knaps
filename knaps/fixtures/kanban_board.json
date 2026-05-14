@@ -4,13 +4,13 @@
    {
     "column_name": "New",
     "indicator": "Pink",
-    "order": "[\"KNAPS-LEAD-0000003\"]",
+    "order": "[\"019e25dc-2e6f-72b7-99c1-0881b0141d5a\", \"019e25da-f608-755e-9fb9-2040da9871b7\"]",
     "status": "Active"
    },
    {
     "column_name": "Qualified",
     "indicator": "Light Blue",
-    "order": "[\"KNAPS-LEAD-0000002\"]",
+    "order": "[]",
     "status": "Active"
    },
    {
@@ -47,10 +47,10 @@
   "docstatus": 0,
   "doctype": "Kanban Board",
   "field_name": "status",
-  "fields": "[\"lead_type\",\"email\",\"phone\",\"source\"]",
+  "fields": "[\"lead_type\",\"source\",\"phone\",\"whatsapp\",\"email\"]",
   "filters": "[]",
   "kanban_board_name": "KNAPS Lead",
-  "modified": "2026-05-11 17:38:34.243874",
+  "modified": "2026-05-14 15:12:00.718102",
   "name": "KNAPS Lead",
   "private": 0,
   "reference_doctype": "KNAPS Lead",
@@ -61,7 +61,7 @@
    {
     "column_name": "New",
     "indicator": "Pink",
-    "order": "[\"KNAPS-OPP-0000001\"]",
+    "order": "[\"019e25d6-b949-7347-a048-a23e303fca2b\"]",
     "status": "Active"
    },
    {
@@ -104,10 +104,10 @@
   "docstatus": 0,
   "doctype": "Kanban Board",
   "field_name": "status",
-  "fields": "[]",
+  "fields": "[\"source\",\"phone\",\"whatsapp\",\"email\"]",
   "filters": null,
   "kanban_board_name": "KNAPS Opportunity",
-  "modified": "2026-05-11 17:38:27.404988",
+  "modified": "2026-05-14 15:08:03.600886",
   "name": "KNAPS Opportunity",
   "private": 0,
   "reference_doctype": "KNAPS Opportunity",

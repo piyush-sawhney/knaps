@@ -17,7 +17,7 @@ add_to_apps_screen = [
 		"logo": "/assets/knaps/images/logo.png",
 		"title": app_title,
 		"route": f"/{app_name}",
-		"has_permission": "knaps.api.permission.has_app_permission"
+		"has_permission": "knaps.check_app_permission"
 	}
 ]
 

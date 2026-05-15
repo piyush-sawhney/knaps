@@ -34,6 +34,14 @@ def create_knaps_person(**kwargs):
 class TestKNAPSPerson(IntegrationTestCase):
 	"""Integration tests for KNAPS Person doctype."""
 
+	def setUp(self):
+		super().setUp()
+		frappe.db.savepoint("knaps_person_sp")
+
+	def tearDown(self):
+		frappe.db.rollback(save_point="knaps_person_sp")
+		super().tearDown()
+
 	# =====================================================
 	# FULL NAME AUTO-CALCULATION TESTS
 	# =====================================================
@@ -44,7 +52,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		self.assertEqual(person.full_name, "Mr John Doe")
-		person.delete()
 
 	def test_full_name_all_three(self):
 		"""Test full name calculation with first, middle, and last name."""
@@ -52,7 +59,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		self.assertEqual(person.full_name, "Mr John Michael Doe")
-		person.delete()
 
 	def test_full_name_only_first(self):
 		"""Test full name when only first name is provided."""
@@ -60,7 +66,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		self.assertEqual(person.full_name, "Mr John")
-		person.delete()
 
 	def test_full_name_whitespace_trimmed(self):
 		"""Test that whitespace is properly trimmed from name components."""
@@ -70,7 +75,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		self.assertEqual(person.full_name, "Mr John Michael Doe")
-		person.delete()
 
 	# =====================================================
 	# PRIMARY PHONE SYNC TESTS
@@ -95,7 +99,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		self.assertEqual(person.primary_phone, "+91 9876543210")
-		person.delete()
 
 	def test_primary_phone_multiple_phones(self):
 		"""Test that only the primary phone is synced when multiple phones exist."""
@@ -124,7 +127,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		self.assertEqual(person.primary_phone, "+91 9876543211")
-		person.delete()
 
 	# =====================================================
 	# PRIMARY WHATSAPP SYNC TESTS
@@ -149,7 +151,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		self.assertEqual(person.primary_whatsapp, "+91 9876543210")
-		person.delete()
 
 	# =====================================================
 	# PRIMARY EMAIL SYNC TESTS
@@ -173,7 +174,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		self.assertEqual(person.primary_email, "john@example.com")
-		person.delete()
 
 	def test_primary_email_multiple_emails(self):
 		"""Test that only the primary email is synced when multiple emails exist."""
@@ -200,7 +200,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		self.assertEqual(person.primary_email, "john.official@example.com")
-		person.delete()
 
 	# =====================================================
 	# VALIDATION TESTS - SINGLE PRIMARY
@@ -410,10 +409,9 @@ class TestKNAPSPerson(IntegrationTestCase):
 			],
 			save=False,
 		)
-
 		person.insert()
+
 		self.assertEqual(len(person.phone_numbers), 2)
-		person.delete()
 
 	# =====================================================
 	# VALIDATION TESTS - DUPLICATE CONTACTS
@@ -625,8 +623,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		# Verify primary email
 		self.assertEqual(person.primary_email, "john.doe@example.com")
 
-		person.delete()
-
 	def test_person_with_no_contacts(self):
 		"""Test that person without phone/email contacts is valid."""
 		person = create_knaps_person(first_name="John", last_name="Doe", save=False)
@@ -638,8 +634,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		self.assertEqual(person.primary_phone, "")
 		self.assertEqual(person.primary_whatsapp, "")
 		self.assertEqual(person.primary_email, "")
-
-		person.delete()
 
 	def test_person_update_primary_phone(self):
 		"""Test updating primary phone on existing person."""
@@ -668,8 +662,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		# Verify updated
 		self.assertEqual(person.primary_phone, "+91 9876543211")
 		self.assertNotEqual(old_phone, person.primary_phone)
-
-		person.delete()
 
 	# =====================================================
 	# PRIMARY FIELD RESET TESTS
@@ -713,8 +705,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		self.assertEqual(person.primary_phone, "")
 		self.assertEqual(person.primary_whatsapp, "")
 		self.assertEqual(person.primary_email, "")
-
-		person.delete()
 
 	# =====================================================
 	# PAN VALIDATION TESTS
@@ -779,8 +769,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 
 		self.assertRaises(frappe.ValidationError, person2.insert)
 
-		person1.delete()
-
 	def test_pan_case_insensitive(self):
 		"""Test that PAN validation is case insensitive."""
 		# Create first person with PAN (uppercase)
@@ -840,8 +828,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 
 		self.assertRaises(frappe.ValidationError, person2.insert)
 
-		person1.delete()
-
 	def test_pan_normalized_on_save(self):
 		"""Test that PAN is normalized to uppercase on save."""
 		person = create_knaps_person(
@@ -869,13 +855,10 @@ class TestKNAPSPerson(IntegrationTestCase):
 			save=False,
 		)
 		person.pan = "abcpf1234f"  # lowercase
-
 		person.insert()
 
 		# Verify PAN is stored in uppercase
 		self.assertEqual(person.pan, "ABCPF1234F")
-
-		person.delete()
 
 	def test_no_pan_is_valid(self):
 		"""Test that person without PAN is valid."""
@@ -904,13 +887,10 @@ class TestKNAPSPerson(IntegrationTestCase):
 			save=False,
 		)
 		person.pan = ""
-
 		person.insert()
 
 		# Should be valid without PAN
 		self.assertEqual(person.pan, "")
-
-		person.delete()
 
 	# =====================================================
 	# PAN FORMAT VALIDATION TESTS
@@ -943,11 +923,9 @@ class TestKNAPSPerson(IntegrationTestCase):
 			save=False,
 		)
 		person.pan = "ABCPF1234F"  # Valid format: ABC(1-3) P(4th='P') F(5) 1234(6-9) F(10)
-
 		person.insert()
 
 		self.assertEqual(person.pan, "ABCPF1234F")
-		person.delete()
 
 	def test_pan_4th_character_not_p(self):
 		"""Test that PAN with 4th character not 'P' throws ValidationError."""
@@ -1133,11 +1111,9 @@ class TestKNAPSPerson(IntegrationTestCase):
 		)
 		# Set DOB to 10 years ago
 		person.date_of_birth = frappe.utils.add_years(frappe.utils.today(), -10)
-
 		person.insert()
 
 		self.assertIsNotNone(person.date_of_birth)
-		person.delete()
 
 	def test_dob_future_throws_error(self):
 		"""Test that future date of birth throws ValidationError."""
@@ -1200,11 +1176,9 @@ class TestKNAPSPerson(IntegrationTestCase):
 		)
 		# Set DOB to today
 		person.date_of_birth = frappe.utils.today()
-
 		person.insert()
 
 		self.assertIsNotNone(person.date_of_birth)
-		person.delete()
 
 	# =====================================================
 	# AGE VIRTUAL FIELD TESTS
@@ -1241,7 +1215,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 
 		self.assertIsNotNone(person.age)
 		self.assertGreaterEqual(person.age, 30)
-		person.delete()
 
 	def test_age_minor(self):
 		"""Test that age is calculated correctly for minor"""
@@ -1274,7 +1247,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 
 		self.assertIsNotNone(person.age)
 		self.assertLess(person.age, 18)
-		person.delete()
 
 	def test_age_no_dob(self):
 		"""Test that age is None when no DOB is set"""
@@ -1306,7 +1278,6 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		self.assertIsNone(person.age)
-		person.delete()
 
 	# =====================================================
 	# AGE EDGE CASE TESTS
@@ -1324,4 +1295,3 @@ class TestKNAPSPerson(IntegrationTestCase):
 
 		self.assertEqual(person.age, 0)
 		self.assertEqual(person.age_formatted, "Newborn")
-		person.delete()

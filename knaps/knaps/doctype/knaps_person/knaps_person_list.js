@@ -2,6 +2,7 @@ frappe.listview_settings["KNAPS Person"] = {
 	add_fields: [
 		"full_name",
 		"age",
+		"date_of_birth",
 		"status",
 		"gender",
 		"pan",
@@ -21,8 +22,8 @@ frappe.listview_settings["KNAPS Person"] = {
 		return [__(doc.status), colors[doc.status], "status,=," + doc.status];
 	},
 	formatters: {
-		age: function (val) {
-			if (val == null) return "";
+		age: function (val, df, doc) {
+			if (!doc.date_of_birth) return "";
 			return val + " yrs";
 		},
 		pan: function (val) {

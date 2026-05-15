@@ -43,7 +43,7 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person = create_knaps_person(first_name="John", last_name="Doe", save=False)
 		person.insert()
 
-		self.assertEqual(person.full_name, "John Doe")
+		self.assertEqual(person.full_name, "Mr John Doe")
 		person.delete()
 
 	def test_full_name_all_three(self):
@@ -51,7 +51,7 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person = create_knaps_person(first_name="John", middle_name="Michael", last_name="Doe", save=False)
 		person.insert()
 
-		self.assertEqual(person.full_name, "John Michael Doe")
+		self.assertEqual(person.full_name, "Mr John Michael Doe")
 		person.delete()
 
 	def test_full_name_only_first(self):
@@ -59,7 +59,7 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person = create_knaps_person(first_name="John", save=False)
 		person.insert()
 
-		self.assertEqual(person.full_name, "John")
+		self.assertEqual(person.full_name, "Mr John")
 		person.delete()
 
 	def test_full_name_whitespace_trimmed(self):
@@ -69,7 +69,7 @@ class TestKNAPSPerson(IntegrationTestCase):
 		)
 		person.insert()
 
-		self.assertEqual(person.full_name, "John Michael Doe")
+		self.assertEqual(person.full_name, "Mr John Michael Doe")
 		person.delete()
 
 	# =====================================================
@@ -327,6 +327,260 @@ class TestKNAPSPerson(IntegrationTestCase):
 		self.assertRaises(frappe.ValidationError, person.insert)
 
 	# =====================================================
+	# VALIDATION TESTS - INACTIVE CANNOT BE PRIMARY
+	# =====================================================
+
+	def test_inactive_phone_cannot_be_primary(self):
+		"""Test that inactive phone with is_primary throws ValidationError."""
+		person = create_knaps_person(
+			first_name="John",
+			phone_numbers=[
+				{
+					"number": "+91 9876543210",
+					"is_primary": 1,
+					"is_whatsapp": 0,
+					"is_active": 0,
+					"ownership": "Self",
+					"type": "Mobile",
+				}
+			],
+			save=False,
+		)
+
+		self.assertRaises(frappe.ValidationError, person.insert)
+
+	def test_inactive_phone_cannot_be_whatsapp(self):
+		"""Test that inactive phone with is_whatsapp throws ValidationError."""
+		person = create_knaps_person(
+			first_name="John",
+			phone_numbers=[
+				{
+					"number": "+91 9876543210",
+					"is_primary": 0,
+					"is_whatsapp": 1,
+					"is_active": 0,
+					"ownership": "Self",
+					"type": "Mobile",
+				}
+			],
+			save=False,
+		)
+
+		self.assertRaises(frappe.ValidationError, person.insert)
+
+	def test_inactive_email_cannot_be_primary(self):
+		"""Test that inactive email with is_primary throws ValidationError."""
+		person = create_knaps_person(
+			first_name="John",
+			email_address=[
+				{
+					"email_address": "john@example.com",
+					"is_primary": 1,
+					"is_active": 0,
+					"ownership": "Self",
+					"type": "Personal",
+				}
+			],
+			save=False,
+		)
+
+		self.assertRaises(frappe.ValidationError, person.insert)
+
+	def test_inactive_row_without_flags_is_valid(self):
+		"""Test that inactive row without primary/whatsapp flags passes validation."""
+		person = create_knaps_person(
+			first_name="John",
+			phone_numbers=[
+				{
+					"number": "+91 9876543210",
+					"is_primary": 1,
+					"is_whatsapp": 1,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				},
+				{
+					"number": "+91 9876543211",
+					"is_primary": 0,
+					"is_whatsapp": 0,
+					"is_active": 0,
+					"ownership": "Self",
+					"type": "Home",
+				},
+			],
+			save=False,
+		)
+
+		person.insert()
+		self.assertEqual(len(person.phone_numbers), 2)
+		person.delete()
+
+	# =====================================================
+	# VALIDATION TESTS - DUPLICATE CONTACTS
+	# =====================================================
+
+	def test_duplicate_phone_number_throws_error(self):
+		"""Test that duplicate phone numbers throw ValidationError."""
+		person = create_knaps_person(
+			first_name="John",
+			phone_numbers=[
+				{
+					"number": "+91 9876543210",
+					"is_primary": 0,
+					"is_whatsapp": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				},
+				{
+					"number": "+91 9876543210",
+					"is_primary": 1,
+					"is_whatsapp": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				},
+			],
+			save=False,
+		)
+
+		self.assertRaises(frappe.ValidationError, person.insert)
+
+	def test_duplicate_phone_number_whitespace_trimmed(self):
+		"""Test that duplicate phones with different spacing throw ValidationError."""
+		person = create_knaps_person(
+			first_name="John",
+			phone_numbers=[
+				{
+					"number": "  +91 9876543210",
+					"is_primary": 0,
+					"is_whatsapp": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				},
+				{
+					"number": "+91 9876543210",
+					"is_primary": 1,
+					"is_whatsapp": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				},
+			],
+			save=False,
+		)
+
+		self.assertRaises(frappe.ValidationError, person.insert)
+
+	def test_duplicate_email_throws_error(self):
+		"""Test that duplicate email addresses throw ValidationError."""
+		person = create_knaps_person(
+			first_name="John",
+			email_address=[
+				{
+					"email_address": "john@example.com",
+					"is_primary": 1,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Personal",
+				},
+				{
+					"email_address": "john@example.com",
+					"is_primary": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Official",
+				},
+			],
+			save=False,
+		)
+
+		self.assertRaises(frappe.ValidationError, person.insert)
+
+	def test_duplicate_email_case_insensitive(self):
+		"""Test that duplicate emails with different case throw ValidationError."""
+		person = create_knaps_person(
+			first_name="John",
+			email_address=[
+				{
+					"email_address": "John@Example.com",
+					"is_primary": 1,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Personal",
+				},
+				{
+					"email_address": "john@example.com",
+					"is_primary": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Official",
+				},
+			],
+			save=False,
+		)
+
+		self.assertRaises(frappe.ValidationError, person.insert)
+
+	# =====================================================
+	# VALIDATION TESTS - PREFERRED CONTACT MODE
+	# =====================================================
+
+	def test_preferred_phone_mode_no_phone_rows(self):
+		"""Test preferred Phone throws when no phone rows exist."""
+		person = create_knaps_person(
+			first_name="John",
+			last_name="Doe",
+			save=False,
+		)
+		person.preferred_contact_mode = "Phone"
+
+		self.assertRaises(frappe.ValidationError, person.insert)
+
+	def test_preferred_whatsapp_mode_no_phone_rows(self):
+		"""Test preferred Whatsapp throws when no phone rows exist."""
+		person = create_knaps_person(
+			first_name="John",
+			last_name="Doe",
+			save=False,
+		)
+		person.preferred_contact_mode = "Whatsapp"
+
+		self.assertRaises(frappe.ValidationError, person.insert)
+
+	def test_preferred_whatsapp_mode_phones_no_whatsapp(self):
+		"""Test preferred Whatsapp throws when phones exist but none is whatsapp."""
+		person = create_knaps_person(
+			first_name="John",
+			phone_numbers=[
+				{
+					"number": "+91 9876543210",
+					"is_primary": 1,
+					"is_whatsapp": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				}
+			],
+			save=False,
+		)
+		person.preferred_contact_mode = "Whatsapp"
+
+		self.assertRaises(frappe.ValidationError, person.insert)
+
+	def test_preferred_email_mode_no_email_rows(self):
+		"""Test preferred Email throws when no email rows exist."""
+		person = create_knaps_person(
+			first_name="John",
+			last_name="Doe",
+			save=False,
+		)
+		person.preferred_contact_mode = "Email"
+
+		self.assertRaises(frappe.ValidationError, person.insert)
+
+	# =====================================================
 	# INTEGRATION TESTS
 	# =====================================================
 
@@ -360,7 +614,7 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		# Verify full name
-		self.assertEqual(person.full_name, "John Michael Doe")
+		self.assertEqual(person.full_name, "Mr John Michael Doe")
 
 		# Verify primary phone
 		self.assertEqual(person.primary_phone, "+91 9876543210")
@@ -414,6 +668,51 @@ class TestKNAPSPerson(IntegrationTestCase):
 		# Verify updated
 		self.assertEqual(person.primary_phone, "+91 9876543211")
 		self.assertNotEqual(old_phone, person.primary_phone)
+
+		person.delete()
+
+	# =====================================================
+	# PRIMARY FIELD RESET TESTS
+	# =====================================================
+
+	def test_primary_fields_cleared_when_rows_removed(self):
+		"""Test that removing all child rows clears parent primary fields."""
+		person = create_knaps_person(
+			first_name="John",
+			phone_numbers=[
+				{
+					"number": "+91 9876543210",
+					"is_primary": 1,
+					"is_whatsapp": 1,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				}
+			],
+			email_address=[
+				{
+					"email_address": "john@example.com",
+					"is_primary": 1,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Personal",
+				}
+			],
+			save=False,
+		)
+		person.insert()
+
+		self.assertEqual(person.primary_phone, "+91 9876543210")
+		self.assertEqual(person.primary_whatsapp, "+91 9876543210")
+		self.assertEqual(person.primary_email, "john@example.com")
+
+		person.phone_numbers = []
+		person.email_address = []
+		person.save()
+
+		self.assertEqual(person.primary_phone, "")
+		self.assertEqual(person.primary_whatsapp, "")
+		self.assertEqual(person.primary_email, "")
 
 		person.delete()
 
@@ -1007,4 +1306,22 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person.insert()
 
 		self.assertIsNone(person.age)
+		person.delete()
+
+	# =====================================================
+	# AGE EDGE CASE TESTS
+	# =====================================================
+
+	def test_age_newborn(self):
+		"""Test that DOB = today shows 'Newborn'."""
+		person = create_knaps_person(
+			first_name="Baby",
+			last_name="Newborn",
+			save=False,
+		)
+		person.date_of_birth = frappe.utils.today()
+		person.insert()
+
+		self.assertEqual(person.age, 0)
+		self.assertEqual(person.age_formatted, "Newborn")
 		person.delete()

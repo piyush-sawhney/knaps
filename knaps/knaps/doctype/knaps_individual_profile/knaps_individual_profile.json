@@ -1,0 +1,149 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:person",
+ "creation": "2026-05-15 23:07:55.593069",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "person",
+  "marital_status",
+  "title",
+  "column_break_hvbl",
+  "nationality",
+  "country_of_birth",
+  "section_break_ccfp",
+  "occupation",
+  "occupational_details",
+  "income_slab",
+  "column_break_jrsy",
+  "politically_exposed_person",
+  "educational_qualification",
+  "number_of_dependents"
+ ],
+ "fields": [
+  {
+   "fieldname": "person",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Person",
+   "options": "KNAPS Person",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "section_break_ccfp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "marital_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Marital Status",
+   "options": "\nSingle\nMarried\nDivorced\nWidowed\nSeparated"
+  },
+  {
+   "fieldname": "number_of_dependents",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Number of Dependents",
+   "non_negative": 1
+  },
+  {
+   "fieldname": "educational_qualification",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Educational Qualification",
+   "options": "\n7th Pass\n10th Pass\n12th Pass\nGraduate\nPost Graduate\nDoctorate Holder\nProfessional"
+  },
+  {
+   "fieldname": "nationality",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Nationality",
+   "options": "Country"
+  },
+  {
+   "fieldname": "country_of_birth",
+   "fieldtype": "Link",
+   "label": "Country of Birth",
+   "options": "Country"
+  },
+  {
+   "fieldname": "occupation",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Occupation",
+   "options": "\nBusiness\nService\nProfessional\nAgriculture\nRetired\nHousewife\nStudent\nOthers"
+  },
+  {
+   "fieldname": "occupational_details",
+   "fieldtype": "Data",
+   "label": "Occupational Details"
+  },
+  {
+   "fieldname": "income_slab",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Income Slab",
+   "mask": 1,
+   "options": "\nBelow 1 Lakh\n1 - 5 Lakh\n5 - 10 Lakh\n10- 25 Lakh\n25 Lakh - 1 Crore\nAbove 1 Cr"
+  },
+  {
+   "fieldname": "politically_exposed_person",
+   "fieldtype": "Select",
+   "label": "Politically Exposed Person",
+   "options": "\nYes\nNo\nRelated to PEP"
+  },
+  {
+   "fieldname": "column_break_hvbl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_jrsy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Title",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-15 23:42:34.412038",
+ "modified_by": "Administrator",
+ "module": "KNAPS",
+ "name": "KNAPS Individual Profile",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "title"
+}

@@ -11,6 +11,7 @@ frappe.listview_settings["KNAPS Person"] = {
 		"preferred_contact_mode",
 	],
 	hide_name_column: true,
+	hide_name_filter: true,
 	get_indicator: function (doc) {
 		var colors = {
 			Active: "green",
@@ -30,8 +31,12 @@ frappe.listview_settings["KNAPS Person"] = {
 		},
 		preferred_contact_mode: function (val) {
 			if (!val) return "";
-			var icons = { Phone: "phone", Whatsapp: "whatsapp", Email: "mail" };
-			return `<i class="fa fa-${icons[val] || "circle"}"></i> ${val}`;
+			var icons = {
+				Phone: "fa fa-phone",
+				Whatsapp: "fa fa-whatsapp",
+				Email: "fa fa-envelope",
+			};
+			return `<i class="${icons[val] || "fa fa-circle"}"></i> ${val}`;
 		},
 	},
 };

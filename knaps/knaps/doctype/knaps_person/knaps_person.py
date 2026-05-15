@@ -3,7 +3,10 @@
 
 import re
 
+PAN_REGEX = re.compile(r"^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$")
+
 import frappe
+from dateutil.relativedelta import relativedelta
 from frappe import _
 from frappe.contacts.address_and_contact import (
 	delete_contact_and_address,
@@ -11,7 +14,7 @@ from frappe.contacts.address_and_contact import (
 )
 from frappe.model.document import Document
 from frappe.utils import getdate, today
-from dateutil.relativedelta import relativedelta
+
 
 class KNAPSPerson(Document):
 	# begin: auto-generated types
@@ -21,6 +24,7 @@ class KNAPSPerson(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from knaps.knaps.doctype.knaps_email.knaps_email import KNAPSEmail
 		from knaps.knaps.doctype.knaps_phone_number.knaps_phone_number import KNAPSPhoneNumber
 
@@ -32,7 +36,6 @@ class KNAPSPerson(Document):
 		full_name: DF.Data | None
 		gender: DF.Link
 		last_name: DF.Data | None
-		marital_status: DF.Literal["", "Single", "Married", "Widowed", "Divorced"]
 		middle_name: DF.Data | None
 		pan: DF.Data | None
 		phone_numbers: DF.Table[KNAPSPhoneNumber]
@@ -44,71 +47,76 @@ class KNAPSPerson(Document):
 		salutation: DF.Link
 		status: DF.Literal["Active", "Passive", "Deceased"]
 	# end: auto-generated types
+
 	def onload(self):
 		load_address_and_contact(self)
 
 	def on_trash(self):
 		delete_contact_and_address("Member", self.name)
 
-	
-	def on_update(self):
-		"""Update all linked Clients when Person is saved"""
-		self.update_linked_clients()
-
-	def update_linked_clients(self):
-		"""Sync all linked Clients with latest Person data"""
-		clients = frappe.get_all("KNAPS Client", filters={"person": self.name}, pluck="name")
-		for client_name in clients:
-			try:
-				client = frappe.get_doc("KNAPS Client", client_name)
-				client.run_method("sync_all_from_link")
-				client.save(ignore_permissions=True)
-			except Exception:
-				frappe.logger().error(f"Error updating linked client {client_name}: {frappe.get_traceback()}")
-
 	def validate(self):
+		self.full_name = None
 		self.update_full_name()
 		self.normalize_pan()
 		self.validate_unique_pan()
 		self.validate_pan_format()
-		self.validate_preferred_contact_mode()
-		self.sync_primary_fields_from_child_tables()
 		self.validate_single_primary()
+		self.validate_inactive_cannot_be_primary()
 		self.validate_at_least_one_primary()
+		self.validate_unique_phone_numbers()
+		self.validate_unique_emails()
+		self.sync_primary_fields_from_child_tables()
+		self.validate_preferred_contact_mode()
 		self.validate_date_of_birth()
 		self.validate_age()
 
 	def validate_age(self):
+		if not self.has_value_changed("date_of_birth"):
+			return
 		if self.date_of_birth:
-			diff = relativedelta(
-				getdate(today()),
-				getdate(self.date_of_birth)
-			)
+			diff = relativedelta(getdate(today()), getdate(self.date_of_birth))
 
-			self.age_formatted = (
-				f"{diff.years} Years "
-				f"{diff.months} Months "
-				f"{diff.days} Days"
-			)
+			if diff.years == 0 and diff.months == 0 and diff.days == 0:
+				self.age_formatted = "Newborn"
+			elif diff.years == 0:
+				self.age_formatted = f"{diff.months} Months {diff.days} Days"
+			else:
+				self.age_formatted = f"{diff.years} Years {diff.months} Months {diff.days} Days"
 
 			self.age = diff.years
-
 		else:
 			self.age = None
 			self.age_formatted = None
 
 	def validate_preferred_contact_mode(self):
-		if self.preferred_contact_mode:
-			if self.preferred_contact_mode == "Phone" and not self.primary_phone:
-				frappe.throw(_("Preferred contact mode is Phone but no primary phone number is set"), title=_("Validation Error"))
-			elif self.preferred_contact_mode == "Whatsapp" and not self.primary_whatsapp:
-				frappe.throw(_("Preferred contact mode is Whatsapp but no primary WhatsApp number is set"), title=_("Validation Error"))
-			elif self.preferred_contact_mode == "Email" and not self.primary_email:
-				frappe.throw(_("Preferred contact mode is Email but no primary email address is set"), title=_("Validation Error"))
+		if not self.preferred_contact_mode:
+			return
+
+		if self.preferred_contact_mode == "Phone":
+			primary = next((p for p in (self.phone_numbers or []) if p.is_primary), None)
+			if not primary:
+				frappe.throw(_("Primary phone number is required for Phone mode"))
+			if not primary.is_active:
+				frappe.throw(_("Primary phone number is inactive. Activate it or choose another."))
+
+		elif self.preferred_contact_mode == "Whatsapp":
+			primary = next((p for p in (self.phone_numbers or []) if p.is_whatsapp), None)
+			if not primary:
+				frappe.throw(_("Primary WhatsApp number is required for WhatsApp mode"))
+			if not primary.is_active:
+				frappe.throw(_("Primary WhatsApp number is inactive. Activate it or choose another."))
+
+		elif self.preferred_contact_mode == "Email":
+			primary = next((e for e in (self.email_address or []) if e.is_primary), None)
+			if not primary:
+				frappe.throw(_("Primary email address is required for Email mode"))
+			if not primary.is_active:
+				frappe.throw(_("Primary email address is inactive. Activate it or choose another."))
 
 	def update_full_name(self):
 		"""Construct full name from first, middle, and last name"""
 		# Trim whitespace from each component
+		salutation = (self.salutation or "").strip()
 		first = (self.first_name or "").strip()
 		middle = (self.middle_name or "").strip()
 		last = (self.last_name or "").strip()
@@ -119,7 +127,7 @@ class KNAPSPerson(Document):
 			old_full_name = self.get_doc_before_save().full_name
 
 		# Construct full name with proper spacing
-		parts = [first, middle, last]
+		parts = [salutation, first, middle, last]
 		self.full_name = " ".join([part for part in parts if part])
 
 		# Log when full name changes (for debugging/auditing)
@@ -129,28 +137,23 @@ class KNAPSPerson(Document):
 			)
 
 	def sync_primary_fields_from_child_tables(self):
-		"""Extract primary values from child tables and sync to parent fields"""
-		# Initialize with empty strings if not already set
-		if not self.primary_phone:
-			self.primary_phone = ""
-		if not self.primary_whatsapp:
-			self.primary_whatsapp = ""
-		if not self.primary_email:
-			self.primary_email = ""
+		if not self.has_value_changed("phone_numbers") and not self.has_value_changed("email_address"):
+			return
 
-		# Get primary phone
+		self.primary_phone = ""
+		self.primary_whatsapp = ""
+		self.primary_email = ""
+
 		for phone in self.phone_numbers or []:
 			if phone.is_primary:
 				self.primary_phone = phone.number or ""
 				break
 
-		# Get primary WhatsApp
 		for phone in self.phone_numbers or []:
 			if phone.is_whatsapp:
 				self.primary_whatsapp = phone.number or ""
 				break
 
-		# Get primary email
 		for email in self.email_address or []:
 			if email.is_primary:
 				self.primary_email = email.email_address or ""
@@ -206,34 +209,50 @@ class KNAPSPerson(Document):
 				)
 
 	def validate_pan_format(self):
-		"""Validate PAN format: 1-3 letters, 4th='P', 5th letter, 6-9 digits, 10th letter"""
+		"""Validate PAN format: 3 letters, 'P', 1 letter, 4 digits, 1 letter"""
 		if self.pan and len(self.pan) == 10:
-			# Check 4th character is 'P'
-			if not self.pan[0:5].isalpha():
+			if not PAN_REGEX.match(self.pan):
 				frappe.throw(
-					_("First 5 characters of PAN must be letters"),
-					title=_("Invalid PAN Format")
+					_("Invalid PAN format. Expected format: ABCPA1234D"), title=_("Invalid PAN Format")
 				)
-
-			# 4th character must be P
-			if self.pan[3] != "P":
-				frappe.throw(
-					_("4th character of PAN must be 'P'"),
-					title=_("Invalid PAN Format")
-				)
-
-			# Check 6-9 are digits
-			if not self.pan[5:9].isdigit():
-				frappe.throw(_("Characters 6-9 of PAN must be digits"), title=_("Invalid PAN Format"))
-
-			# Check 10th is letter
-			if not self.pan[9].isalpha():
-				frappe.throw(_("10th character of PAN must be a letter"), title=_("Invalid PAN Format"))
 
 	def validate_date_of_birth(self):
 		if self.date_of_birth:
 			if getdate(self.date_of_birth) > getdate(today()):
+				frappe.throw(_("Date of Birth cannot be in the future"), title=_("Invalid Date"))
+
+	def validate_unique_phone_numbers(self):
+		seen = set()
+		for phone in self.phone_numbers or []:
+			num = (phone.number or "").strip()
+			if num in seen:
+				frappe.throw(_("Duplicate phone number: {}").format(num), title=_("Duplicate Entry"))
+			seen.add(num)
+
+	def validate_unique_emails(self):
+		seen = set()
+		for email in self.email_address or []:
+			addr = (email.email_address or "").strip().lower()
+			if addr in seen:
+				frappe.throw(_("Duplicate email address: {}").format(addr), title=_("Duplicate Entry"))
+			seen.add(addr)
+
+	def validate_inactive_cannot_be_primary(self):
+		for phone in self.phone_numbers or []:
+			if phone.is_active:
+				continue
+			if phone.is_primary:
 				frappe.throw(
-					_("Date of Birth cannot be in the future"),
-					title=_("Invalid Date")
+					_("Row #{}: Phone {} is inactive — cannot be Primary").format(phone.idx, phone.number)
+				)
+			if phone.is_whatsapp:
+				frappe.throw(
+					_("Row #{}: Phone {} is inactive — cannot be WhatsApp").format(phone.idx, phone.number)
+				)
+		for email in self.email_address or []:
+			if not email.is_active and email.is_primary:
+				frappe.throw(
+					_("Row #{}: Email {} is inactive — cannot be Primary").format(
+						email.idx, email.email_address
+					)
 				)

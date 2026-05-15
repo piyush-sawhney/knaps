@@ -19,10 +19,9 @@
   "first_name",
   "middle_name",
   "last_name",
-  "gender",
   "column_break_ftpf",
+  "gender",
   "pan",
-  "marital_status",
   "date_of_birth",
   "age_formatted",
   "age",
@@ -187,12 +186,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "marital_status",
-   "fieldtype": "Select",
-   "label": "Marital Status",
-   "options": "\nSingle\nMarried\nWidowed\nDivorced"
-  },
-  {
    "fieldname": "connections_tab",
    "fieldtype": "Tab Break",
    "label": "Connections",
@@ -232,21 +225,19 @@
    "non_negative": 1
   },
   {
-   "default": "Phone",
    "fieldname": "preferred_contact_mode",
    "fieldtype": "Select",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Preferred Contact Mode",
-   "options": "\nPhone\nWhatsapp\nEmail",
-   "reqd": 1
+   "options": "\nPhone\nWhatsapp\nEmail"
   }
  ],
  "grid_page_length": 50,
  "image_field": "display_picture",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-14 19:31:41.015909",
+ "modified": "2026-05-15 15:44:22.105014",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Person",

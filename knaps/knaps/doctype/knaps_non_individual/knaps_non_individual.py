@@ -11,6 +11,16 @@ from frappe.contacts.address_and_contact import (
 )
 from frappe.model.document import Document
 
+from knaps.knaps.utils.party_validation import (
+	normalize_pan,
+	validate_email_primary,
+	validate_inactive_cannot_be_primary,
+	validate_phone_primary,
+	validate_unique_emails,
+	validate_unique_phone_numbers,
+	validate_unique_pan,
+)
+
 PAN_REGEX = re.compile(r"^[A-Z]{3}(.)[A-Z][0-9]{4}[A-Z]$")
 
 TYPE_4TH_CHAR = {
@@ -60,24 +70,16 @@ class KNAPSNonIndividual(Document):
 
 	def validate(self):
 		self.normalize_legal_name()
-		self.normalize_pan()
+		normalize_pan(self)
 		self.validate_pan_format()
-		self.validate_unique_pan()
+		validate_unique_pan(self, "KNAPS Non Individual", "entity")
 		self.validate_primary_contact()
-		self.validate_phone_primary()
-		self.validate_email_primary()
-		self.validate_inactive_cannot_be_primary()
-		self.validate_unique_phone_numbers()
-		self.validate_unique_emails()
+		validate_phone_primary(self)
+		validate_email_primary(self, "email_addresses")
+		validate_inactive_cannot_be_primary(self, "email_addresses")
+		validate_unique_phone_numbers(self)
+		validate_unique_emails(self, "email_addresses")
 
-	def validate_inactive_cannot_be_primary(self):
-		for phone in self.phone_numbers or []:
-			if not phone.is_active and phone.is_primary:
-				frappe.throw(_("Row #{}: Phone {} is inactive — cannot be Primary").format(phone.idx, phone.number))
-		for email in self.email_addresses or []:
-			if not email.is_active and email.is_primary:
-				frappe.throw(_("Row #{}: Email {} is inactive — cannot be Primary").format(email.idx, email.email_address))
-				
 	def validate_primary_contact(self):
 		if self.primary_contact:
 			status = frappe.db.get_value("KNAPS Person", self.primary_contact, "status")
@@ -87,11 +89,6 @@ class KNAPSNonIndividual(Document):
 	def normalize_legal_name(self):
 		if self.legal_name:
 			self.legal_name = " ".join(self.legal_name.split())
-
-	def normalize_pan(self):
-		"""Normalize PAN to uppercase and strip whitespace"""
-		if self.pan:
-			self.pan = self.pan.upper().strip()
 
 	def validate_pan_format(self):
 		if not self.pan:
@@ -107,51 +104,3 @@ class KNAPSNonIndividual(Document):
 				_("4th character of PAN must be '{}' for {}").format(expected_4th, self.non_individual_type),
 				title=_("Invalid PAN Format"),
 			)
-
-	def validate_unique_pan(self):
-		"""Ensure PAN is unique if provided"""
-		if self.pan:
-			existing = frappe.db.exists("KNAPS Non Individual", {"pan": self.pan, "name": ["!=", self.name]})
-			if existing:
-				frappe.throw(
-					_("PAN {0} is already linked to another entity").format(self.pan),
-					title=_("Duplicate PAN"),
-				)
-
-	def validate_unique_phone_numbers(self):
-		seen = set()
-		for phone in self.phone_numbers or []:
-			num = (phone.number or "").strip()
-			if num in seen:
-				frappe.throw(_("Duplicate phone number: {}").format(num), title=_("Duplicate Entry"))
-			seen.add(num)
-
-	def validate_unique_emails(self):
-		seen = set()
-		for email in self.email_addresses or []:
-			addr = (email.email_address or "").strip().lower()
-			if addr in seen:
-				frappe.throw(_("Duplicate email address: {}").format(addr), title=_("Duplicate Entry"))
-			seen.add(addr)
-
-	def validate_phone_primary(self):
-		"""Validate phone numbers: at least one primary if rows exist, only one primary"""
-		if self.phone_numbers and len(self.phone_numbers) > 0:
-			primary_phones = [p for p in self.phone_numbers if p.is_primary]
-
-			if len(primary_phones) == 0:
-				frappe.throw(_("At least one phone must be marked as Primary"), title=_("Validation Error"))
-
-			if len(primary_phones) > 1:
-				frappe.throw(_("Only one phone can be marked as Primary"), title=_("Validation Error"))
-
-	def validate_email_primary(self):
-		"""Validate email addresses: at least one primary if rows exist, only one primary"""
-		if self.email_addresses and len(self.email_addresses) > 0:
-			primary_emails = [e for e in self.email_addresses if e.is_primary]
-
-			if len(primary_emails) == 0:
-				frappe.throw(_("At least one email must be marked as Primary"), title=_("Validation Error"))
-
-			if len(primary_emails) > 1:
-				frappe.throw(_("Only one email can be marked as Primary"), title=_("Validation Error"))

@@ -220,9 +220,11 @@
   {
    "fieldname": "age",
    "fieldtype": "Int",
+   "hidden": 1,
    "in_list_view": 1,
    "label": "Age",
-   "non_negative": 1
+   "non_negative": 1,
+   "read_only": 1
   },
   {
    "fieldname": "preferred_contact_mode",
@@ -237,7 +239,7 @@
  "image_field": "display_picture",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-15 17:44:57.539872",
+ "modified": "2026-05-16 13:22:33.012267",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Person",

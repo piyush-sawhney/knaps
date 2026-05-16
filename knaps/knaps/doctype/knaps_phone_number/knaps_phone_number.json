@@ -20,6 +20,7 @@
    "fieldtype": "Phone",
    "in_list_view": 1,
    "label": "Number",
+   "read_only_depends_on": "eval:!doc.is_active;",
    "reqd": 1
   },
   {
@@ -27,21 +28,24 @@
    "fieldname": "is_primary",
    "fieldtype": "Check",
    "in_list_view": 1,
-   "label": "Is Primary?"
+   "label": "Is Primary?",
+   "read_only_depends_on": "eval:!doc.is_active;"
   },
   {
    "default": "0",
    "fieldname": "is_whatsapp",
    "fieldtype": "Check",
    "in_list_view": 1,
-   "label": "Is Whatsapp?"
+   "label": "Is Whatsapp?",
+   "read_only_depends_on": "eval:!doc.is_active;"
   },
   {
    "fieldname": "type",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Type",
-   "options": "Mobile\nOffice\nHome"
+   "options": "Mobile\nOffice\nHome",
+   "read_only_depends_on": "eval:!doc.is_active;"
   },
   {
    "default": "Self",
@@ -50,6 +54,7 @@
    "in_list_view": 1,
    "label": "Ownership",
    "options": "Self\nSpouse\nPoA\nChildren\nParent",
+   "read_only_depends_on": "eval:!doc.is_active;",
    "reqd": 1
   },
   {
@@ -64,7 +69,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-30 14:21:01.064205",
+ "modified": "2026-05-16 12:41:10.292725",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Phone Number",

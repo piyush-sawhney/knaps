@@ -15,6 +15,16 @@ from frappe.contacts.address_and_contact import (
 from frappe.model.document import Document
 from frappe.utils import getdate, today
 
+from knaps.knaps.utils.party_validation import (
+	normalize_pan,
+	validate_email_primary,
+	validate_inactive_cannot_be_primary,
+	validate_phone_primary,
+	validate_unique_emails,
+	validate_unique_phone_numbers,
+	validate_unique_pan,
+)
+
 
 class KNAPSPerson(Document):
 	# begin: auto-generated types
@@ -24,7 +34,6 @@ class KNAPSPerson(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-
 		from knaps.knaps.doctype.knaps_email.knaps_email import KNAPSEmail
 		from knaps.knaps.doctype.knaps_phone_number.knaps_phone_number import KNAPSPhoneNumber
 
@@ -57,36 +66,31 @@ class KNAPSPerson(Document):
 	def validate(self):
 		self.full_name = None
 		self.update_full_name()
-		self.normalize_pan()
-		self.validate_unique_pan()
+		normalize_pan(self)
+		validate_unique_pan(self, "KNAPS Person", "person")
 		self.validate_pan_format()
-		self.validate_single_primary()
-		self.validate_inactive_cannot_be_primary()
-		self.validate_at_least_one_primary()
-		self.validate_unique_phone_numbers()
-		self.validate_unique_emails()
+		validate_phone_primary(self, check_whatsapp=True)
+		validate_email_primary(self, "email_address")
+		validate_inactive_cannot_be_primary(self, "email_address", check_whatsapp=True)
+		validate_unique_phone_numbers(self)
+		validate_unique_emails(self, "email_address")
 		self.sync_primary_fields_from_child_tables()
 		self.validate_preferred_contact_mode()
 		self.validate_date_of_birth()
-		self.validate_age()
-
-	def validate_age(self):
-		if not self.has_value_changed("date_of_birth"):
-			return
 		if self.date_of_birth:
-			diff = relativedelta(getdate(today()), getdate(self.date_of_birth))
+			self.age = relativedelta(getdate(today()), getdate(self.date_of_birth)).years
 
-			if diff.years == 0 and diff.months == 0 and diff.days == 0:
-				self.age_formatted = "Newborn"
-			elif diff.years == 0:
-				self.age_formatted = f"{diff.months} Months {diff.days} Days"
-			else:
-				self.age_formatted = f"{diff.years} Years {diff.months} Months {diff.days} Days"
-
-			self.age = diff.years
+	@property
+	def age_formatted(self):
+		if not self.date_of_birth:
+			return None
+		diff = relativedelta(getdate(today()), getdate(self.date_of_birth))
+		if diff.years == 0 and diff.months == 0 and diff.days == 0:
+			return "Newborn"
+		elif diff.years == 0:
+			return f"{diff.months} Months {diff.days} Days"
 		else:
-			self.age = None
-			self.age_formatted = None
+			return f"{diff.years} Years {diff.months} Months {diff.days} Days"
 
 	def validate_preferred_contact_mode(self):
 		if not self.preferred_contact_mode:
@@ -159,55 +163,6 @@ class KNAPSPerson(Document):
 				self.primary_email = email.email_address or ""
 				break
 
-	def validate_single_primary(self):
-		"""Ensure only one primary per category"""
-		# Ensure only one primary phone
-		primary_phones = [p for p in (self.phone_numbers or []) if p.is_primary]
-		if len(primary_phones) > 1:
-			frappe.throw(_("Only one phone can be marked as Primary"), title=_("Validation Error"))
-
-		# Ensure only one WhatsApp
-		whatsapp_phones = [p for p in (self.phone_numbers or []) if p.is_whatsapp]
-		if len(whatsapp_phones) > 1:
-			frappe.throw(_("Only one phone can be marked as WhatsApp"), title=_("Validation Error"))
-
-		# Ensure only one primary email
-		primary_emails = [e for e in (self.email_address or []) if e.is_primary]
-		if len(primary_emails) > 1:
-			frappe.throw(_("Only one email can be marked as Primary"), title=_("Validation Error"))
-
-	def validate_at_least_one_primary(self):
-		"""Ensure at least one primary exists if rows are present"""
-		# Check phone numbers - if there are rows, at least one should be primary
-		if self.phone_numbers and len(self.phone_numbers) > 0:
-			has_primary = any(p.is_primary for p in self.phone_numbers)
-			if not has_primary:
-				frappe.throw(
-					_("At least one phone number must be marked as Primary"), title=_("Validation Error")
-				)
-
-		# Check emails - if there are rows, at least one should be primary
-		if self.email_address and len(self.email_address) > 0:
-			has_primary = any(e.is_primary for e in self.email_address)
-			if not has_primary:
-				frappe.throw(_("At least one email must be marked as Primary"), title=_("Validation Error"))
-
-	def normalize_pan(self):
-		"""Normalize PAN to uppercase and stripped"""
-		if self.pan:
-			self.pan = self.pan.upper().strip()
-
-	def validate_unique_pan(self):
-		"""Ensure PAN is unique if provided"""
-		if self.pan:
-			# Check if PAN already exists (excluding current document)
-			existing = frappe.db.exists("KNAPS Person", {"pan": self.pan, "name": ["!=", self.name]})
-			if existing:
-				frappe.throw(
-					_("PAN {0} is already linked to another person").format(self.pan),
-					title=_("Duplicate PAN"),
-				)
-
 	def validate_pan_format(self):
 		"""Validate PAN format: 3 letters, 'P', 1 letter, 4 digits, 1 letter"""
 		if self.pan:
@@ -222,39 +177,3 @@ class KNAPSPerson(Document):
 		if self.date_of_birth:
 			if getdate(self.date_of_birth) > getdate(today()):
 				frappe.throw(_("Date of Birth cannot be in the future"), title=_("Invalid Date"))
-
-	def validate_unique_phone_numbers(self):
-		seen = set()
-		for phone in self.phone_numbers or []:
-			num = (phone.number or "").strip()
-			if num in seen:
-				frappe.throw(_("Duplicate phone number: {}").format(num), title=_("Duplicate Entry"))
-			seen.add(num)
-
-	def validate_unique_emails(self):
-		seen = set()
-		for email in self.email_address or []:
-			addr = (email.email_address or "").strip().lower()
-			if addr in seen:
-				frappe.throw(_("Duplicate email address: {}").format(addr), title=_("Duplicate Entry"))
-			seen.add(addr)
-
-	def validate_inactive_cannot_be_primary(self):
-		for phone in self.phone_numbers or []:
-			if phone.is_active:
-				continue
-			if phone.is_primary:
-				frappe.throw(
-					_("Row #{}: Phone {} is inactive — cannot be Primary").format(phone.idx, phone.number)
-				)
-			if phone.is_whatsapp:
-				frappe.throw(
-					_("Row #{}: Phone {} is inactive — cannot be WhatsApp").format(phone.idx, phone.number)
-				)
-		for email in self.email_address or []:
-			if not email.is_active and email.is_primary:
-				frappe.throw(
-					_("Row #{}: Email {} is inactive — cannot be Primary").format(
-						email.idx, email.email_address
-					)
-				)

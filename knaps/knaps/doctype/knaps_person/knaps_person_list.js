@@ -23,7 +23,7 @@ frappe.listview_settings["KNAPS Person"] = {
 	},
 	formatters: {
 		age: function (val, df, doc) {
-			if (!doc.date_of_birth) return "";
+			if (!doc.date_of_birth || val == null) return "";
 			return val + " yrs";
 		},
 		pan: function (val) {

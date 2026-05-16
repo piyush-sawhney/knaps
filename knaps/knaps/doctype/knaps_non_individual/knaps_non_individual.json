@@ -21,9 +21,8 @@
   "primary_contact",
   "primary_contact_name",
   "column_break_pgji",
-  "primary_contact_whatsapp",
   "primary_contact_phone",
-  "column_break_ygzq",
+  "primary_contact_whatsapp",
   "primary_contact_email",
   "section_break_mhjm",
   "phone_numbers",
@@ -82,13 +81,9 @@
    "read_only": 1
   },
   {
-   "fieldname": "column_break_ygzq",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "section_break_mhjm",
    "fieldtype": "Section Break",
-   "label": "Contact Details"
+   "label": "Non Individual Contact Details"
   },
   {
    "fieldname": "phone_numbers",
@@ -178,7 +173,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-16 11:43:16.699570",
+ "modified": "2026-05-16 12:07:32.350825",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual",

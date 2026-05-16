@@ -52,7 +52,7 @@ class KNAPSPerson(Document):
 		load_address_and_contact(self)
 
 	def on_trash(self):
-		delete_contact_and_address("Member", self.name)
+		delete_contact_and_address(self.doctype, self.name)
 
 	def validate(self):
 		self.full_name = None
@@ -210,7 +210,9 @@ class KNAPSPerson(Document):
 
 	def validate_pan_format(self):
 		"""Validate PAN format: 3 letters, 'P', 1 letter, 4 digits, 1 letter"""
-		if self.pan and len(self.pan) == 10:
+		if self.pan:
+			if len(self.pan) != 10:
+				frappe.throw(_("PAN must be exactly 10 characters"), title=_("Invalid PAN Format"))
 			if not PAN_REGEX.match(self.pan):
 				frappe.throw(
 					_("Invalid PAN format. Expected format: ABCPA1234D"), title=_("Invalid PAN Format")

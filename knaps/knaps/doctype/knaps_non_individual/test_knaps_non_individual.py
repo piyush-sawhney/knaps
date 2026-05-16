@@ -9,14 +9,12 @@ def create_knaps_non_individual(**kwargs):
     """Helper function to create a KNAPS Non Individual for testing."""
     doc = frappe.get_doc({
         "doctype": "KNAPS Non Individual",
-        "non_individual_name": kwargs.get("non_individual_name", "Test Entity"),
+        "legal_name": kwargs.get("legal_name", kwargs.get("non_individual_name", "Test Entity")),
         "non_individual_type": kwargs.get("non_individual_type", "Company"),
         "status": kwargs.get("status", "Active"),
         "pan": kwargs.get("pan", ""),
-        "date_of_incoporation": kwargs.get("date_of_incoporation", None),
         "phone_numbers": kwargs.get("phone_numbers", []),
         "email_addresses": kwargs.get("email_addresses", []),
-        "signatories": kwargs.get("signatories", [])
     })
 
     if kwargs.get("save", True):
@@ -25,30 +23,24 @@ def create_knaps_non_individual(**kwargs):
     return doc
 
 
-def create_knaps_non_individual(**kwargs):
-    """Helper function to create a KNAPS Non Individual for testing."""
-    doc = frappe.get_doc({
-        "doctype": "KNAPS Non Individual",
-        "non_individual_name": kwargs.get("non_individual_name", "Test Entity"),
-        "non_individual_type": kwargs.get("non_individual_type", "Company"),
-        "status": kwargs.get("status", "Active"),
-        "pan": kwargs.get("pan", ""),
-        "date_of_incoporation": kwargs.get("date_of_incoporation", None),
-        "phone_numbers": kwargs.get("phone_numbers", []),
-        "email_addresses": kwargs.get("email_addresses", []),
-        "signatories": kwargs.get("signatories", [])
-    })
-
-    if kwargs.get("save", True):
-        doc.insert()
-
-    return doc
+NON_INDIVIDUAL_TYPES = [
+    "Body of Individuals", "Association of Persons", "Hindu Undivided Family",
+    "Company", "Limited Liability Partnership", "Partnership Firm",
+    "Trust", "Government Agency", "Local Authority", "Artificial Judicial Person",
+]
 
 
 class TestKNAPSNonIndividual(IntegrationTestCase):
     """Integration tests for KNAPS Non Individual doctype."""
 
     doctype = "KNAPS Non Individual"
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        for t in NON_INDIVIDUAL_TYPES:
+            if not frappe.db.exists("KNAPS Non Individual Type", t):
+                frappe.get_doc({"doctype": "KNAPS Non Individual Type", "non_individual_type": t}).insert()
 
     # =====================================================
     # PAN VALIDATION TESTS
@@ -231,84 +223,6 @@ class TestKNAPSNonIndividual(IntegrationTestCase):
         entity.delete()
 
     # =====================================================
-    # DATE OF INCORPORATION VALIDATION TESTS
-    # =====================================================
-
-    def test_doi_valid_past_date(self):
-        """Test that valid past date of incorporation is accepted"""
-        entity = create_knaps_non_individual(
-            non_individual_name="Test Company",
-            non_individual_type="Company",
-            date_of_incoporation=frappe.utils.add_years(frappe.utils.today(), -5),
-            phone_numbers=[
-                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
-            ],
-            email_addresses=[
-                {"email_address": "test@company.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
-            ],
-            save=False
-        )
-        entity.insert()
-
-        self.assertIsNotNone(entity.date_of_incoporation)
-        entity.delete()
-
-    def test_doi_future_throws_error(self):
-        """Test that future date of incorporation throws error"""
-        entity = create_knaps_non_individual(
-            non_individual_name="Test Company",
-            non_individual_type="Company",
-            date_of_incoporation=frappe.utils.add_years(frappe.utils.today(), 1),
-            phone_numbers=[
-                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
-            ],
-            email_addresses=[
-                {"email_address": "test@company.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
-            ],
-            save=False
-        )
-
-        self.assertRaises(frappe.ValidationError, entity.insert)
-
-    def test_doi_today_is_valid(self):
-        """Test that today's date is valid"""
-        entity = create_knaps_non_individual(
-            non_individual_name="Test Company",
-            non_individual_type="Company",
-            date_of_incoporation=frappe.utils.today(),
-            phone_numbers=[
-                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
-            ],
-            email_addresses=[
-                {"email_address": "test@company.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
-            ],
-            save=False
-        )
-        entity.insert()
-
-        self.assertIsNotNone(entity.date_of_incoporation)
-        entity.delete()
-
-    def test_doi_optional(self):
-        """Test that entity without DOI is valid"""
-        entity = create_knaps_non_individual(
-            non_individual_name="Test Entity",
-            non_individual_type="Company",
-            date_of_incoporation=None,
-            phone_numbers=[
-                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
-            ],
-            email_addresses=[
-                {"email_address": "test@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
-            ],
-            save=False
-        )
-        entity.insert()
-
-        self.assertIsNone(entity.date_of_incoporation)
-        entity.delete()
-
-    # =====================================================
     # PHONE/EMAIL VALIDATION TESTS
     # =====================================================
 
@@ -395,92 +309,6 @@ class TestKNAPSNonIndividual(IntegrationTestCase):
 
         self.assertEqual(len(entity.phone_numbers), 1)
         self.assertEqual(len(entity.email_addresses), 1)
-        entity.delete()
-
-    # =====================================================
-    # SIGNATORIES VALIDATION TESTS
-    # =====================================================
-
-    def get_test_person_names(self):
-        """Get test person names from database"""
-        # Query directly for test persons created
-        persons = frappe.db.get_all("KNAPS Person", 
-            filters={"first_name": "Test"},
-            pluck="name",
-            limit=2
-        )
-        return persons
-
-    def test_signatory_without_primary_throws_error(self):
-        """Test that signatories without primary contact throws error"""
-        test_persons = self.get_test_person_names()
-        if len(test_persons) < 1:
-            self.skipTest("KNAPS Person test records not available")
-
-        entity = create_knaps_non_individual(
-            non_individual_name="Test Entity",
-            non_individual_type="Company",
-            signatories=[
-                {"signatory": test_persons[0], "is_primary_contact": 0, "is_active": 1, "role": "Director"}
-            ],
-            phone_numbers=[
-                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
-            ],
-            email_addresses=[
-                {"email_address": "test@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
-            ],
-            save=False
-        )
-
-        self.assertRaises(frappe.ValidationError, entity.insert)
-
-    def test_multiple_primary_signatories_throws_error(self):
-        """Test that multiple primary signatories throws error"""
-        test_persons = self.get_test_person_names()
-        if len(test_persons) < 2:
-            self.skipTest("Need at least 2 KNAPS Person test records")
-
-        entity = create_knaps_non_individual(
-            non_individual_name="Test Entity",
-            non_individual_type="Company",
-            signatories=[
-                {"signatory": test_persons[0], "is_primary_contact": 1, "is_active": 1, "role": "Director"},
-                {"signatory": test_persons[1], "is_primary_contact": 1, "is_active": 1, "role": "Director"}
-            ],
-            phone_numbers=[
-                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
-            ],
-            email_addresses=[
-                {"email_address": "test@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
-            ],
-            save=False
-        )
-
-        self.assertRaises(frappe.ValidationError, entity.insert)
-
-    def test_valid_single_primary_signatory_works(self):
-        """Test that valid single primary signatory works"""
-        test_persons = self.get_test_person_names()
-        if len(test_persons) < 1:
-            self.skipTest("KNAPS Person test records not available")
-
-        entity = create_knaps_non_individual(
-            non_individual_name="Test Entity",
-            non_individual_type="Company",
-            signatories=[
-                {"signatory": test_persons[0], "is_primary_contact": 1, "is_active": 1, "role": "Director"}
-            ],
-            phone_numbers=[
-                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
-            ],
-            email_addresses=[
-                {"email_address": "test@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
-            ],
-            save=False
-        )
-        entity.insert()
-
-        self.assertEqual(len(entity.signatories), 1)
         entity.delete()
 
     # =====================================================
@@ -592,25 +420,6 @@ class TestKNAPSNonIndividual(IntegrationTestCase):
         self.assertEqual(entity.status, "Inactive")
         entity.delete()
 
-    def test_empty_signatories_valid(self):
-        """Test that empty signatories table is valid (no validation error for missing primary)"""
-        entity = create_knaps_non_individual(
-            non_individual_name="Test Entity",
-            non_individual_type="Company",
-            signatories=[],
-            phone_numbers=[
-                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
-            ],
-            email_addresses=[
-                {"email_address": "test@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
-            ],
-            save=False
-        )
-        entity.insert()
-
-        self.assertEqual(len(entity.signatories), 0)
-        entity.delete()
-
     def test_empty_phone_table_valid(self):
         """Test that empty phone table is valid"""
         entity = create_knaps_non_individual(
@@ -620,10 +429,281 @@ class TestKNAPSNonIndividual(IntegrationTestCase):
             email_addresses=[
                 {"email_address": "test@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
             ],
-            signatories=[],
             save=False
         )
         entity.insert()
 
         self.assertEqual(len(entity.phone_numbers), 0)
+        entity.delete()
+
+    # =====================================================
+    # LEGAL NAME NORMALIZATION TESTS
+    # =====================================================
+
+    def test_legal_name_normalized(self):
+        """Test that legal name is trimmed and internal spaces collapsed"""
+        entity = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "  HDFC   Mutual  Fund  ",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "phone_numbers": [
+                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+            ],
+            "email_addresses": [
+                {"email_address": "test@hdfc.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+            ],
+        }).insert()
+
+        self.assertEqual(entity.legal_name, "HDFC Mutual Fund")
+        entity.delete()
+
+    # =====================================================
+    # PRIMARY CONTACT VALIDATION TESTS
+    # =====================================================
+
+    def test_primary_contact_deceased_rejected(self):
+        """Test that a deceased person cannot be set as primary contact"""
+        person = frappe.get_doc({
+            "doctype": "KNAPS Person",
+            "first_name": "Deceased Person",
+            "salutation": "Mr",
+            "gender": "Male",
+            "status": "Deceased",
+        }).insert()
+
+        entity = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "Test Corp",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "primary_contact": person.name,
+            "phone_numbers": [
+                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+            ],
+            "email_addresses": [
+                {"email_address": "test@corp.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+            ],
+        })
+
+        self.assertRaises(frappe.ValidationError, entity.insert)
+        person.delete()
+
+    def test_primary_contact_active_accepted(self):
+        """Test that an active person can be set as primary contact"""
+        person = frappe.get_doc({
+            "doctype": "KNAPS Person",
+            "first_name": "Active Person",
+            "salutation": "Mr",
+            "gender": "Male",
+            "status": "Active",
+        }).insert()
+
+        entity = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "Test Corp",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "primary_contact": person.name,
+            "phone_numbers": [
+                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+            ],
+            "email_addresses": [
+                {"email_address": "test@corp.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+            ],
+        }).insert()
+
+        self.assertEqual(entity.primary_contact, person.name)
+        entity.delete()
+        person.delete()
+
+    def test_primary_contact_empty_valid(self):
+        """Test that entity without primary contact is valid"""
+        entity = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "No Contact Entity",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "phone_numbers": [
+                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+            ],
+            "email_addresses": [
+                {"email_address": "test@nocontact.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+            ],
+        }).insert()
+
+        self.assertIsNone(entity.primary_contact)
+        entity.delete()
+
+    # =====================================================
+    # INACTIVE CHILD TABLE VALIDATION TESTS
+    # =====================================================
+
+    def test_inactive_phone_cannot_be_primary(self):
+        """Test that inactive phone marked as primary throws error"""
+        entity = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "Test Entity",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "phone_numbers": [
+                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 0, "ownership": "Self", "type": "Mobile"}
+            ],
+            "email_addresses": [
+                {"email_address": "test@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+            ],
+        })
+
+        self.assertRaises(frappe.ValidationError, entity.insert)
+
+    def test_inactive_email_cannot_be_primary(self):
+        """Test that inactive email marked as primary throws error"""
+        entity = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "Test Entity",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "phone_numbers": [
+                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+            ],
+            "email_addresses": [
+                {"email_address": "test@example.com", "is_primary": 1, "is_active": 0, "ownership": "Self", "type": "Official"}
+            ],
+        })
+
+        self.assertRaises(frappe.ValidationError, entity.insert)
+
+    # =====================================================
+    # DUPLICATE CHILD TABLE TESTS
+    # =====================================================
+
+    def test_duplicate_phone_rejected(self):
+        """Test that duplicate phone numbers in child table throw error"""
+        entity = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "Test Entity",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "phone_numbers": [
+                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"},
+                {"number": "+91 9876543210", "is_primary": 0, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Office"},
+            ],
+            "email_addresses": [
+                {"email_address": "test@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+            ],
+        })
+
+        self.assertRaises(frappe.ValidationError, entity.insert)
+
+    def test_duplicate_email_rejected(self):
+        """Test that duplicate email addresses in child table throw error"""
+        entity = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "Test Entity",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "phone_numbers": [
+                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+            ],
+            "email_addresses": [
+                {"email_address": "test@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"},
+                {"email_address": "test@example.com", "is_primary": 0, "is_active": 1, "ownership": "Self", "type": "Personal"},
+            ],
+        })
+
+        self.assertRaises(frappe.ValidationError, entity.insert)
+
+    # =====================================================
+    # ADDRESS DELETION TESTS
+    # =====================================================
+
+    def test_address_deleted_when_non_individual_deleted(self):
+        """Test that exclusively-linked Address is deleted when Non Individual is deleted"""
+        entity = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "Test Corp Address Delete",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "phone_numbers": [
+                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+            ],
+            "email_addresses": [
+                {"email_address": "test@corp.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+            ],
+        }).insert()
+
+        address = frappe.get_doc({
+            "doctype": "Address",
+            "address_title": "Corporate Office",
+            "address_line1": "789 Business Park",
+            "city": "Bangalore",
+            "links": [
+                {"link_doctype": entity.doctype, "link_name": entity.name}
+            ]
+        }).insert()
+
+        self.assertTrue(frappe.db.exists("Address", address.name))
+        entity.delete()
+        self.assertFalse(frappe.db.exists("Address", address.name))
+
+    def test_shared_address_not_deleted_when_one_non_individual_deleted(self):
+        """Test that shared Address only loses the link row when one Non Individual is deleted"""
+        entity_a = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "Company A",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "phone_numbers": [
+                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+            ],
+            "email_addresses": [
+                {"email_address": "a@company.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+            ],
+        }).insert()
+        entity_b = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "Company B",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "phone_numbers": [
+                {"number": "+91 9876543211", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+            ],
+            "email_addresses": [
+                {"email_address": "b@company.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+            ],
+        }).insert()
+
+        address = frappe.get_doc({
+            "doctype": "Address",
+            "address_title": "Co-working Space",
+            "address_line1": "100 Shared Ave",
+            "city": "Mumbai",
+            "links": [
+                {"link_doctype": entity_a.doctype, "link_name": entity_a.name},
+                {"link_doctype": entity_b.doctype, "link_name": entity_b.name},
+            ]
+        }).insert()
+
+        entity_a.delete()
+
+        self.assertTrue(frappe.db.exists("Address", address.name))
+        address.reload()
+        self.assertEqual(len(address.links), 1)
+        self.assertEqual(address.links[0].link_name, entity_b.name)
+        entity_b.delete()
+
+    def test_delete_non_individual_without_address_succeeds(self):
+        """Test that deleting a Non Individual with no linked Address does not raise"""
+        entity = frappe.get_doc({
+            "doctype": "KNAPS Non Individual",
+            "legal_name": "Minimal Entity",
+            "non_individual_type": "Company",
+            "status": "Active",
+            "phone_numbers": [
+                {"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+            ],
+            "email_addresses": [
+                {"email_address": "minimal@corp.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+            ],
+        }).insert()
         entity.delete()

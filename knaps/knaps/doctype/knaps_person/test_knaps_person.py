@@ -1295,3 +1295,85 @@ class TestKNAPSPerson(IntegrationTestCase):
 
 		self.assertEqual(person.age, 0)
 		self.assertEqual(person.age_formatted, "Newborn")
+
+	# =====================================================
+	# ADDRESS DELETION TESTS
+	# =====================================================
+
+	def test_address_deleted_when_person_deleted(self):
+		"""Test that exclusively-linked Address is deleted when Person is deleted"""
+		person = create_knaps_person(
+			phone_numbers=[
+				{"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+			],
+			email_address=[
+				{"email_address": "test@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+			],
+		)
+
+		address = frappe.get_doc({
+			"doctype": "Address",
+			"address_title": "Test Address",
+			"address_line1": "123 Test Street",
+			"city": "Mumbai",
+			"links": [
+				{"link_doctype": person.doctype, "link_name": person.name}
+			]
+		}).insert()
+
+		self.assertTrue(frappe.db.exists("Address", address.name))
+		person.delete()
+		self.assertFalse(frappe.db.exists("Address", address.name))
+
+	def test_shared_address_not_deleted_when_one_person_deleted(self):
+		"""Test that shared Address only loses the link row when one Person is deleted"""
+		person_a = create_knaps_person(
+			first_name="Alice",
+			phone_numbers=[
+				{"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+			],
+			email_address=[
+				{"email_address": "alice@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Personal"}
+			],
+		)
+		person_b = create_knaps_person(
+			first_name="Bob",
+			phone_numbers=[
+				{"number": "+91 9876543211", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+			],
+			email_address=[
+				{"email_address": "bob@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Personal"}
+			],
+		)
+
+		address = frappe.get_doc({
+			"doctype": "Address",
+			"address_title": "Shared Address",
+			"address_line1": "456 Shared Lane",
+			"city": "Delhi",
+			"links": [
+				{"link_doctype": person_a.doctype, "link_name": person_a.name},
+				{"link_doctype": person_b.doctype, "link_name": person_b.name},
+			]
+		}).insert()
+
+		person_a.delete()
+
+		self.assertTrue(frappe.db.exists("Address", address.name))
+		address.reload()
+		self.assertEqual(len(address.links), 1)
+		self.assertEqual(address.links[0].link_name, person_b.name)
+		person_b.delete()
+
+	def test_delete_person_without_address_succeeds(self):
+		"""Test that deleting a Person with no linked Address does not raise"""
+		person = create_knaps_person(
+			first_name="NoAddress",
+			phone_numbers=[
+				{"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+			],
+			email_address=[
+				{"email_address": "noaddress@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Personal"}
+			],
+		)
+		person.delete()

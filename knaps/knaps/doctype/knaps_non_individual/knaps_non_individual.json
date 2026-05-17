@@ -16,6 +16,7 @@
   "legal_name",
   "column_break_finr",
   "pan",
+  "primary_household",
   "section_break_dsno",
   "column_break_bkmy",
   "primary_contact",
@@ -168,12 +169,19 @@
   {
    "fieldname": "column_break_bkmy",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "primary_household",
+   "fieldtype": "Link",
+   "label": "Primary Household",
+   "options": "KNAPS Household",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-16 12:07:32.350825",
+ "modified": "2026-05-17 16:25:11.534452",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual",

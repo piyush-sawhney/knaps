@@ -1,6 +1,9 @@
 {
  "actions": [],
+ "allow_events_in_timeline": 1,
+ "allow_import": 1,
  "allow_rename": 1,
+ "autoname": "UUID",
  "creation": "2026-04-24 15:48:30.088823",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -44,10 +47,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-24 18:01:54.793970",
+ "modified": "2026-05-17 17:07:59.381268",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Household",
+ "naming_rule": "UUID",
  "owner": "Administrator",
  "permissions": [
   {
@@ -65,7 +69,10 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "household_name",
+ "track_changes": 1
 }

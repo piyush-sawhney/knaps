@@ -17,8 +17,8 @@ from knaps.knaps.utils.party_validation import (
 	validate_inactive_cannot_be_primary,
 	validate_phone_primary,
 	validate_unique_emails,
-	validate_unique_phone_numbers,
 	validate_unique_pan,
+	validate_unique_phone_numbers,
 )
 
 PAN_REGEX = re.compile(r"^[A-Z]{3}(.)[A-Z][0-9]{4}[A-Z]$")
@@ -45,6 +45,7 @@ class KNAPSNonIndividual(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from knaps.knaps.doctype.knaps_email.knaps_email import KNAPSEmail
 		from knaps.knaps.doctype.knaps_phone_number.knaps_phone_number import KNAPSPhoneNumber
 
@@ -58,6 +59,7 @@ class KNAPSNonIndividual(Document):
 		primary_contact_name: DF.Data | None
 		primary_contact_phone: DF.Phone | None
 		primary_contact_whatsapp: DF.Phone | None
+		primary_household: DF.Link | None
 		status: DF.Literal["Active", "Inactive"]
 	# end: auto-generated types
 
@@ -66,7 +68,6 @@ class KNAPSNonIndividual(Document):
 
 	def on_trash(self):
 		delete_contact_and_address(self.doctype, self.name)
-
 
 	def validate(self):
 		self.normalize_legal_name()

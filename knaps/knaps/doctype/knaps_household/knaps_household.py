@@ -28,7 +28,7 @@ class KNAPSHousehold(Document):
 		self._validate_no_deceased_members()
 		before_save = self.get_doc_before_save()
 		self._update_head_of_household_primary_household(before_save)
-		self._update_primary_members_households(before_save)
+		self._sync_primary_members_household(before_save)
 
 	def _validate_unique_members(self):
 		seen = set()
@@ -65,31 +65,29 @@ class KNAPSHousehold(Document):
 		if not self.head_of_household:
 			return
 
-		old_head = before_save.head_of_household if before_save else None
-		if self.head_of_household == old_head:
+		previous_head = before_save.head_of_household if before_save else None
+		if self.head_of_household == previous_head:
 			return
 
-		if old_head:
-			current = frappe.db.get_value("KNAPS Person", old_head, "primary_household")
+		if previous_head:
+			current = frappe.db.get_value("KNAPS Person", previous_head, "primary_household")
 			if current == self.name:
-				frappe.db.set_value("KNAPS Person", old_head, "primary_household", None)
+				frappe.db.set_value("KNAPS Person", previous_head, "primary_household", None)
 
 		self._raise_if_primary_elsewhere("KNAPS Person", self.head_of_household)
 		frappe.db.set_value("KNAPS Person", self.head_of_household, "primary_household", self.name)
 
-	def _update_primary_members_households(self, before_save):
+	def _sync_primary_members_household(self, before_save):
 		old_primaries = {}
 		if before_save:
 			for row in before_save.members:
 				if row.membership_type == "Primary":
 					old_primaries[(row.member_type, row.member_name)] = row
 
-		current_primary_keys = set()
 		for row in self.members or []:
 			key = (row.member_type, row.member_name)
 
 			if row.membership_type == "Primary":
-				current_primary_keys.add(key)
 				if key in old_primaries:
 					old_primaries.pop(key)
 					continue

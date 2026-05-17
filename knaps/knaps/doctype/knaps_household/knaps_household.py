@@ -22,6 +22,11 @@ class KNAPSHousehold(Document):
 		members: DF.Table[KNAPSHouseholdMember]
 	# end: auto-generated types
 
+	def on_trash(self):
+		self._clear_primary_household_if_matching("KNAPS Person", self.head_of_household)
+		for row in self.members or []:
+			self._clear_primary_household_if_matching(row.member_type, row.member_name)
+
 	def validate(self):
 		self._validate_unique_members()
 		self._validate_head_not_listed_as_member()

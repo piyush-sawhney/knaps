@@ -789,21 +789,60 @@ class IntegrationTestKNAPSHousehold(IntegrationTestCase):
 		)
 
 	# =====================================================
-	# HOUSEHOLD DELETION BLOCKED WHEN LINKS EXIST
+	# HOUSEHOLD DELETION CLEARS LINKS
 	# =====================================================
 
-	def test_delete_household_with_linked_person_blocked(self):
+	def test_delete_household_clears_head_primary_household(self):
 		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
 		household = create_knaps_household(head_of_household=head)
-		with self.assertRaises(frappe.LinkExistsError):
-			household.delete()
+		self.assertEqual(frappe.db.get_value("KNAPS Person", head.name, "primary_household"), household.name)
+		household.delete()
+		self.assertFalse(frappe.db.exists("KNAPS Household", household.name))
+		self.assertIsNone(frappe.db.get_value("KNAPS Person", head.name, "primary_household"))
 
-	def test_delete_household_with_no_links_succeeds(self):
+	def test_delete_household_clears_primary_member_primary_household(self):
+		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_person(first_name="Primary", phone_numbers=self.phone, email_address=self.email)
 		household = create_knaps_household(
-			head_of_household=create_knaps_person(
-				first_name="Temp", phone_numbers=self.phone, email_address=self.email
-			),
+			head_of_household=head,
+			members=[
+				{
+					"member_type": "KNAPS Person",
+					"member_name": member.name,
+					"relation_with_head": self.relation,
+					"membership_type": "Primary",
+				},
+			],
 		)
-		frappe.db.set_value("KNAPS Person", household.head_of_household, "primary_household", None)
+		self.assertEqual(
+			frappe.db.get_value("KNAPS Person", member.name, "primary_household"), household.name
+		)
+		household.delete()
+		self.assertIsNone(frappe.db.get_value("KNAPS Person", member.name, "primary_household"))
+
+	def test_delete_household_clears_non_individual_primary_household(self):
+		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		entity = create_knaps_non_individual(legal_name="Test Entity", pan="ABCCC1234F")
+		household = create_knaps_household(
+			head_of_household=head,
+			members=[
+				{
+					"member_type": "KNAPS Non Individual",
+					"member_name": entity.name,
+					"relation_with_head": self.relation,
+					"membership_type": "Primary",
+				},
+			],
+		)
+		self.assertEqual(
+			frappe.db.get_value("KNAPS Non Individual", entity.name, "primary_household"), household.name
+		)
+		household.delete()
+		self.assertIsNone(frappe.db.get_value("KNAPS Non Individual", entity.name, "primary_household"))
+
+	def test_delete_household_with_no_linked_members_succeeds(self):
+		head = create_knaps_person(first_name="Temp", phone_numbers=self.phone, email_address=self.email)
+		household = create_knaps_household(head_of_household=head)
+		frappe.db.set_value("KNAPS Person", head.name, "primary_household", None)
 		household.delete()
 		self.assertFalse(frappe.db.exists("KNAPS Household", household.name))

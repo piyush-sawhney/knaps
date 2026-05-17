@@ -338,6 +338,38 @@ class IntegrationTestKNAPSHousehold(IntegrationTestCase):
 			household.save()
 		self.assertIn("already a primary member", str(cm.exception).lower())
 
+	def test_primary_member_promoted_to_head_keeps_primary_household(self):
+		head = create_knaps_person(first_name="OldHead", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_person(
+			first_name="Promoted", phone_numbers=self.phone, email_address=self.email
+		)
+		household = create_knaps_household(
+			head_of_household=head,
+			members=[
+				{
+					"member_type": "KNAPS Person",
+					"member_name": member.name,
+					"relation_with_head": self.relation,
+					"membership_type": "Primary",
+				},
+			],
+		)
+		self.assertEqual(
+			frappe.db.get_value("KNAPS Person", member.name, "primary_household"),
+			household.name,
+		)
+		household.head_of_household = member.name
+		household.members = []
+		household.save()
+		self.assertEqual(
+			frappe.db.get_value("KNAPS Person", member.name, "primary_household"),
+			household.name,
+		)
+		self.assertEqual(
+			frappe.db.get_value("KNAPS Person", head.name, "primary_household"),
+			None,
+		)
+
 	# =====================================================
 	# PRIMARY MEMBER SYNC — ADD
 	# =====================================================

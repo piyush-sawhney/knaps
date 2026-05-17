@@ -104,11 +104,13 @@ class KNAPSHousehold(Document):
 					frappe.db.set_value(row.member_type, row.member_name, "primary_household", self.name)
 
 			elif key in old_primaries:
-				self._clear_primary_household_if_matching(row.member_type, row.member_name)
+				if not (row.member_type == "KNAPS Person" and row.member_name == self.head_of_household):
+					self._clear_primary_household_if_matching(row.member_type, row.member_name)
 				old_primaries.pop(key)
 
 		for member_type, member_name in old_primaries:
-			self._clear_primary_household_if_matching(member_type, member_name)
+			if not (member_type == "KNAPS Person" and member_name == self.head_of_household):
+				self._clear_primary_household_if_matching(member_type, member_name)
 
 	def _raise_if_primary_elsewhere(self, doctype, name):
 		current_hh = frappe.db.get_value(doctype, name, "primary_household")

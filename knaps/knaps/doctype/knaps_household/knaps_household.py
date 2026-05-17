@@ -52,7 +52,10 @@ class KNAPSHousehold(Document):
 			status = frappe.db.get_value("KNAPS Person", self.head_of_household, "status")
 			if status == "Deceased":
 				title = self._get_party_display_name("KNAPS Person", self.head_of_household)
-				frappe.throw(_("{} is deceased and cannot be the Head of Household.").format(title))
+				frappe.throw(
+					_("{} is deceased and cannot be the Head of Household.").format(title),
+					title=_("Deceased Person"),
+				)
 
 		for row in self.members or []:
 			if row.member_type == "KNAPS Person":

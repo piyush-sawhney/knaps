@@ -1,8 +1,6 @@
 # Copyright (c) 2026, KNAPS and Contributors and Contributors
 # See license.txt
 
-import unittest
-
 import frappe
 from frappe.tests import IntegrationTestCase
 
@@ -31,7 +29,7 @@ def create_knaps_person(**kwargs):
 	return doc
 
 
-class TestKNAPSPerson(IntegrationTestCase):
+class IntegrationTestKNAPSPerson(IntegrationTestCase):
 	"""Integration tests for KNAPS Person doctype."""
 
 	def setUp(self):
@@ -1304,22 +1302,35 @@ class TestKNAPSPerson(IntegrationTestCase):
 		"""Test that exclusively-linked Address is deleted when Person is deleted"""
 		person = create_knaps_person(
 			phone_numbers=[
-				{"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+				{
+					"number": "+91 9876543210",
+					"is_primary": 1,
+					"is_whatsapp": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				}
 			],
 			email_address=[
-				{"email_address": "test@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Official"}
+				{
+					"email_address": "test@example.com",
+					"is_primary": 1,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Official",
+				}
 			],
 		)
 
-		address = frappe.get_doc({
-			"doctype": "Address",
-			"address_title": "Test Address",
-			"address_line1": "123 Test Street",
-			"city": "Mumbai",
-			"links": [
-				{"link_doctype": person.doctype, "link_name": person.name}
-			]
-		}).insert()
+		address = frappe.get_doc(
+			{
+				"doctype": "Address",
+				"address_title": "Test Address",
+				"address_line1": "123 Test Street",
+				"city": "Mumbai",
+				"links": [{"link_doctype": person.doctype, "link_name": person.name}],
+			}
+		).insert()
 
 		self.assertTrue(frappe.db.exists("Address", address.name))
 		person.delete()
@@ -1330,32 +1341,60 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person_a = create_knaps_person(
 			first_name="Alice",
 			phone_numbers=[
-				{"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+				{
+					"number": "+91 9876543210",
+					"is_primary": 1,
+					"is_whatsapp": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				}
 			],
 			email_address=[
-				{"email_address": "alice@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Personal"}
+				{
+					"email_address": "alice@example.com",
+					"is_primary": 1,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Personal",
+				}
 			],
 		)
 		person_b = create_knaps_person(
 			first_name="Bob",
 			phone_numbers=[
-				{"number": "+91 9876543211", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+				{
+					"number": "+91 9876543211",
+					"is_primary": 1,
+					"is_whatsapp": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				}
 			],
 			email_address=[
-				{"email_address": "bob@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Personal"}
+				{
+					"email_address": "bob@example.com",
+					"is_primary": 1,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Personal",
+				}
 			],
 		)
 
-		address = frappe.get_doc({
-			"doctype": "Address",
-			"address_title": "Shared Address",
-			"address_line1": "456 Shared Lane",
-			"city": "Delhi",
-			"links": [
-				{"link_doctype": person_a.doctype, "link_name": person_a.name},
-				{"link_doctype": person_b.doctype, "link_name": person_b.name},
-			]
-		}).insert()
+		address = frappe.get_doc(
+			{
+				"doctype": "Address",
+				"address_title": "Shared Address",
+				"address_line1": "456 Shared Lane",
+				"city": "Delhi",
+				"links": [
+					{"link_doctype": person_a.doctype, "link_name": person_a.name},
+					{"link_doctype": person_b.doctype, "link_name": person_b.name},
+				],
+			}
+		).insert()
 
 		person_a.delete()
 
@@ -1370,10 +1409,23 @@ class TestKNAPSPerson(IntegrationTestCase):
 		person = create_knaps_person(
 			first_name="NoAddress",
 			phone_numbers=[
-				{"number": "+91 9876543210", "is_primary": 1, "is_whatsapp": 0, "is_active": 1, "ownership": "Self", "type": "Mobile"}
+				{
+					"number": "+91 9876543210",
+					"is_primary": 1,
+					"is_whatsapp": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				}
 			],
 			email_address=[
-				{"email_address": "noaddress@example.com", "is_primary": 1, "is_active": 1, "ownership": "Self", "type": "Personal"}
+				{
+					"email_address": "noaddress@example.com",
+					"is_primary": 1,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Personal",
+				}
 			],
 		)
 		person.delete()

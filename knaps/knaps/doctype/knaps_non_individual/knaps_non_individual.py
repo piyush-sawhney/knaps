@@ -70,28 +70,28 @@ class KNAPSNonIndividual(Document):
 		delete_contact_and_address(self.doctype, self.name)
 
 	def validate(self):
-		self.normalize_legal_name()
+		self._normalize_legal_name()
 		normalize_pan(self)
-		self.validate_pan_format()
+		self._validate_pan_format()
 		validate_unique_pan(self, "KNAPS Non Individual", "entity")
-		self.validate_primary_contact()
+		self._validate_primary_contact()
 		validate_phone_primary(self)
 		validate_email_primary(self, "email_addresses")
 		validate_inactive_cannot_be_primary(self, "email_addresses")
 		validate_unique_phone_numbers(self)
 		validate_unique_emails(self, "email_addresses")
 
-	def validate_primary_contact(self):
+	def _validate_primary_contact(self):
 		if self.primary_contact:
 			status = frappe.db.get_value("KNAPS Person", self.primary_contact, "status")
 			if status == "Deceased":
 				frappe.throw(_("Cannot set a deceased person as primary contact"), title=_("Invalid Contact"))
 
-	def normalize_legal_name(self):
+	def _normalize_legal_name(self):
 		if self.legal_name:
 			self.legal_name = " ".join(self.legal_name.split())
 
-	def validate_pan_format(self):
+	def _validate_pan_format(self):
 		if not self.pan:
 			return
 		if len(self.pan) != 10:

@@ -77,7 +77,7 @@ def create_relationship(name):
 	return name
 
 
-class TestKNAPSHousehold(IntegrationTestCase):
+class IntegrationTestKNAPSHousehold(IntegrationTestCase):
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()

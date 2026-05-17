@@ -48,17 +48,19 @@ def validate_inactive_cannot_be_primary(doc, email_field="email_address", check_
 		if not phone.is_active:
 			if phone.is_primary:
 				frappe.throw(
-					_("Row #{}: Phone {} is inactive — cannot be Primary").format(phone.idx, phone.number)
+					_("Row #{}: Phone {} is inactive — cannot be Primary").format(phone.idx, phone.number),
+					title=_("Inactive Contact"),
 				)
 			if check_whatsapp and phone.is_whatsapp:
 				frappe.throw(
-					_("Row #{}: Phone {} is inactive — cannot be WhatsApp").format(phone.idx, phone.number)
+					_("Row #{}: Phone {} is inactive — cannot be WhatsApp").format(phone.idx, phone.number),
+					title=_("Inactive Contact"),
 				)
 	emails = getattr(doc, email_field, [])
 	for email in emails:
 		if not email.is_active and email.is_primary:
 			frappe.throw(
-				_("Row #{}: Email {} is inactive —` cannot be Primary").format(email.idx, email.email_address)
+				_("Row #{}: Email {} is inactive — cannot be Primary").format(email.idx, email.email_address)
 			)
 
 

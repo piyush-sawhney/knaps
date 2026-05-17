@@ -21,8 +21,8 @@ from knaps.knaps.utils.party_validation import (
 	validate_inactive_cannot_be_primary,
 	validate_phone_primary,
 	validate_unique_emails,
-	validate_unique_phone_numbers,
 	validate_unique_pan,
+	validate_unique_phone_numbers,
 )
 
 
@@ -34,6 +34,7 @@ class KNAPSPerson(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from knaps.knaps.doctype.knaps_email.knaps_email import KNAPSEmail
 		from knaps.knaps.doctype.knaps_phone_number.knaps_phone_number import KNAPSPhoneNumber
 
@@ -65,18 +66,18 @@ class KNAPSPerson(Document):
 
 	def validate(self):
 		self.full_name = None
-		self.update_full_name()
+		self._update_full_name()
 		normalize_pan(self)
 		validate_unique_pan(self, "KNAPS Person", "person")
-		self.validate_pan_format()
+		self._validate_pan_format()
 		validate_phone_primary(self, check_whatsapp=True)
 		validate_email_primary(self, "email_address")
 		validate_inactive_cannot_be_primary(self, "email_address", check_whatsapp=True)
 		validate_unique_phone_numbers(self)
 		validate_unique_emails(self, "email_address")
-		self.sync_primary_fields_from_child_tables()
-		self.validate_preferred_contact_mode()
-		self.validate_date_of_birth()
+		self._sync_primary_fields_from_child_tables()
+		self._validate_preferred_contact_mode()
+		self._validate_date_of_birth()
 		if self.date_of_birth:
 			self.age = relativedelta(getdate(today()), getdate(self.date_of_birth)).years
 
@@ -92,32 +93,48 @@ class KNAPSPerson(Document):
 		else:
 			return f"{diff.years} Years {diff.months} Months {diff.days} Days"
 
-	def validate_preferred_contact_mode(self):
+	def _validate_preferred_contact_mode(self):
 		if not self.preferred_contact_mode:
 			return
 
 		if self.preferred_contact_mode == "Phone":
 			primary = next((p for p in (self.phone_numbers or []) if p.is_primary), None)
 			if not primary:
-				frappe.throw(_("Primary phone number is required for Phone mode"))
+				frappe.throw(
+					_("Primary phone number is required for Phone mode"), title=_("Invalid Contact Mode")
+				)
 			if not primary.is_active:
-				frappe.throw(_("Primary phone number is inactive. Activate it or choose another."))
+				frappe.throw(
+					_("Primary phone number is inactive. Activate it or choose another."),
+					title=_("Invalid Contact Mode"),
+				)
 
 		elif self.preferred_contact_mode == "Whatsapp":
 			primary = next((p for p in (self.phone_numbers or []) if p.is_whatsapp), None)
 			if not primary:
-				frappe.throw(_("Primary WhatsApp number is required for WhatsApp mode"))
+				frappe.throw(
+					_("Primary WhatsApp number is required for WhatsApp mode"),
+					title=_("Invalid Contact Mode"),
+				)
 			if not primary.is_active:
-				frappe.throw(_("Primary WhatsApp number is inactive. Activate it or choose another."))
+				frappe.throw(
+					_("Primary WhatsApp number is inactive. Activate it or choose another."),
+					title=_("Invalid Contact Mode"),
+				)
 
 		elif self.preferred_contact_mode == "Email":
 			primary = next((e for e in (self.email_address or []) if e.is_primary), None)
 			if not primary:
-				frappe.throw(_("Primary email address is required for Email mode"))
+				frappe.throw(
+					_("Primary email address is required for Email mode"), title=_("Invalid Contact Mode")
+				)
 			if not primary.is_active:
-				frappe.throw(_("Primary email address is inactive. Activate it or choose another."))
+				frappe.throw(
+					_("Primary email address is inactive. Activate it or choose another."),
+					title=_("Invalid Contact Mode"),
+				)
 
-	def update_full_name(self):
+	def _update_full_name(self):
 		"""Construct full name from first, middle, and last name"""
 		# Trim whitespace from each component
 		salutation = (self.salutation or "").strip()
@@ -140,7 +157,7 @@ class KNAPSPerson(Document):
 				f"Full name updated for {self.name or 'new record'}: '{old_full_name}' -> '{self.full_name}'"
 			)
 
-	def sync_primary_fields_from_child_tables(self):
+	def _sync_primary_fields_from_child_tables(self):
 		if not self.has_value_changed("phone_numbers") and not self.has_value_changed("email_address"):
 			return
 
@@ -163,7 +180,7 @@ class KNAPSPerson(Document):
 				self.primary_email = email.email_address or ""
 				break
 
-	def validate_pan_format(self):
+	def _validate_pan_format(self):
 		"""Validate PAN format: 3 letters, 'P', 1 letter, 4 digits, 1 letter"""
 		if self.pan:
 			if len(self.pan) != 10:
@@ -173,7 +190,7 @@ class KNAPSPerson(Document):
 					_("Invalid PAN format. Expected format: ABCPA1234D"), title=_("Invalid PAN Format")
 				)
 
-	def validate_date_of_birth(self):
+	def _validate_date_of_birth(self):
 		if self.date_of_birth:
 			if getdate(self.date_of_birth) > getdate(today()):
 				frappe.throw(_("Date of Birth cannot be in the future"), title=_("Invalid Date"))

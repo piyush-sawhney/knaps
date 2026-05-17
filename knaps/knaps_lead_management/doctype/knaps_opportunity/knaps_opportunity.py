@@ -3,8 +3,9 @@
 
 
 import frappe
-from frappe.model.document import Document
 from frappe import _
+from frappe.model.document import Document
+
 
 class KNAPSOpportunity(Document):
 	# begin: auto-generated types
@@ -14,7 +15,10 @@ class KNAPSOpportunity(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-		from knaps.knaps_lead_management.doctype.knaps_lead_interest.knaps_lead_interest import KNAPSLeadInterest
+
+		from knaps.knaps_lead_management.doctype.knaps_lead_interest.knaps_lead_interest import (
+			KNAPSLeadInterest,
+		)
 
 		client: DF.Link
 		client_name: DF.Data | None
@@ -33,9 +37,9 @@ class KNAPSOpportunity(Document):
 	# end: auto-generated types
 
 	def validate(self):
-		self.validate_unique_opportunity()
-		
-	def validate_unique_opportunity(self):
+		self._validate_unique_opportunity()
+
+	def _validate_unique_opportunity(self):
 		if self.client:
 			exists = frappe.db.exists(
 				"KNAPS Opportunity",
@@ -43,11 +47,11 @@ class KNAPSOpportunity(Document):
 					"client": self.client,
 					"status": ["not in", ["Lost", "Won", "Junk"]],
 					"name": ["!=", self.name],
-				}
+				},
 			)
 
 			if exists:
 				frappe.throw(
-					_(f"An opportunity with the name '{self.client_name}' already exists."),
-					title=_("Duplicate Opportunity Name")
+					_("An opportunity with the name '{}' already exists.").format(self.client_name),
+					title=_("Duplicate Opportunity Name"),
 				)

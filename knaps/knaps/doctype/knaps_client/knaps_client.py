@@ -8,11 +8,11 @@ from frappe.model.document import Document
 
 class KNAPSClient(Document):
 	def validate(self):
-		self.sync_all_from_link()
-		self.validate_required_links()
-		self.validate_pan_uniqueness()
+		self._sync_all_from_link()
+		self._validate_required_links()
+		self._validate_pan_uniqueness()
 
-	def sync_all_from_link(self):
+	def _sync_all_from_link(self):
 		"""Sync all fields from linked Person or Non Individual in a single call"""
 		if self.investor_type in ["Individual", "Sole Proprietor"] and self.person:
 			person = frappe.get_doc("KNAPS Person", self.person)
@@ -34,7 +34,7 @@ class KNAPSClient(Document):
 			self.primary_email = non_individual.primary_contact_email or ""
 			self.status = non_individual.status or ""
 
-	def validate_required_links(self):
+	def _validate_required_links(self):
 		"""Ensure correct link field is selected based on client type"""
 		if self.investor_type in ["Individual", "Sole Proprietor"] and not self.person:
 			frappe.throw(_("Person is required for Individual/Sole Proprietor"), title=_("Validation Error"))
@@ -42,7 +42,7 @@ class KNAPSClient(Document):
 		if self.investor_type == "Non Individual" and not self.non_individual:
 			frappe.throw(_("Non Individual entity is required"), title=_("Validation Error"))
 
-	def validate_pan_uniqueness(self):
+	def _validate_pan_uniqueness(self):
 		"""Validate PAN uniqueness based on investor type"""
 		if not self.client_pan:
 			return

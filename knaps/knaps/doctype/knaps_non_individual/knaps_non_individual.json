@@ -15,10 +15,12 @@
   "non_individual_type",
   "legal_name",
   "column_break_finr",
-  "pan",
   "primary_household",
+  "column_break_evgp",
+  "entity_profile",
   "section_break_dsno",
   "column_break_bkmy",
+  "pan",
   "primary_contact",
   "primary_contact_name",
   "column_break_pgji",
@@ -176,12 +178,23 @@
    "label": "Primary Household",
    "options": "KNAPS Household",
    "read_only": 1
+  },
+  {
+   "fieldname": "column_break_evgp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "entity_profile",
+   "fieldtype": "Link",
+   "label": "Entity Profile",
+   "options": "KNAPS Non Individual Profile",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-17 16:25:11.534452",
+ "modified": "2026-05-18 19:06:26.514134",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual",

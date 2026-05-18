@@ -14,8 +14,10 @@
   "full_name",
   "column_break_hssg",
   "primary_household",
+  "add_to_household",
   "column_break_yxss",
   "profile_link",
+  "create_profile",
   "basic_details_section",
   "salutation",
   "first_name",
@@ -246,13 +248,23 @@
    "label": "Profile Link",
    "options": "KNAPS Individual Profile",
    "read_only": 1
+  },
+  {
+   "fieldname": "create_profile",
+   "fieldtype": "Button",
+   "label": "Create Profile"
+  },
+  {
+   "fieldname": "add_to_household",
+   "fieldtype": "Button",
+   "label": "Add to Household"
   }
  ],
  "grid_page_length": 50,
  "image_field": "display_picture",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-18 18:17:40.226979",
+ "modified": "2026-05-18 18:20:01.549913",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Person",

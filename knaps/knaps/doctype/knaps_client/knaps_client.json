@@ -11,57 +11,41 @@
   "column_break_hojk",
   "status",
   "section_break_mqop",
-  "investor_type",
-  "person",
-  "non_individual",
+  "client_type",
   "is_minor",
   "column_break_tbeo",
+  "non_individual",
+  "person",
+  "column_break_ckun",
   "client_pan",
   "client_name",
   "section_break_oehr",
+  "preferred_contact_mode",
   "primary_phone",
   "column_break_dqiz",
-  "primary_whatsapp",
-  "column_break_yieb",
   "primary_email",
-  "section_break_yllo",
-  "occupation",
-  "column_break_ktnf",
-  "income_slab"
+  "primary_whatsapp"
  ],
  "fields": [
-  {
-   "fieldname": "investor_type",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Client Type",
-   "options": "Individual\nSole Proprietor\nNon Individual",
-   "reqd": 1
-  },
   {
    "fieldname": "column_break_tbeo",
    "fieldtype": "Column Break"
   },
   {
-   "depends_on": "eval: doc.investor_type === 'Individual' || doc.investor_type === 'Sole Proprietor'",
    "fieldname": "person",
    "fieldtype": "Link",
-   "label": "Person",
-   "mandatory_depends_on": "eval: doc.investor_type === 'Individual' || doc.investor_type === 'Sole Proprietor'",
-   "options": "KNAPS Person"
+   "label": "Primary Person",
+   "mandatory_depends_on": "eval: doc.client_type === 'Individual' || doc.client_type === 'Sole Proprietor'",
+   "options": "KNAPS Person",
+   "read_only_depends_on": "eval: doc.client_type === \"Non Individual\""
   },
   {
-   "depends_on": "eval: doc.investor_type === 'Non Individual'",
+   "depends_on": "eval: doc.client_type === 'Non Individual'",
    "fieldname": "non_individual",
    "fieldtype": "Link",
    "label": "Non Individual",
-   "mandatory_depends_on": "eval: doc.investor_type === 'Non Individual'",
+   "mandatory_depends_on": "eval: doc.client_type === 'Non Individual'",
    "options": "KNAPS Non Individual"
-  },
-  {
-   "fieldname": "section_break_yllo",
-   "fieldtype": "Section Break"
   },
   {
    "fieldname": "primary_phone",
@@ -89,22 +73,14 @@
    "read_only": 1
   },
   {
-   "default": "0",
-   "depends_on": "eval: doc.investor_type === \"Individual\"",
-   "fieldname": "is_minor",
-   "fieldtype": "Check",
-   "label": "Is Minor?",
-   "read_only": 1
-  },
-  {
-   "depends_on": "eval: doc.investor_type === 'Sole Proprietor'",
+   "depends_on": "eval: doc.client_type === 'Sole Proprietor'",
    "fieldname": "client_name",
    "fieldtype": "Data",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Name",
-   "mandatory_depends_on": "eval: doc.investor_type === 'Sole Proprietor'",
-   "read_only_depends_on": "eval: doc.investor_type !== 'Sole Proprietor'"
+   "mandatory_depends_on": "eval: doc.client_type === 'Sole Proprietor'",
+   "read_only_depends_on": "eval: doc.client_type !== 'Sole Proprietor'"
   },
   {
    "fieldname": "client_pan",
@@ -113,21 +89,6 @@
    "in_standard_filter": 1,
    "label": "Client PAN",
    "read_only": 1
-  },
-  {
-   "depends_on": "eval: doc.investor_type === 'Individual' || doc.investor_type === 'Sole Proprietor'",
-   "fieldname": "occupation",
-   "fieldtype": "Select",
-   "label": "Occupation",
-   "options": "\nBusiness\nService\nProfessional\nAgriculture\nRetired\nHousewife\nStudent\nOthers"
-  },
-  {
-   "depends_on": "eval: doc.investor_type === 'Individual' || doc.investor_type === 'Sole Proprietor'",
-   "fieldname": "income_slab",
-   "fieldtype": "Select",
-   "label": "Income Slab",
-   "mask": 1,
-   "options": "\nBelow 1 Lakh\n1 - 5 Lakh\n5 - 10 Lakh\n10 - 25 Lakh\n25 - 50 Lakh\n50 - 99 Lakh\nAbove 1 Cr"
   },
   {
    "fieldname": "section_break_mqop",
@@ -160,18 +121,37 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "column_break_yieb",
+   "fieldname": "preferred_contact_mode",
+   "fieldtype": "Data",
+   "label": "Preferred Contact Mode",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_ckun",
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "column_break_ktnf",
-   "fieldtype": "Column Break"
+   "default": "0",
+   "depends_on": "eval: doc.client_type === \"Individual\"",
+   "fieldname": "is_minor",
+   "fieldtype": "Check",
+   "label": "Is Minor?",
+   "read_only": 1
+  },
+  {
+   "fieldname": "client_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Client Type",
+   "options": "Individual\nSole Proprietor\nNon Individual",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-30 20:50:33.132102",
+ "modified": "2026-05-18 19:10:03.491717",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Client",

@@ -45,11 +45,11 @@ class KNAPSNonIndividual(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-
 		from knaps.knaps.doctype.knaps_email.knaps_email import KNAPSEmail
 		from knaps.knaps.doctype.knaps_phone_number.knaps_phone_number import KNAPSPhoneNumber
 
 		email_addresses: DF.Table[KNAPSEmail]
+		entity_profile: DF.Link | None
 		legal_name: DF.Data
 		non_individual_type: DF.Link
 		pan: DF.Data | None

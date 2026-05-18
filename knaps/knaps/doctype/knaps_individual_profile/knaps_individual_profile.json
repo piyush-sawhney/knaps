@@ -11,6 +11,7 @@
   "title",
   "column_break_hvbl",
   "nationality",
+  "place_of_birth",
   "country_of_birth",
   "section_break_ccfp",
   "occupation",
@@ -115,12 +116,17 @@
    "hidden": 1,
    "label": "Title",
    "read_only": 1
+  },
+  {
+   "fieldname": "place_of_birth",
+   "fieldtype": "Data",
+   "label": "Place of Birth"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-15 23:42:34.412038",
+ "modified": "2026-05-18 17:59:47.255287",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Individual Profile",

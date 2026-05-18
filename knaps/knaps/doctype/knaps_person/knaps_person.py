@@ -34,7 +34,6 @@ class KNAPSPerson(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-
 		from knaps.knaps.doctype.knaps_email.knaps_email import KNAPSEmail
 		from knaps.knaps.doctype.knaps_phone_number.knaps_phone_number import KNAPSPhoneNumber
 
@@ -54,6 +53,7 @@ class KNAPSPerson(Document):
 		primary_household: DF.Link | None
 		primary_phone: DF.Phone | None
 		primary_whatsapp: DF.Phone | None
+		profile_link: DF.Link | None
 		salutation: DF.Link
 		status: DF.Literal["Active", "Passive", "Deceased"]
 	# end: auto-generated types

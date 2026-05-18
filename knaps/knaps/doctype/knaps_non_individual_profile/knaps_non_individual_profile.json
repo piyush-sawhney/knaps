@@ -1,0 +1,124 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:non_individual_entity",
+ "creation": "2026-05-18 18:00:48.029452",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "non_individual_entity",
+  "title",
+  "industry_sector",
+  "column_break_wwag",
+  "registration_number",
+  "is_politcally_exposed_entity",
+  "is_listed_entity",
+  "stock_exchange",
+  "column_break_ytvn",
+  "date_of_incorporation",
+  "place_of_incorporation",
+  "country_of_incorporation"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_wwag",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "non_individual_entity",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Non Individual Entity",
+   "options": "KNAPS Non Individual",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "registration_number",
+   "fieldtype": "Data",
+   "label": "Registration Number",
+   "unique": 1
+  },
+  {
+   "fieldname": "date_of_incorporation",
+   "fieldtype": "Date",
+   "label": "Date of Incorporation"
+  },
+  {
+   "fieldname": "column_break_ytvn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "place_of_incorporation",
+   "fieldtype": "Data",
+   "label": "Place of Incorporation"
+  },
+  {
+   "fieldname": "country_of_incorporation",
+   "fieldtype": "Link",
+   "label": "Country of Incorporation",
+   "options": "Country"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_listed_entity",
+   "fieldtype": "Check",
+   "label": "Is Listed Entity?"
+  },
+  {
+   "depends_on": "eval: doc.is_listed_entity;",
+   "fieldname": "stock_exchange",
+   "fieldtype": "Select",
+   "label": "Stock Exchange",
+   "mandatory_depends_on": "eval: doc.is_listed_entity;",
+   "options": "\nNSE\nBSE\nMSE"
+  },
+  {
+   "fieldname": "industry_sector",
+   "fieldtype": "Link",
+   "label": "Industry Sector",
+   "options": "KNAPS Industry Sector"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_politcally_exposed_entity",
+   "fieldtype": "Check",
+   "label": "Is Politcally Exposed Entity?"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-18 18:14:32.652190",
+ "modified_by": "Administrator",
+ "module": "KNAPS",
+ "name": "KNAPS Non Individual Profile",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "title"
+}

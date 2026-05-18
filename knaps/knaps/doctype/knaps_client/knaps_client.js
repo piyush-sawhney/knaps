@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("KNAPS Client", {
-	client_type: function(frm) {
+	client_type: function (frm) {
 		let is_non_individual = frm.doc.client_type === "Non Individual";
 		let is_sole_proprietor = frm.doc.client_type === "Sole Proprietor";
 
@@ -14,6 +14,11 @@ frappe.ui.form.on("KNAPS Client", {
 		}
 		if (!is_sole_proprietor && frm.doc.client_name) {
 			frm.set_value("client_name", null);
+		}
+	},
+	non_individual: function (frm) {
+		if (frm.doc.client_type === "Non Individual" && frm.doc.person) {
+			frm.set_value("person", null);
 		}
 	},
 });

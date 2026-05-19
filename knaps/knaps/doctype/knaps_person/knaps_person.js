@@ -60,6 +60,16 @@ frappe.ui.form.on("KNAPS Person", "refresh", function (frm) {
 		frm.trigger("sync_primary_email");
 	}
 	frm.trigger("update_full_name");
+
+	if (frm.doc.profile_link) {
+		frm.add_custom_button(__("Open Profile"), function () {
+			frappe.set_route("Form", "KNAPS Individual Profile", frm.doc.profile_link);
+		});
+	} else {
+		frm.add_custom_button(__("Create Profile"), function () {
+			frappe.new_doc("KNAPS Individual Profile", { person: frm.doc.name });
+		});
+	}
 });
 
 // KNAPS Phone Number child table events

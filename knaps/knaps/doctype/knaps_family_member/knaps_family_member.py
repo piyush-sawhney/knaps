@@ -21,7 +21,7 @@ class KNAPSFamilyMember(Document):
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data
-		relation_with_head: DF.Link
+		relation_with_head: DF.Link | None
 	# end: auto-generated types
 
 	pass

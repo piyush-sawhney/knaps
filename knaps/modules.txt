@@ -11,3 +11,4 @@ KNAPS SIF
 KNAPS PMS
 KNAPS AIF
 KNAPS Lead Management
+KNAPS Client Management

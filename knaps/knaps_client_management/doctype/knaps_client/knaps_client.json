@@ -1,0 +1,193 @@
+{
+ "actions": [],
+ "allow_events_in_timeline": 1,
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "UUID",
+ "creation": "2026-04-24 21:01:49.733179",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "column_break_rcwh",
+  "column_break_tbma",
+  "column_break_hojk",
+  "status",
+  "section_break_mqop",
+  "client_type",
+  "is_minor",
+  "column_break_tbeo",
+  "non_individual",
+  "person",
+  "column_break_ckun",
+  "pan",
+  "client_name",
+  "section_break_oehr",
+  "preferred_contact_mode",
+  "primary_phone",
+  "column_break_dqiz",
+  "primary_email",
+  "primary_whatsapp"
+ ],
+ "fields": [
+  {
+   "fieldname": "column_break_rcwh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_tbma",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_hojk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_mqop",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "client_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Client Type",
+   "options": "Individual\nSole Proprietor\nNon Individual",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: doc.client_type === \"Individual\"",
+   "fieldname": "is_minor",
+   "fieldtype": "Check",
+   "label": "Is Minor?",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_tbeo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: doc.client_type === 'Non Individual'",
+   "fieldname": "non_individual",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Non Individual",
+   "mandatory_depends_on": "eval: doc.client_type === 'Non Individual'",
+   "options": "KNAPS Non Individual"
+  },
+  {
+   "fieldname": "person",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Primary Person",
+   "mandatory_depends_on": "eval: doc.client_type === 'Individual' || doc.client_type === 'Sole Proprietor'",
+   "options": "KNAPS Person",
+   "read_only_depends_on": "eval: doc.client_type === \"Non Individual\""
+  },
+  {
+   "fieldname": "column_break_ckun",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pan",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "PAN",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval: doc.client_type === 'Sole Proprietor'",
+   "fieldname": "client_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Name",
+   "mandatory_depends_on": "eval: doc.client_type === 'Sole Proprietor'",
+   "read_only_depends_on": "eval: doc.client_type !== 'Sole Proprietor'"
+  },
+  {
+   "fieldname": "section_break_oehr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "preferred_contact_mode",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Preferred Contact Mode",
+   "read_only": 1
+  },
+  {
+   "fieldname": "primary_phone",
+   "fieldtype": "Phone",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Primary Phone",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_dqiz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "primary_email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Primary Email",
+   "options": "Email",
+   "read_only": 1
+  },
+  {
+   "fieldname": "primary_whatsapp",
+   "fieldtype": "Phone",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Primary Whatsapp",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-19 18:51:58.927773",
+ "modified_by": "Administrator",
+ "module": "KNAPS Client Management",
+ "name": "KNAPS Client",
+ "naming_rule": "UUID",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "client_name",
+ "track_changes": 1,
+ "translated_doctype": 1
+}

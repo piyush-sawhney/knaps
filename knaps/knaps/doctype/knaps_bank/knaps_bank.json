@@ -6,11 +6,12 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_nrvt",
-  "holder_type",
-  "holder_name",
-  "column_break_qqmf",
   "holding_type",
+  "holder_type",
+  "column_break_qqmf",
+  "holder_name",
   "second_holder",
+  "first_holder_name",
   "section_break_iplt",
   "bank_name",
   "bank_account_number",
@@ -64,6 +65,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "description": "Single, Anyone or Survivor, Joint",
    "fieldname": "holding_type",
    "fieldtype": "Link",
    "label": "Holding Type",
@@ -84,6 +86,7 @@
    "label": "Bank Details"
   },
   {
+   "description": "Individual or Non Individual",
    "fieldname": "holder_type",
    "fieldtype": "Link",
    "label": "Holder Type",
@@ -94,15 +97,22 @@
   {
    "fieldname": "holder_name",
    "fieldtype": "Dynamic Link",
-   "label": "Holder Name",
+   "label": "First Holder",
    "options": "holder_type",
    "reqd": 1
+  },
+  {
+   "fieldname": "first_holder_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "First Holder Name",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-24 18:15:45.718994",
+ "modified": "2026-05-19 19:06:35.766956",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Bank",

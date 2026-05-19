@@ -8,9 +8,9 @@
  "field_order": [
   "member_type",
   "member_name",
+  "membership_type",
   "relation_with_head",
-  "member_role",
-  "membership_type"
+  "member_role"
  ],
  "fields": [
   {
@@ -35,8 +35,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Relation with Head",
-   "options": "KNAPS Relationship",
-   "reqd": 1
+   "options": "KNAPS Relationship"
   },
   {
    "default": "Primary",
@@ -49,6 +48,8 @@
   {
    "fieldname": "member_role",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Member Role",
    "options": "KNAPS Family Role"
   }
@@ -57,7 +58,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-05-19 18:04:44.621517",
+ "modified": "2026-05-19 18:45:49.001256",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Family Member",

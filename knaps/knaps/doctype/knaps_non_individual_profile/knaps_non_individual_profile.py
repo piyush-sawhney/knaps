@@ -1,7 +1,7 @@
 # Copyright (c) 2026, KNAPS and Contributors and contributors
 # For license information, please see license.txt
 
-# import frappe
+import frappe
 from frappe.model.document import Document
 
 
@@ -26,4 +26,16 @@ class KNAPSNonIndividualProfile(Document):
 		title: DF.Data | None
 	# end: auto-generated types
 
-	pass
+	def before_save(self):
+		if self.non_individual_entity:
+			entity_title = frappe.db.get_value(
+				"KNAPS Non Individual", self.non_individual_entity, "legal_name"
+			)
+			self.title = f"{entity_title} Profile"
+
+	def after_insert(self):
+		frappe.db.set_value("KNAPS Non Individual", self.non_individual_entity, "entity_profile", self.name)
+
+	def on_trash(self):
+		if self.non_individual_entity:
+			frappe.db.set_value("KNAPS Non Individual", self.non_individual_entity, "entity_profile", None)

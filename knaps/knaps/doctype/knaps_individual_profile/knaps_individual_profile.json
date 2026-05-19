@@ -7,10 +7,11 @@
  "engine": "InnoDB",
  "field_order": [
   "person",
-  "marital_status",
   "title",
-  "column_break_hvbl",
+  "section_break_gqgg",
   "nationality",
+  "marital_status",
+  "column_break_hvbl",
   "place_of_birth",
   "country_of_birth",
   "section_break_ccfp",
@@ -19,8 +20,7 @@
   "income_slab",
   "column_break_jrsy",
   "politically_exposed_person",
-  "educational_qualification",
-  "number_of_dependents"
+  "educational_qualification"
  ],
  "fields": [
   {
@@ -43,14 +43,6 @@
    "in_standard_filter": 1,
    "label": "Marital Status",
    "options": "\nSingle\nMarried\nDivorced\nWidowed\nSeparated"
-  },
-  {
-   "fieldname": "number_of_dependents",
-   "fieldtype": "Int",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Number of Dependents",
-   "non_negative": 1
   },
   {
    "fieldname": "educational_qualification",
@@ -121,12 +113,16 @@
    "fieldname": "place_of_birth",
    "fieldtype": "Data",
    "label": "Place of Birth"
+  },
+  {
+   "fieldname": "section_break_gqgg",
+   "fieldtype": "Section Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-18 17:59:47.255287",
+ "modified": "2026-05-19 18:29:52.230488",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Individual Profile",
@@ -148,8 +144,10 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
- "title_field": "title"
+ "title_field": "title",
+ "track_changes": 1
 }

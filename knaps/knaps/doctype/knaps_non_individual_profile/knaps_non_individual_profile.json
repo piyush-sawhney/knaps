@@ -95,7 +95,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-18 18:14:32.652190",
+ "modified": "2026-05-19 18:32:21.301794",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual Profile",
@@ -117,8 +117,10 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
- "title_field": "title"
+ "title_field": "title",
+ "track_changes": 1
 }

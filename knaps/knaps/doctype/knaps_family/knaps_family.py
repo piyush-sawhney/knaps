@@ -31,6 +31,8 @@ class KNAPSFamily(Document):
 		self._validate_unique_members()
 		self._validate_head_not_listed_as_member()
 		self._validate_no_deceased_members()
+		self._validate_relation_with_head()
+		self._validate_has_at_least_one_member()
 		before_save = self.get_doc_before_save()
 		self._update_head_of_family(before_save)
 		self._sync_primary_members(before_save)
@@ -51,6 +53,23 @@ class KNAPSFamily(Document):
 			if row.member_type == "KNAPS Person" and row.member_name == self.head_of_family:
 				title = self._get_party_display_name("KNAPS Person", self.head_of_family)
 				frappe.throw(_("{} is the Head of Family and cannot be added as a member.").format(title))
+
+	def _validate_relation_with_head(self):
+		for row in self.members or []:
+			if row.member_type == "KNAPS Person" and not row.relation_with_head:
+				title = self._get_party_display_name(row.member_type, row.member_name)
+				frappe.throw(
+					_("Relation with Head is mandatory for {} (an Individual member).").format(title)
+				)
+			if row.member_type == "KNAPS Non Individual" and row.relation_with_head:
+				title = self._get_party_display_name(row.member_type, row.member_name)
+				frappe.throw(
+					_("Relation with Head is not applicable for {} (a Non Individual member).").format(title)
+				)
+
+	def _validate_has_at_least_one_member(self):
+		if not self.members:
+			frappe.throw(_("A family must have at least one member."))
 
 	def _validate_no_deceased_members(self):
 		if self.head_of_family:

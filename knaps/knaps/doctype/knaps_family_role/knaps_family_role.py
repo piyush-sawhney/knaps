@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class KNAPSHouseholdRole(Document):
+class KNAPSFamilyRole(Document):
 	pass

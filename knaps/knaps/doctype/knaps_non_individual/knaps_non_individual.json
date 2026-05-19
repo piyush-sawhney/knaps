@@ -15,7 +15,8 @@
   "non_individual_type",
   "legal_name",
   "column_break_finr",
-  "primary_household",
+  "family",
+  "family_name",
   "column_break_evgp",
   "entity_profile",
   "section_break_dsno",
@@ -27,6 +28,7 @@
   "primary_contact_phone",
   "primary_contact_whatsapp",
   "primary_contact_email",
+  "preferred_contact_mode",
   "section_break_mhjm",
   "phone_numbers",
   "email_addresses",
@@ -173,13 +175,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "primary_household",
-   "fieldtype": "Link",
-   "label": "Primary Household",
-   "options": "KNAPS Household",
-   "read_only": 1
-  },
-  {
    "fieldname": "column_break_evgp",
    "fieldtype": "Column Break"
   },
@@ -189,12 +184,34 @@
    "label": "Entity Profile",
    "options": "KNAPS Non Individual Profile",
    "read_only": 1
+  },
+  {
+   "fieldname": "family",
+   "fieldtype": "Link",
+   "label": "Family",
+   "options": "KNAPS Family",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "family.family_name",
+   "fieldname": "family_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Family Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "primary_contact.preferred_contact_mode",
+   "fieldname": "preferred_contact_mode",
+   "fieldtype": "Data",
+   "label": "Preferred Contact Mode",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-18 19:06:26.514134",
+ "modified": "2026-05-19 17:51:44.879283",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual",
@@ -216,6 +233,7 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "pan, non_individual_type, family_name, primary_contact_name",
  "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",

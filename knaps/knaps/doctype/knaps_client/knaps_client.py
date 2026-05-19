@@ -16,10 +16,10 @@ class KNAPSClient(Document):
 		from frappe.types import DF
 
 		client_name: DF.Data | None
-		client_pan: DF.Data | None
 		client_type: DF.Literal["Individual", "Sole Proprietor", "Non Individual"]
 		is_minor: DF.Check
 		non_individual: DF.Link | None
+		pan: DF.Data | None
 		person: DF.Link | None
 		preferred_contact_mode: DF.Data | None
 		primary_email: DF.Data | None
@@ -62,7 +62,9 @@ class KNAPSClient(Document):
 
 	def _validate_required_links(self):
 		if self.client_type in ("Individual", "Sole Proprietor") and not self.person:
-			frappe.throw(_("Person is required for Individual or Sole Proprietor."), title=_("Validation Error"))
+			frappe.throw(
+				_("Person is required for Individual or Sole Proprietor."), title=_("Validation Error")
+			)
 		if self.client_type == "Non Individual" and not self.non_individual:
 			frappe.throw(_("Non Individual entity is required."), title=_("Validation Error"))
 

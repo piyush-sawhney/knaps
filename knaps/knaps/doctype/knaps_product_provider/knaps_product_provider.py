@@ -14,6 +14,7 @@ class KNAPSProductProvider(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
+		category: DF.Data | None
 		product: DF.Link
 		provider: DF.Link
 		title: DF.Data | None

@@ -19,7 +19,7 @@
   "non_individual",
   "person",
   "column_break_ckun",
-  "client_pan",
+  "pan",
   "client_name",
   "section_break_oehr",
   "preferred_contact_mode",
@@ -89,14 +89,6 @@
    "read_only_depends_on": "eval: doc.client_type !== 'Sole Proprietor'"
   },
   {
-   "fieldname": "client_pan",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Client PAN",
-   "read_only": 1
-  },
-  {
    "fieldname": "section_break_mqop",
    "fieldtype": "Section Break"
   },
@@ -156,12 +148,20 @@
    "label": "Client Type",
    "options": "Individual\nSole Proprietor\nNon Individual",
    "reqd": 1
+  },
+  {
+   "fieldname": "pan",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "PAN",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-18 20:22:28.462089",
+ "modified": "2026-05-19 17:28:17.620513",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Client",

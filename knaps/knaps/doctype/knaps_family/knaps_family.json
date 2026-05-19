@@ -8,27 +8,13 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "household_name",
+  "family_name",
   "column_break_hfhn",
-  "head_of_household",
+  "head_of_family",
   "section_break_fllw",
   "members"
  ],
  "fields": [
-  {
-   "fieldname": "household_name",
-   "fieldtype": "Data",
-   "label": "Household Name"
-  },
-  {
-   "fieldname": "head_of_household",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Head of Household",
-   "options": "KNAPS Person",
-   "reqd": 1,
-   "unique": 1
-  },
   {
    "fieldname": "column_break_hfhn",
    "fieldtype": "Column Break"
@@ -41,16 +27,31 @@
    "fieldname": "members",
    "fieldtype": "Table",
    "label": "Members",
-   "options": "KNAPS Household Member"
+   "options": "KNAPS Family Member"
+  },
+  {
+   "fieldname": "head_of_family",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Head of Family",
+   "options": "KNAPS Person",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "family_name",
+   "fieldtype": "Data",
+   "label": "Family Name",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-17 23:41:54.639134",
+ "modified": "2026-05-19 17:42:18.288163",
  "modified_by": "Administrator",
  "module": "KNAPS",
- "name": "KNAPS Household",
+ "name": "KNAPS Family",
  "naming_rule": "UUID",
  "owner": "Administrator",
  "permissions": [
@@ -69,10 +70,11 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "head_of_family",
  "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
- "title_field": "household_name",
+ "title_field": "family_name",
  "track_changes": 1
 }

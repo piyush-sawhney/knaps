@@ -34,6 +34,7 @@ class KNAPSPerson(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from knaps.knaps.doctype.knaps_email.knaps_email import KNAPSEmail
 		from knaps.knaps.doctype.knaps_phone_number.knaps_phone_number import KNAPSPhoneNumber
 
@@ -41,6 +42,8 @@ class KNAPSPerson(Document):
 		date_of_birth: DF.Date | None
 		display_picture: DF.AttachImage | None
 		email_address: DF.Table[KNAPSEmail]
+		family: DF.Link | None
+		family_name: DF.Data | None
 		first_name: DF.Data
 		full_name: DF.Data | None
 		gender: DF.Link
@@ -50,7 +53,6 @@ class KNAPSPerson(Document):
 		phone_numbers: DF.Table[KNAPSPhoneNumber]
 		preferred_contact_mode: DF.Literal["", "Phone", "Whatsapp", "Email"]
 		primary_email: DF.Data | None
-		primary_household: DF.Link | None
 		primary_phone: DF.Phone | None
 		primary_whatsapp: DF.Phone | None
 		profile_link: DF.Link | None

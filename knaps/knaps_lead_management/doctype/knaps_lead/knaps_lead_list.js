@@ -1,39 +1,19 @@
-frappe.listview_settings["KNAPS Non Individual"] = {
-	add_fields: [
-		"legal_name",
-		"non_individual_type",
-		"status",
-		"pan",
-		"primary_contact",
-		"primary_contact_phone",
-		"primary_contact_email",
-		"primary_contact_whatsapp",
-	],
+frappe.listview_settings["KNAPS Lead"] = {
+	add_fields: ["lead_name", "phone", "whatsapp", "email", "lead_type"],
 	hide_name_column: true,
 	hide_name_filter: true,
-	get_indicator: function (doc) {
-		const colors = {
-			Active: "green",
-			Inactive: "orange",
-		};
-		return [__(doc.status), colors[doc.status], "status,=," + doc.status];
-	},
 	formatters: {
-		pan: function (val) {
-			if (!val) return "";
-			return "XXXXXX" + val.slice(-4);
-		},
-		primary_contact_phone: function (val) {
+		phone: function (val) {
 			if (!val) return "";
 			if (val.length <= 7) return `<span>${val}</span>`;
 			return `<span>${val.slice(0, 5)}${"X".repeat(val.length - 7)}${val.slice(-2)}</span>`;
 		},
-		primary_contact_whatsapp: function (val) {
+		whatsapp: function (val) {
 			if (!val) return "";
 			if (val.length <= 7) return `<span>${val}</span>`;
 			return `<span>${val.slice(0, 5)}${"X".repeat(val.length - 7)}${val.slice(-2)}</span>`;
 		},
-		primary_contact_email: function (val) {
+		email: function (val) {
 			if (!val) return "";
 			const parts = val.split("@");
 			if (parts.length !== 2) return `<span>${val}</span>`;

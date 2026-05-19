@@ -13,11 +13,10 @@
   "section_break_wpzs",
   "full_name",
   "column_break_hssg",
-  "primary_household",
-  "add_to_household",
+  "family",
+  "family_name",
   "column_break_yxss",
   "profile_link",
-  "create_profile",
   "basic_details_section",
   "salutation",
   "first_name",
@@ -161,15 +160,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "primary_household",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Primary Household",
-   "options": "KNAPS Household",
-   "read_only": 1
-  },
-  {
    "fieldname": "column_break_rmhb",
    "fieldtype": "Column Break"
   },
@@ -250,21 +240,28 @@
    "read_only": 1
   },
   {
-   "fieldname": "create_profile",
-   "fieldtype": "Button",
-   "label": "Create Profile"
+   "fieldname": "family",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Family",
+   "options": "KNAPS Family",
+   "read_only": 1
   },
   {
-   "fieldname": "add_to_household",
-   "fieldtype": "Button",
-   "label": "Add to Household"
+   "fetch_from": "family.family_name",
+   "fieldname": "family_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Family Name",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "image_field": "display_picture",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-18 18:20:01.549913",
+ "modified": "2026-05-19 18:05:55.988469",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Person",
@@ -286,7 +283,7 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
- "search_fields": "pan, primary_phone, primary_email, primary_household",
+ "search_fields": "pan, primary_phone, primary_email, family_name",
  "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",

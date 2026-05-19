@@ -18,6 +18,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Member Type",
+   "link_filters": "[[\"DocType\",\"name\",\"in\",[\"KNAPS Person\",\"KNAPS Non Individual\"]]]",
    "options": "DocType",
    "reqd": 1
   },
@@ -49,17 +50,17 @@
    "fieldname": "member_role",
    "fieldtype": "Link",
    "label": "Member Role",
-   "options": "KNAPS Household Role"
+   "options": "KNAPS Family Role"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-05-17 16:23:47.465755",
+ "modified": "2026-05-19 18:04:44.621517",
  "modified_by": "Administrator",
  "module": "KNAPS",
- "name": "KNAPS Household Member",
+ "name": "KNAPS Family Member",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",

@@ -1,17 +1,20 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "autoname": "autoincrement",
  "creation": "2026-04-24 18:03:53.035389",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "section_break_nrvt",
   "holding_type",
+  "title",
+  "column_break_kewm",
   "holder_type",
   "column_break_qqmf",
-  "holder_name",
+  "first_holder",
   "second_holder",
   "first_holder_name",
+  "second_holder_name",
   "section_break_iplt",
   "bank_name",
   "bank_account_number",
@@ -34,7 +37,8 @@
    "in_standard_filter": 1,
    "label": "Bank Account Number",
    "mask": 1,
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fieldname": "bank_branch",
@@ -68,6 +72,8 @@
    "description": "Single, Anyone or Survivor, Joint",
    "fieldname": "holding_type",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Holding Type",
    "options": "KNAPS Holding Type"
   },
@@ -75,8 +81,10 @@
    "depends_on": "eval: doc.holding_type != 'Single' && doc.holder_type === 'KNAPS Person';",
    "fieldname": "second_holder",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Second Holder",
-   "link_filters": "[[\"KNAPS Person\",\"name\",\"!=\",\"eval: doc.holder_name\"]]",
+   "link_filters": "[[\"KNAPS Person\",\"name\",\"!=\",\"eval: doc.first_holder\"]]",
    "mandatory_depends_on": "eval: doc.holding_type != 'Single' && doc.holder_type === 'KNAPS Person';",
    "options": "KNAPS Person"
   },
@@ -95,27 +103,48 @@
    "reqd": 1
   },
   {
-   "fieldname": "holder_name",
-   "fieldtype": "Dynamic Link",
-   "label": "First Holder",
-   "options": "holder_type",
-   "reqd": 1
-  },
-  {
    "fieldname": "first_holder_name",
    "fieldtype": "Data",
    "hidden": 1,
    "label": "First Holder Name",
    "read_only": 1
+  },
+  {
+   "fieldname": "second_holder_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Second Holder Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Title",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_kewm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "first_holder",
+   "fieldtype": "Dynamic Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "First Holder",
+   "options": "holder_type",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-19 19:06:35.766956",
+ "modified": "2026-05-19 22:48:01.780263",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Bank",
+ "naming_rule": "Autoincrement",
  "owner": "Administrator",
  "permissions": [
   {
@@ -133,7 +162,11 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "first_holder_name, second_holder_name, bank_name",
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "title",
+ "track_changes": 1
 }

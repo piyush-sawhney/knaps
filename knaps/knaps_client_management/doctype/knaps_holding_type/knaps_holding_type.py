@@ -14,7 +14,7 @@ class KNAPSHoldingType(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		name1: DF.Data
+		holding_type: DF.Data
 	# end: auto-generated types
 
 	pass

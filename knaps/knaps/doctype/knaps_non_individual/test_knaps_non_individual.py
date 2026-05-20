@@ -761,12 +761,586 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 		self.assertEqual(entity.legal_name, "HDFC Mutual Fund")
 
-	# =====================================================
-	# PRIMARY CONTACT VALIDATION TESTS
-	# =====================================================
+# =====================================================
+# PRIMARY CONTACT SYNC TESTS (from Entity Contacts child table)
+# =====================================================
+
+	def _create_contact_person(self, first_name: str = "Contact") -> str:
+		person = frappe.get_doc(
+			{
+				"doctype": "KNAPS Person",
+				"first_name": first_name,
+				"salutation": "Mr",
+				"gender": "Male",
+				"status": "Active",
+				"preferred_contact_mode": "Phone",
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_address": [
+					{
+						"email_address": f"{first_name.lower()}@example.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+		return person.name
+
+	def test_sync_primary_contact_populates_all_fields(self):
+		"""Test that primary contact sync populates name, phone, whatsapp, email, and preferred contact mode"""
+		person_name = self._create_contact_person("Primary")
+
+		entity = frappe.get_doc(
+			{
+				"doctype": "KNAPS Non Individual",
+				"legal_name": "Test Corp",
+				"non_individual_type": "Company",
+				"status": "Active",
+				"contacts": [
+					{
+						"person": person_name,
+						"designation": "CEO",
+						"is_primary_contact": 1,
+					}
+				],
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_addresses": [
+					{
+						"email_address": "test@corp.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+
+		self.assertEqual(entity.primary_contact, person_name)
+		self.assertIsNotNone(entity.primary_contact_name)
+		self.assertEqual(entity.primary_contact_phone, "+91 9876543210")
+		self.assertIsNone(entity.primary_contact_whatsapp)
+		self.assertEqual(entity.primary_contact_email, "primary@example.com")
+		self.assertEqual(entity.preferred_contact_mode, "Phone")
+
+	def test_sync_primary_contact_multiple_primary_rejected(self):
+		"""Test that two contacts marked as primary throws ValidationError"""
+		person_a = self._create_contact_person("Alpha")
+		person_b = self._create_contact_person("Beta")
+
+		entity = frappe.get_doc(
+			{
+				"doctype": "KNAPS Non Individual",
+				"legal_name": "Test Corp",
+				"non_individual_type": "Company",
+				"status": "Active",
+				"contacts": [
+					{
+						"person": person_a,
+						"designation": "CEO",
+						"is_primary_contact": 1,
+					},
+					{
+						"person": person_b,
+						"designation": "CFO",
+						"is_primary_contact": 1,
+					},
+				],
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_addresses": [
+					{
+						"email_address": "test@corp.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		)
+
+		self.assertRaises(frappe.ValidationError, entity.insert)
+
+	def test_sync_primary_contact_single_contact_auto_primary(self):
+		"""Test that a single contact with no primary flag auto-becomes primary"""
+		person_name = self._create_contact_person("AutoPrimary")
+
+		entity = frappe.get_doc(
+			{
+				"doctype": "KNAPS Non Individual",
+				"legal_name": "Auto Corp",
+				"non_individual_type": "Company",
+				"status": "Active",
+				"contacts": [
+					{
+						"person": person_name,
+						"designation": "CEO",
+						"is_primary_contact": 0,
+					}
+				],
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_addresses": [
+					{
+						"email_address": "test@corp.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+
+		self.assertEqual(entity.primary_contact, person_name)
+		self.assertIsNotNone(entity.primary_contact_name)
+		self.assertEqual(entity.primary_contact_phone, "+91 9876543210")
+		self.assertEqual(entity.primary_contact_email, "autoprimary@example.com")
+
+	def test_sync_primary_contact_auto_primary_on_single_remaining(self):
+		"""Test that removing extra contacts leaving only one auto-sets that remaining contact"""
+		person_a = self._create_contact_person("Alpha")
+		person_b = self._create_contact_person("Beta")
+
+		entity = frappe.get_doc(
+			{
+				"doctype": "KNAPS Non Individual",
+				"legal_name": "Reduce Corp",
+				"non_individual_type": "Company",
+				"status": "Active",
+				"contacts": [
+					{
+						"person": person_a,
+						"designation": "First",
+						"is_primary_contact": 0,
+					},
+					{
+						"person": person_b,
+						"designation": "Second",
+						"is_primary_contact": 0,
+					},
+				],
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_addresses": [
+					{
+						"email_address": "test@corp.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+
+		self.assertIsNone(entity.primary_contact)
+
+		entity.contacts = [entity.contacts[0]]
+		entity.save()
+
+		self.assertEqual(entity.primary_contact, person_a)
+		self.assertIsNotNone(entity.primary_contact_name)
+
+	def test_sync_primary_contact_multiple_contacts_no_primary_clears_fields(self):
+		"""Test that multiple contacts with no primary clears all synced fields"""
+		person_a = self._create_contact_person("Alpha")
+		person_b = self._create_contact_person("Beta")
+
+		entity = frappe.get_doc(
+			{
+				"doctype": "KNAPS Non Individual",
+				"legal_name": "Test Corp",
+				"non_individual_type": "Company",
+				"status": "Active",
+				"contacts": [
+					{
+						"person": person_a,
+						"designation": "Employee",
+						"is_primary_contact": 0,
+					},
+					{
+						"person": person_b,
+						"designation": "Manager",
+						"is_primary_contact": 0,
+					},
+				],
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_addresses": [
+					{
+						"email_address": "test@corp.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+
+		self.assertIsNone(entity.primary_contact)
+		self.assertIsNone(entity.primary_contact_name)
+		self.assertIsNone(entity.primary_contact_phone)
+		self.assertIsNone(entity.primary_contact_whatsapp)
+		self.assertIsNone(entity.primary_contact_email)
+		self.assertIsNone(entity.preferred_contact_mode)
+
+	def test_sync_primary_contact_no_contacts_clears_fields(self):
+		"""Test that empty contacts table clears all synced fields"""
+		entity = frappe.get_doc(
+			{
+				"doctype": "KNAPS Non Individual",
+				"legal_name": "No Contacts",
+				"non_individual_type": "Company",
+				"status": "Active",
+				"contacts": [],
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_addresses": [
+					{
+						"email_address": "test@corp.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+
+		self.assertIsNone(entity.primary_contact)
+		self.assertIsNone(entity.primary_contact_name)
+		self.assertIsNone(entity.primary_contact_phone)
+		self.assertIsNone(entity.primary_contact_whatsapp)
+		self.assertIsNone(entity.primary_contact_email)
+		self.assertIsNone(entity.preferred_contact_mode)
+
+	def test_sync_primary_contact_deceased_person_rejected(self):
+		"""Test that a deceased person marked as primary contact throws ValidationError"""
+		person = frappe.get_doc(
+			{
+				"doctype": "KNAPS Person",
+				"first_name": "Deceased",
+				"salutation": "Mr",
+				"gender": "Male",
+				"status": "Deceased",
+			}
+		).insert()
+
+		entity = frappe.get_doc(
+			{
+				"doctype": "KNAPS Non Individual",
+				"legal_name": "Test Corp",
+				"non_individual_type": "Company",
+				"status": "Active",
+				"contacts": [
+					{
+						"person": person.name,
+						"designation": "Director",
+						"is_primary_contact": 1,
+					}
+				],
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_addresses": [
+					{
+						"email_address": "test@corp.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		)
+
+		self.assertRaises(frappe.ValidationError, entity.insert)
+
+	def test_sync_primary_contact_updated_on_change(self):
+		"""Test that changing which contact is primary updates all synced fields"""
+		person_a = self._create_contact_person("FirstContact")
+		person_b = frappe.get_doc(
+			{
+				"doctype": "KNAPS Person",
+				"first_name": "SecondContact",
+				"salutation": "Mr",
+				"gender": "Male",
+				"status": "Active",
+				"preferred_contact_mode": "Email",
+				"phone_numbers": [
+					{
+						"number": "+91 9999999999",
+						"is_primary": 1,
+						"is_whatsapp": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_address": [
+					{
+						"email_address": "second@example.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+
+		entity = frappe.get_doc(
+			{
+				"doctype": "KNAPS Non Individual",
+				"legal_name": "Switch Corp",
+				"non_individual_type": "Company",
+				"status": "Active",
+				"contacts": [
+					{
+						"person": person_a,
+						"designation": "Old",
+						"is_primary_contact": 1,
+					},
+					{
+						"person": person_b.name,
+						"designation": "New",
+						"is_primary_contact": 0,
+					},
+				],
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_addresses": [
+					{
+						"email_address": "test@corp.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+
+		self.assertEqual(entity.primary_contact, person_a)
+		self.assertEqual(entity.primary_contact_phone, "+91 9876543210")
+
+		entity.contacts[0].is_primary_contact = 0
+		entity.contacts[1].is_primary_contact = 1
+		entity.save()
+
+		self.assertEqual(entity.primary_contact, person_b.name)
+		self.assertEqual(entity.primary_contact_phone, "+91 9999999999")
+		self.assertEqual(entity.primary_contact_whatsapp, "+91 9999999999")
+		self.assertEqual(entity.primary_contact_email, "second@example.com")
+		self.assertEqual(entity.preferred_contact_mode, "Email")
+
+	def test_sync_primary_contact_removed_clears_fields(self):
+		"""Test that removing the primary contact row clears all synced fields"""
+		person_name = self._create_contact_person("RemoveMe")
+
+		entity = frappe.get_doc(
+			{
+				"doctype": "KNAPS Non Individual",
+				"legal_name": "Remove Corp",
+				"non_individual_type": "Company",
+				"status": "Active",
+				"contacts": [
+					{
+						"person": person_name,
+						"designation": "Temp",
+						"is_primary_contact": 1,
+					}
+				],
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_addresses": [
+					{
+						"email_address": "test@corp.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+
+		self.assertIsNotNone(entity.primary_contact)
+
+		entity.contacts = []
+		entity.save()
+
+		self.assertIsNone(entity.primary_contact)
+		self.assertIsNone(entity.primary_contact_name)
+		self.assertIsNone(entity.primary_contact_phone)
+		self.assertIsNone(entity.primary_contact_whatsapp)
+		self.assertIsNone(entity.primary_contact_email)
+		self.assertIsNone(entity.preferred_contact_mode)
+
+	def test_sync_primary_contact_populates_whatsapp_and_preferred_mode(self):
+		"""Test that whatsapp and preferred contact mode are populated when person has them"""
+		person = frappe.get_doc(
+			{
+				"doctype": "KNAPS Person",
+				"first_name": "WhatsAppUser",
+				"salutation": "Mr",
+				"gender": "Male",
+				"status": "Active",
+				"preferred_contact_mode": "Whatsapp",
+				"phone_numbers": [
+					{
+						"number": "+91 8888888888",
+						"is_primary": 1,
+						"is_whatsapp": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_address": [
+					{
+						"email_address": "whatsapp@example.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+
+		entity = frappe.get_doc(
+			{
+				"doctype": "KNAPS Non Individual",
+				"legal_name": "WhatsApp Corp",
+				"non_individual_type": "Company",
+				"status": "Active",
+				"contacts": [
+					{
+						"person": person.name,
+						"designation": "Manager",
+						"is_primary_contact": 1,
+					}
+				],
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_addresses": [
+					{
+						"email_address": "test@corp.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+
+		self.assertEqual(entity.primary_contact_phone, "+91 8888888888")
+		self.assertEqual(entity.primary_contact_whatsapp, "+91 8888888888")
+		self.assertEqual(entity.primary_contact_email, "whatsapp@example.com")
+		self.assertEqual(entity.preferred_contact_mode, "Whatsapp")
+
+# =====================================================
+# PRIMARY CONTACT VALIDATION TESTS (legacy direct set)
+# =====================================================
 
 	def test_primary_contact_deceased_rejected(self):
-		"""Test that a deceased person cannot be set as primary contact"""
+		"""Test that a deceased person cannot be set as primary contact via contacts table"""
 		person = frappe.get_doc(
 			{
 				"doctype": "KNAPS Person",
@@ -783,7 +1357,13 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"legal_name": "Test Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
-				"primary_contact": person.name,
+				"contacts": [
+					{
+						"person": person.name,
+						"designation": "Director",
+						"is_primary_contact": 1,
+					}
+				],
 				"phone_numbers": [
 					{
 						"number": "+91 9876543210",
@@ -809,7 +1389,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		self.assertRaises(frappe.ValidationError, entity.insert)
 
 	def test_primary_contact_active_accepted(self):
-		"""Test that an active person can be set as primary contact"""
+		"""Test that an active person can be set as primary contact via contacts table"""
 		person = frappe.get_doc(
 			{
 				"doctype": "KNAPS Person",
@@ -826,7 +1406,13 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"legal_name": "Test Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
-				"primary_contact": person.name,
+				"contacts": [
+					{
+						"person": person.name,
+						"designation": "Manager",
+						"is_primary_contact": 1,
+					}
+				],
 				"phone_numbers": [
 					{
 						"number": "+91 9876543210",

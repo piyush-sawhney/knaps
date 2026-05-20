@@ -45,10 +45,11 @@ class KNAPSNonIndividual(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-
 		from knaps.knaps.doctype.knaps_email.knaps_email import KNAPSEmail
+		from knaps.knaps.doctype.knaps_entity_contact.knaps_entity_contact import KNAPSEntityContact
 		from knaps.knaps.doctype.knaps_phone_number.knaps_phone_number import KNAPSPhoneNumber
 
+		contacts: DF.Table[KNAPSEntityContact]
 		email_addresses: DF.Table[KNAPSEmail]
 		entity_profile: DF.Link | None
 		family: DF.Link | None
@@ -77,18 +78,58 @@ class KNAPSNonIndividual(Document):
 		normalize_pan(self)
 		self._validate_pan_format()
 		validate_unique_pan(self, "KNAPS Non Individual", "entity")
-		self._validate_primary_contact()
+		self._sync_primary_contact()
 		validate_phone_primary(self)
 		validate_email_primary(self, "email_addresses")
 		validate_inactive_cannot_be_primary(self, "email_addresses")
 		validate_unique_phone_numbers(self)
 		validate_unique_emails(self, "email_addresses")
 
-	def _validate_primary_contact(self):
-		if self.primary_contact:
-			status = frappe.db.get_value("KNAPS Person", self.primary_contact, "status")
+	def _sync_primary_contact(self):
+		primary_person = None
+
+		for row in self.contacts or []:
+			if row.is_primary_contact:
+				if primary_person:
+					frappe.throw(
+						_("Only one contact can be marked as primary."),
+						title=_("Duplicate Primary Contact"),
+					)
+				primary_person = row.person
+
+		if not primary_person and len(self.contacts or []) == 1:
+			self.contacts[0].is_primary_contact = 1
+			primary_person = self.contacts[0].person
+
+		if primary_person:
+			status = frappe.db.get_value("KNAPS Person", primary_person, "status")
 			if status == "Deceased":
-				frappe.throw(_("Cannot set a deceased person as primary contact"), title=_("Invalid Contact"))
+				frappe.throw(
+					_("Cannot set a deceased person as primary contact."),
+					title=_("Invalid Contact"),
+				)
+
+			self.primary_contact = primary_person
+
+			person_data = frappe.db.get_value(
+				"KNAPS Person",
+				primary_person,
+				["full_name", "primary_phone", "primary_whatsapp", "primary_email", "preferred_contact_mode"],
+			)
+
+			if person_data:
+				self.primary_contact_name = person_data[0] or primary_person
+				self.primary_contact_phone = person_data[1] or None
+				self.primary_contact_whatsapp = person_data[2] or None
+				self.primary_contact_email = person_data[3] or None
+				self.preferred_contact_mode = person_data[4] or None
+		else:
+			self.primary_contact = None
+			self.primary_contact_name = None
+			self.primary_contact_phone = None
+			self.primary_contact_whatsapp = None
+			self.primary_contact_email = None
+			self.preferred_contact_mode = None
 
 	def _normalize_legal_name(self):
 		if self.legal_name:

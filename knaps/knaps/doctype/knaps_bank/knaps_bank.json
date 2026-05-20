@@ -36,7 +36,6 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Bank Account Number",
-   "mask": 1,
    "reqd": 1,
    "unique": 1
   },
@@ -140,7 +139,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-19 22:48:01.780263",
+ "modified": "2026-05-20 18:39:46.585657",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Bank",

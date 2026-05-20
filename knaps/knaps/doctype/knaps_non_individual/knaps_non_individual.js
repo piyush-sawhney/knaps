@@ -68,3 +68,16 @@ frappe.ui.form.on("KNAPS Email", {
 		}
 	},
 });
+
+// Entity Contacts - Single primary enforcement
+frappe.ui.form.on("KNAPS Entity Contact", {
+	is_primary_contact: function (frm, cdt, cdn) {
+		if (frm.doc.contacts) {
+			frm.doc.contacts.forEach((row) => {
+				if (row.name !== cdn && row.is_primary_contact) {
+					frappe.model.set_value(cdt, row.name, "is_primary_contact", 0);
+				}
+			});
+		}
+	},
+});

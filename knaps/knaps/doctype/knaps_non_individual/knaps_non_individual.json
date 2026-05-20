@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "UUID",
  "creation": "2026-04-24 16:11:38.867267",
@@ -25,11 +26,12 @@
   "primary_contact",
   "primary_contact_name",
   "preferred_contact_mode",
-  "column_break_pgji",
   "primary_contact_phone",
-  "primary_contact_whatsapp",
+  "column_break_pgji",
   "primary_contact_email",
+  "primary_contact_whatsapp",
   "section_break_mhjm",
+  "contacts",
   "phone_numbers",
   "email_addresses",
   "address_html"
@@ -64,10 +66,10 @@
    "in_standard_filter": 1,
    "label": "Primary Contact",
    "link_filters": "[[\"KNAPS Person\",\"status\",\"!=\",\"Deceased\"]]",
-   "options": "KNAPS Person"
+   "options": "KNAPS Person",
+   "read_only": 1
   },
   {
-   "fetch_from": "primary_contact.primary_phone",
    "fieldname": "primary_contact_phone",
    "fieldtype": "Phone",
    "in_list_view": 1,
@@ -76,7 +78,6 @@
    "read_only": 1
   },
   {
-   "fetch_from": "primary_contact.primary_email",
    "fieldname": "primary_contact_email",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -145,7 +146,6 @@
    "in_standard_filter": 1
   },
   {
-   "fetch_from": "primary_contact.primary_whatsapp",
    "fieldname": "primary_contact_whatsapp",
    "fieldtype": "Phone",
    "in_list_view": 1,
@@ -154,7 +154,6 @@
    "read_only": 1
   },
   {
-   "fetch_from": "primary_contact.full_name",
    "fieldname": "primary_contact_name",
    "fieldtype": "Data",
    "hidden": 1,
@@ -201,17 +200,22 @@
    "read_only": 1
   },
   {
-   "fetch_from": "primary_contact.preferred_contact_mode",
    "fieldname": "preferred_contact_mode",
    "fieldtype": "Data",
    "label": "Preferred Contact Mode",
    "read_only": 1
+  },
+  {
+   "fieldname": "contacts",
+   "fieldtype": "Table",
+   "label": "Contacts",
+   "options": "KNAPS Entity Contact"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-19 18:31:17.239434",
+ "modified": "2026-05-20 21:03:44.987486",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual",

@@ -7,10 +7,7 @@ from frappe.tests import IntegrationTestCase
 
 def create_holding_type(name):
 	if not frappe.db.exists("KNAPS Holding Type", name):
-		doc = frappe.get_doc({"doctype": "KNAPS Holding Type", "name1": name})
-		doc.insert()
-		if doc.name != name:
-			frappe.rename_doc("KNAPS Holding Type", doc.name, name, force=True)
+		frappe.get_doc({"doctype": "KNAPS Holding Type", "holding_type": name}).insert()
 	return name
 
 
@@ -162,3 +159,46 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 			bank_account_number="HDFC0012345",
 		)
 		self.assertEqual(bank.title, "Mr John Doe - 2345")
+
+	def test_ifsc_lowercase_rejected(self):
+		with self.assertRaises(frappe.ValidationError):
+			self._make_bank(ifsc="hdfc0001234")
+
+	def test_ifsc_without_zero_at_5th_char_rejected(self):
+		with self.assertRaises(frappe.ValidationError):
+			self._make_bank(ifsc="HDFCC001234")
+
+	def test_ifsc_with_digits_in_first_4_chars_rejected(self):
+		with self.assertRaises(frappe.ValidationError):
+			self._make_bank(ifsc="12DF0001234")
+
+	def test_second_holder_name_populated_from_person(self):
+		person = create_knaps_person(first_name="First", last_name="Holder")
+		second = create_knaps_person(first_name="Second", last_name="Person")
+		bank = self._make_bank(
+			first_holder=person.name,
+			holding_type="Anyone or Survivor",
+			second_holder=second.name,
+		)
+		self.assertEqual(bank.second_holder_name, "Mr Second Person")
+
+	def test_title_with_only_holder_name(self):
+		person = create_knaps_person(first_name="John", last_name="Doe")
+		bank = self._make_bank(
+			first_holder=person.name,
+			bank_account_number="HDFC0000001",
+		)
+		self.assertEqual(bank.title, "Mr John Doe - 0001")
+
+	def test_title_from_last_four_digits_with_short_account(self):
+		person = create_knaps_person(first_name="Jane", last_name="Doe")
+		bank = self._make_bank(
+			first_holder=person.name,
+			bank_account_number="123",
+		)
+		self.assertEqual(bank.title, "Mr Jane Doe - 123")
+
+	def test_populate_first_holder_name_without_last_name(self):
+		person = create_knaps_person(first_name="SingleName", last_name="")
+		bank = self._make_bank(first_holder=person.name)
+		self.assertEqual(bank.first_holder_name, "Mr SingleName")

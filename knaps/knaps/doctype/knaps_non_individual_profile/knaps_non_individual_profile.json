@@ -89,13 +89,13 @@
    "default": "0",
    "fieldname": "is_politcally_exposed_entity",
    "fieldtype": "Check",
-   "label": "Is Politcally Exposed Entity?"
+   "label": "Is Politically Exposed Entity?"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-19 18:32:21.301794",
+ "modified": "2026-05-20 18:47:45.775635",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual Profile",

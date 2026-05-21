@@ -221,7 +221,7 @@
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Lead",
-   "options": "KNAPS Person",
+   "options": "KNAPS Individual",
    "reqd": 1
   },
   {
@@ -257,7 +257,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-14 18:58:00.925207",
+ "modified": "2026-05-21 12:04:11.540248",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Lead",

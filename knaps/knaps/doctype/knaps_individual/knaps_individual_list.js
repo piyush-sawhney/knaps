@@ -1,4 +1,4 @@
-frappe.listview_settings["KNAPS Person"] = {
+frappe.listview_settings["KNAPS Individual"] = {
 	add_fields: [
 		"full_name",
 		"age",

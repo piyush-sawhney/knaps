@@ -86,43 +86,43 @@ class KNAPSNonIndividual(Document):
 		validate_unique_emails(self, "email_addresses")
 
 	def _sync_primary_contact(self):
-		primary_person = None
+		primary_individual = None
 
 		for row in self.contacts or []:
 			if row.is_primary_contact:
-				if primary_person:
+				if primary_individual:
 					frappe.throw(
 						_("Only one contact can be marked as primary."),
 						title=_("Duplicate Primary Contact"),
 					)
-				primary_person = row.person
+				primary_individual = row.individual
 
-		if not primary_person and len(self.contacts or []) == 1:
+		if not primary_individual and len(self.contacts or []) == 1:
 			self.contacts[0].is_primary_contact = 1
-			primary_person = self.contacts[0].person
+			primary_individual = self.contacts[0].individual
 
-		if primary_person:
-			status = frappe.db.get_value("KNAPS Person", primary_person, "status")
+		if primary_individual:
+			status = frappe.db.get_value("KNAPS Individual", primary_individual, "status")
 			if status == "Deceased":
 				frappe.throw(
-					_("Cannot set a deceased person as primary contact."),
+					_("Cannot set a deceased individual as primary contact."),
 					title=_("Invalid Contact"),
 				)
 
-			self.primary_contact = primary_person
+			self.primary_contact = primary_individual
 
-			person_data = frappe.db.get_value(
-				"KNAPS Person",
-				primary_person,
+			individual_data = frappe.db.get_value(
+				"KNAPS Individual",
+				primary_individual,
 				["full_name", "primary_phone", "primary_whatsapp", "primary_email", "preferred_contact_mode"],
 			)
 
-			if person_data:
-				self.primary_contact_name = person_data[0] or primary_person
-				self.primary_contact_phone = person_data[1] or None
-				self.primary_contact_whatsapp = person_data[2] or None
-				self.primary_contact_email = person_data[3] or None
-				self.preferred_contact_mode = person_data[4] or None
+			if individual_data:
+				self.primary_contact_name = individual_data[0] or primary_individual
+				self.primary_contact_phone = individual_data[1] or None
+				self.primary_contact_whatsapp = individual_data[2] or None
+				self.primary_contact_email = individual_data[3] or None
+				self.preferred_contact_mode = individual_data[4] or None
 		else:
 			self.primary_contact = None
 			self.primary_contact_name = None

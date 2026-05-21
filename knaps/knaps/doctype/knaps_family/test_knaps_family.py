@@ -16,14 +16,14 @@ NON_INDIVIDUAL_TYPES = [
 	"Trust",
 	"Government Agency",
 	"Local Authority",
-	"Artificial Judicial Person",
+	"Artificial Judicial Individual",
 ]
 
 
-def create_knaps_person(**kwargs):
+def create_knaps_individual(**kwargs):
 	doc = frappe.get_doc(
 		{
-			"doctype": "KNAPS Person",
+			"doctype": "KNAPS Individual",
 			"first_name": kwargs.get("first_name", "Test"),
 			"last_name": kwargs.get("last_name", ""),
 			"salutation": kwargs.get("salutation", "Mr"),
@@ -59,13 +59,13 @@ def create_knaps_family(**kwargs):
 	head = kwargs.get("head_of_family")
 	members = kwargs.get("members")
 	if members is None:
-		member_person = create_knaps_person(
+		member_individual = create_knaps_individual(
 			first_name="Default", last_name="Member", phone_numbers=[], email_address=[]
 		)
 		members = [
 			{
-				"member_type": "KNAPS Person",
-				"member_name": member_person.name,
+				"member_type": "KNAPS Individual",
+				"member_name": member_individual.name,
 				"relation_with_head": "Self",
 				"membership_type": "Secondary",
 			}
@@ -129,23 +129,23 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# DUPLICATE MEMBER VALIDATION
 	# =====================================================
 
-	def test_duplicate_person_rejected(self):
-		person = create_knaps_person(first_name="John", phone_numbers=self.phone, email_address=self.email)
+	def test_duplicate_individual_rejected(self):
+		individual = create_knaps_individual(first_name="John", phone_numbers=self.phone, email_address=self.email)
 		with self.assertRaises(frappe.ValidationError) as cm:
 			create_knaps_family(
-				head_of_family=create_knaps_person(
+				head_of_family=create_knaps_individual(
 					first_name="Head", phone_numbers=self.phone, email_address=self.email
 				),
 				members=[
 					{
-						"member_type": "KNAPS Person",
-						"member_name": person.name,
+						"member_type": "KNAPS Individual",
+						"member_name": individual.name,
 						"relation_with_head": self.relation,
 						"membership_type": "Primary",
 					},
 					{
-						"member_type": "KNAPS Person",
-						"member_name": person.name,
+						"member_type": "KNAPS Individual",
+						"member_name": individual.name,
 						"relation_with_head": self.relation,
 						"membership_type": "Secondary",
 					},
@@ -159,7 +159,7 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		)
 		with self.assertRaises(frappe.ValidationError):
 			create_knaps_family(
-				head_of_family=create_knaps_person(
+				head_of_family=create_knaps_individual(
 					first_name="Head", phone_numbers=self.phone, email_address=self.email
 				),
 				members=[
@@ -179,20 +179,20 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 			)
 
 	def test_same_name_different_type_allowed(self):
-		person = create_knaps_person(
+		individual = create_knaps_individual(
 			first_name="Test", last_name="Entity", phone_numbers=self.phone, email_address=self.email
 		)
 		entity = create_knaps_non_individual(
-			legal_name=person.name, phone_numbers=self.phone, email_addresses=self.email
+			legal_name=individual.name, phone_numbers=self.phone, email_addresses=self.email
 		)
 		family = create_knaps_family(
-			head_of_family=create_knaps_person(
+			head_of_family=create_knaps_individual(
 				first_name="Head", phone_numbers=self.phone, email_address=self.email
 			),
 			members=[
 				{
-					"member_type": "KNAPS Person",
-					"member_name": person.name,
+					"member_type": "KNAPS Individual",
+					"member_name": individual.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
@@ -206,24 +206,24 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		self.assertEqual(len(family.members), 2)
 
 	def test_all_unique_members_passes(self):
-		p1 = create_knaps_person(first_name="Alice", phone_numbers=self.phone, email_address=self.email)
-		p2 = create_knaps_person(first_name="Bob", phone_numbers=self.phone, email_address=self.email)
+		p1 = create_knaps_individual(first_name="Alice", phone_numbers=self.phone, email_address=self.email)
+		p2 = create_knaps_individual(first_name="Bob", phone_numbers=self.phone, email_address=self.email)
 		e1 = create_knaps_non_individual(
 			legal_name="Corp A", phone_numbers=self.phone, email_addresses=self.email
 		)
 		family = create_knaps_family(
-			head_of_family=create_knaps_person(
+			head_of_family=create_knaps_individual(
 				first_name="Head", phone_numbers=self.phone, email_address=self.email
 			),
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": p1.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": p2.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Secondary",
@@ -242,13 +242,13 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# =====================================================
 
 	def test_head_listed_as_member_rejected(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
 		with self.assertRaises(frappe.ValidationError) as cm:
 			create_knaps_family(
 				head_of_family=head,
 				members=[
 					{
-						"member_type": "KNAPS Person",
+						"member_type": "KNAPS Individual",
 						"member_name": head.name,
 						"relation_with_head": self.relation,
 						"membership_type": "Primary",
@@ -258,13 +258,13 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		self.assertIn("head of family", str(cm.exception).lower())
 
 	def test_head_not_in_members_passes(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(first_name="Member", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(first_name="Member", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Secondary",
@@ -274,13 +274,13 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		self.assertEqual(len(family.members), 1)
 
 	def test_family_with_only_head_passes(self):
-		head = create_knaps_person(first_name="Solo", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(first_name="Member", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Solo", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(first_name="Member", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Secondary",
@@ -295,40 +295,40 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# =====================================================
 
 	def test_head_primary_family_set_on_create(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(head_of_family=head)
-		primary_family = frappe.db.get_value("KNAPS Person", head.name, "family")
+		primary_family = frappe.db.get_value("KNAPS Individual", head.name, "family")
 		self.assertEqual(primary_family, family.name)
 
 	def test_head_primary_family_unchanged_on_same_head_resave(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(head_of_family=head)
 		family.family_name = "Renamed Family"
 		family.save()
-		primary_family = frappe.db.get_value("KNAPS Person", head.name, "family")
+		primary_family = frappe.db.get_value("KNAPS Individual", head.name, "family")
 		self.assertEqual(primary_family, family.name)
 
 	def test_head_change_clears_old_and_sets_new(self):
-		old_head = create_knaps_person(
+		old_head = create_knaps_individual(
 			first_name="Old Head", phone_numbers=self.phone, email_address=self.email
 		)
-		new_head = create_knaps_person(
+		new_head = create_knaps_individual(
 			first_name="New Head", phone_numbers=self.phone, email_address=self.email
 		)
 		family = create_knaps_family(head_of_family=old_head)
 		family.head_of_family = new_head.name
 		family.save()
-		self.assertEqual(frappe.db.get_value("KNAPS Person", old_head.name, "family"), None)
-		self.assertEqual(frappe.db.get_value("KNAPS Person", new_head.name, "family"), family.name)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", old_head.name, "family"), None)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", new_head.name, "family"), family.name)
 
 	def test_head_change_does_not_clear_old_if_not_pointing_here(self):
-		old_head = create_knaps_person(
+		old_head = create_knaps_individual(
 			first_name="Old Head", phone_numbers=self.phone, email_address=self.email
 		)
-		new_head = create_knaps_person(
+		new_head = create_knaps_individual(
 			first_name="New Head", phone_numbers=self.phone, email_address=self.email
 		)
-		another = create_knaps_person(
+		another = create_knaps_individual(
 			first_name="Another", phone_numbers=self.phone, email_address=self.email
 		)
 		family_a = create_knaps_family(head_of_family=old_head)
@@ -341,39 +341,39 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		family_b.head_of_family = old_head.name
 		family_b.save()
 		self.assertEqual(
-			frappe.db.get_value("KNAPS Person", old_head.name, "family"),
+			frappe.db.get_value("KNAPS Individual", old_head.name, "family"),
 			family_b.name,
 		)
 
 	def test_head_change_rejected_if_new_head_is_primary_elsewhere(self):
-		primary_person = create_knaps_person(
+		primary_individual = create_knaps_individual(
 			first_name="Primary Elsewhere", phone_numbers=self.phone, email_address=self.email
 		)
-		create_knaps_family(head_of_family=primary_person, family_name="Other Family")
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		create_knaps_family(head_of_family=primary_individual, family_name="Other Family")
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(head_of_family=head)
 		with self.assertRaises(frappe.ValidationError) as cm:
-			family.head_of_family = primary_person.name
+			family.head_of_family = primary_individual.name
 			family.save()
 		self.assertIn("already a primary member", str(cm.exception).lower())
 
 	def test_primary_member_promoted_to_head_keeps_primary_family(self):
-		head = create_knaps_person(first_name="OldHead", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(
+		head = create_knaps_individual(first_name="OldHead", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
 			first_name="Promoted", phone_numbers=self.phone, email_address=self.email
 		)
-		other = create_knaps_person(first_name="Other", phone_numbers=self.phone, email_address=self.email)
+		other = create_knaps_individual(first_name="Other", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": other.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Secondary",
@@ -381,18 +381,18 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 			],
 		)
 		self.assertEqual(
-			frappe.db.get_value("KNAPS Person", member.name, "family"),
+			frappe.db.get_value("KNAPS Individual", member.name, "family"),
 			family.name,
 		)
 		family.head_of_family = member.name
 		family.members = [row for row in family.members if row.member_name != member.name]
 		family.save()
 		self.assertEqual(
-			frappe.db.get_value("KNAPS Person", member.name, "family"),
+			frappe.db.get_value("KNAPS Individual", member.name, "family"),
 			family.name,
 		)
 		self.assertEqual(
-			frappe.db.get_value("KNAPS Person", head.name, "family"),
+			frappe.db.get_value("KNAPS Individual", head.name, "family"),
 			None,
 		)
 
@@ -400,14 +400,14 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# PRIMARY MEMBER SYNC — ADD
 	# =====================================================
 
-	def test_add_primary_person_sets_primary_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(first_name="Member", phone_numbers=self.phone, email_address=self.email)
+	def test_add_primary_individual_sets_primary_family(self):
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(first_name="Member", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
@@ -415,12 +415,12 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 			],
 		)
 		self.assertEqual(
-			frappe.db.get_value("KNAPS Person", member.name, "family"),
+			frappe.db.get_value("KNAPS Individual", member.name, "family"),
 			family.name,
 		)
 
 	def test_add_primary_non_individual_sets_primary_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
 		entity = create_knaps_non_individual(
 			legal_name="Primary Entity", phone_numbers=self.phone, email_addresses=self.email
 		)
@@ -440,45 +440,45 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		)
 
 	def test_add_secondary_member_does_not_set_primary_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
 			first_name="Secondary", phone_numbers=self.phone, email_address=self.email
 		)
 		create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Secondary",
 				},
 			],
 		)
-		self.assertIsNone(frappe.db.get_value("KNAPS Person", member.name, "family"))
+		self.assertIsNone(frappe.db.get_value("KNAPS Individual", member.name, "family"))
 
 	def test_add_beneficial_member_does_not_set_primary_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
 			first_name="Beneficial", phone_numbers=self.phone, email_address=self.email
 		)
 		create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Beneficial",
 				},
 			],
 		)
-		self.assertIsNone(frappe.db.get_value("KNAPS Person", member.name, "family"))
+		self.assertIsNone(frappe.db.get_value("KNAPS Individual", member.name, "family"))
 
 	def test_multiple_primary_members_all_set(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		p1 = create_knaps_person(first_name="Primary1", phone_numbers=self.phone, email_address=self.email)
-		p2 = create_knaps_person(first_name="Primary2", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		p1 = create_knaps_individual(first_name="Primary1", phone_numbers=self.phone, email_address=self.email)
+		p2 = create_knaps_individual(first_name="Primary2", phone_numbers=self.phone, email_address=self.email)
 		e1 = create_knaps_non_individual(
 			legal_name="Primary Entity", phone_numbers=self.phone, email_addresses=self.email
 		)
@@ -486,13 +486,13 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": p1.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": p2.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
@@ -504,8 +504,8 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 				},
 			],
 		)
-		self.assertEqual(frappe.db.get_value("KNAPS Person", p1.name, "family"), family.name)
-		self.assertEqual(frappe.db.get_value("KNAPS Person", p2.name, "family"), family.name)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", p1.name, "family"), family.name)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", p2.name, "family"), family.name)
 		self.assertEqual(frappe.db.get_value("KNAPS Non Individual", e1.name, "family"), family.name)
 
 	# =====================================================
@@ -513,90 +513,90 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# =====================================================
 
 	def test_change_primary_to_secondary_clears_primary_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
 			first_name="ChangeMe", phone_numbers=self.phone, email_address=self.email
 		)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 			],
 		)
-		self.assertEqual(frappe.db.get_value("KNAPS Person", member.name, "family"), family.name)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", member.name, "family"), family.name)
 		family.members[0].membership_type = "Secondary"
 		family.save()
-		self.assertIsNone(frappe.db.get_value("KNAPS Person", member.name, "family"))
+		self.assertIsNone(frappe.db.get_value("KNAPS Individual", member.name, "family"))
 
 	def test_change_secondary_to_primary_sets_primary_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
 			first_name="Promoted", phone_numbers=self.phone, email_address=self.email
 		)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Secondary",
 				},
 			],
 		)
-		self.assertIsNone(frappe.db.get_value("KNAPS Person", member.name, "family"))
+		self.assertIsNone(frappe.db.get_value("KNAPS Individual", member.name, "family"))
 		family.members[0].membership_type = "Primary"
 		family.save()
-		self.assertEqual(frappe.db.get_value("KNAPS Person", member.name, "family"), family.name)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", member.name, "family"), family.name)
 
 	def test_delete_primary_member_clears_primary_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
 			first_name="RemoveMe", phone_numbers=self.phone, email_address=self.email
 		)
-		other = create_knaps_person(first_name="Other", phone_numbers=self.phone, email_address=self.email)
+		other = create_knaps_individual(first_name="Other", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": other.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Secondary",
 				},
 			],
 		)
-		self.assertEqual(frappe.db.get_value("KNAPS Person", member.name, "family"), family.name)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", member.name, "family"), family.name)
 		family.members = [row for row in family.members if row.member_name != member.name]
 		family.save()
-		self.assertIsNone(frappe.db.get_value("KNAPS Person", member.name, "family"))
+		self.assertIsNone(frappe.db.get_value("KNAPS Individual", member.name, "family"))
 
 	def test_delete_secondary_member_does_not_affect_primary_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(first_name="KeepMe", phone_numbers=self.phone, email_address=self.email)
-		other = create_knaps_person(first_name="Other", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(first_name="KeepMe", phone_numbers=self.phone, email_address=self.email)
+		other = create_knaps_individual(first_name="Other", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Secondary",
 				},
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": other.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
@@ -605,27 +605,27 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		)
 		family.members = [row for row in family.members if row.member_name != member.name]
 		family.save()
-		self.assertIsNone(frappe.db.get_value("KNAPS Person", member.name, "family"))
+		self.assertIsNone(frappe.db.get_value("KNAPS Individual", member.name, "family"))
 
 	def test_clear_only_if_matching_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(first_name="Shared", phone_numbers=self.phone, email_address=self.email)
-		other = create_knaps_person(first_name="Other", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(first_name="Shared", phone_numbers=self.phone, email_address=self.email)
+		other = create_knaps_individual(first_name="Other", phone_numbers=self.phone, email_address=self.email)
 		family_a = create_knaps_family(head_of_family=head, family_name="Family A")
-		frappe.db.set_value("KNAPS Person", member.name, "family", family_a.name)
-		head2 = create_knaps_person(first_name="Head2", phone_numbers=self.phone, email_address=self.email)
+		frappe.db.set_value("KNAPS Individual", member.name, "family", family_a.name)
+		head2 = create_knaps_individual(first_name="Head2", phone_numbers=self.phone, email_address=self.email)
 		family_b = create_knaps_family(
 			head_of_family=head2,
 			family_name="Family B",
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Secondary",
 				},
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": other.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Beneficial",
@@ -635,7 +635,7 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		family_b.members = [row for row in family_b.members if row.member_name != member.name]
 		family_b.save()
 		self.assertEqual(
-			frappe.db.get_value("KNAPS Person", member.name, "family"),
+			frappe.db.get_value("KNAPS Individual", member.name, "family"),
 			family_a.name,
 		)
 
@@ -644,8 +644,8 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# =====================================================
 
 	def test_add_primary_member_who_is_already_primary_elsewhere_rejected(self):
-		head_a = create_knaps_person(first_name="HeadA", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(
+		head_a = create_knaps_individual(first_name="HeadA", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
 			first_name="Conflict", phone_numbers=self.phone, email_address=self.email
 		)
 		create_knaps_family(
@@ -653,21 +653,21 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 			family_name="First Family",
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 			],
 		)
-		head_b = create_knaps_person(first_name="HeadB", phone_numbers=self.phone, email_address=self.email)
+		head_b = create_knaps_individual(first_name="HeadB", phone_numbers=self.phone, email_address=self.email)
 		with self.assertRaises(frappe.ValidationError) as cm:
 			create_knaps_family(
 				head_of_family=head_b,
 				family_name="Second Family",
 				members=[
 					{
-						"member_type": "KNAPS Person",
+						"member_type": "KNAPS Individual",
 						"member_name": member.name,
 						"relation_with_head": self.relation,
 						"membership_type": "Primary",
@@ -677,10 +677,10 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		self.assertIn("already a primary member", str(cm.exception).lower())
 
 	def test_set_head_who_is_already_primary_elsewhere_rejected(self):
-		primary_person = create_knaps_person(
+		primary_individual = create_knaps_individual(
 			first_name="Primary Elsewhere", phone_numbers=self.phone, email_address=self.email
 		)
-		other_family_head = create_knaps_person(
+		other_family_head = create_knaps_individual(
 			first_name="OtherHead", phone_numbers=self.phone, email_address=self.email
 		)
 		create_knaps_family(
@@ -688,42 +688,42 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 			family_name="Other Family",
 			members=[
 				{
-					"member_type": "KNAPS Person",
-					"member_name": primary_person.name,
+					"member_type": "KNAPS Individual",
+					"member_name": primary_individual.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 			],
 		)
-		create_knaps_person(first_name="NewHead", phone_numbers=self.phone, email_address=self.email)
+		create_knaps_individual(first_name="NewHead", phone_numbers=self.phone, email_address=self.email)
 		with self.assertRaises(frappe.ValidationError):
-			create_knaps_family(head_of_family=primary_person)
+			create_knaps_family(head_of_family=primary_individual)
 
 	def test_add_as_secondary_when_primary_elsewhere_allowed(self):
-		primary_person = create_knaps_person(
+		primary_individual = create_knaps_individual(
 			first_name="Primary Elsewhere", phone_numbers=self.phone, email_address=self.email
 		)
-		head_a = create_knaps_person(first_name="HeadA", phone_numbers=self.phone, email_address=self.email)
+		head_a = create_knaps_individual(first_name="HeadA", phone_numbers=self.phone, email_address=self.email)
 		create_knaps_family(
 			head_of_family=head_a,
 			family_name="First Family",
 			members=[
 				{
-					"member_type": "KNAPS Person",
-					"member_name": primary_person.name,
+					"member_type": "KNAPS Individual",
+					"member_name": primary_individual.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 			],
 		)
-		head_b = create_knaps_person(first_name="HeadB", phone_numbers=self.phone, email_address=self.email)
+		head_b = create_knaps_individual(first_name="HeadB", phone_numbers=self.phone, email_address=self.email)
 		family_b = create_knaps_family(
 			head_of_family=head_b,
 			family_name="Second Family",
 			members=[
 				{
-					"member_type": "KNAPS Person",
-					"member_name": primary_person.name,
+					"member_type": "KNAPS Individual",
+					"member_name": primary_individual.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Secondary",
 				},
@@ -736,20 +736,20 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# =====================================================
 
 	def test_deceased_head_rejected(self):
-		deceased = create_knaps_person(first_name="Dead", status="Deceased")
+		deceased = create_knaps_individual(first_name="Dead", status="Deceased")
 		with self.assertRaises(frappe.ValidationError) as cm:
 			create_knaps_family(head_of_family=deceased)
 		self.assertIn("deceased", str(cm.exception).lower())
 
 	def test_deceased_member_rejected(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		deceased = create_knaps_person(first_name="Dead", status="Deceased")
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		deceased = create_knaps_individual(first_name="Dead", status="Deceased")
 		with self.assertRaises(frappe.ValidationError) as cm:
 			create_knaps_family(
 				head_of_family=head,
 				members=[
 					{
-						"member_type": "KNAPS Person",
+						"member_type": "KNAPS Individual",
 						"member_name": deceased.name,
 						"relation_with_head": self.relation,
 						"membership_type": "Secondary",
@@ -759,14 +759,14 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		self.assertIn("deceased", str(cm.exception).lower())
 
 	def test_deceased_member_rejected_even_as_primary(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		deceased = create_knaps_person(first_name="Dead", status="Deceased")
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		deceased = create_knaps_individual(first_name="Dead", status="Deceased")
 		with self.assertRaises(frappe.ValidationError):
 			create_knaps_family(
 				head_of_family=head,
 				members=[
 					{
-						"member_type": "KNAPS Person",
+						"member_type": "KNAPS Individual",
 						"member_name": deceased.name,
 						"relation_with_head": self.relation,
 						"membership_type": "Primary",
@@ -775,7 +775,7 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 			)
 
 	def test_deceased_non_individual_allowed(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
 		entity = create_knaps_non_individual(legal_name="Dead Entity", status="Inactive")
 		family = create_knaps_family(
 			head_of_family=head,
@@ -790,15 +790,15 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		self.assertEqual(len(family.members), 1)
 
 	def test_active_member_allowed(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
 			first_name="Alive", status="Active", phone_numbers=self.phone, email_address=self.email
 		)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
@@ -811,9 +811,9 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# RELATION WITH HEAD VALIDATION
 	# =====================================================
 
-	def test_person_member_without_relation_rejected(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(
+	def test_individual_member_without_relation_rejected(self):
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
 			first_name="NoRelation", phone_numbers=self.phone, email_address=self.email
 		)
 		with self.assertRaises(frappe.ValidationError) as cm:
@@ -821,7 +821,7 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 				head_of_family=head,
 				members=[
 					{
-						"member_type": "KNAPS Person",
+						"member_type": "KNAPS Individual",
 						"member_name": member.name,
 						"membership_type": "Secondary",
 					},
@@ -830,7 +830,7 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		self.assertIn("Relation with Head", str(cm.exception))
 
 	def test_non_individual_member_without_relation_allowed(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
 		entity = create_knaps_non_individual(
 			legal_name="No Relation Entity", phone_numbers=self.phone, email_addresses=self.email
 		)
@@ -847,7 +847,7 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		self.assertEqual(len(family.members), 1)
 
 	def test_non_individual_member_with_relation_rejected(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
 		entity = create_knaps_non_individual(
 			legal_name="Entity With Relation", phone_numbers=self.phone, email_addresses=self.email
 		)
@@ -865,16 +865,16 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 			)
 		self.assertIn("not applicable", str(cm.exception).lower())
 
-	def test_person_member_with_relation_allowed(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(
+	def test_individual_member_with_relation_allowed(self):
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
 			first_name="WithRelation", phone_numbers=self.phone, email_address=self.email
 		)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Secondary",
@@ -888,56 +888,56 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# =====================================================
 
 	def test_new_family_without_before_save(self):
-		head = create_knaps_person(first_name="New", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="New", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(head_of_family=head, save=True)
 		self.assertEqual(
-			frappe.db.get_value("KNAPS Person", head.name, "family"),
+			frappe.db.get_value("KNAPS Individual", head.name, "family"),
 			family.name,
 		)
 
 	def test_family_without_members_rejected(self):
-		head = create_knaps_person(first_name="Alone", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Alone", phone_numbers=self.phone, email_address=self.email)
 		with self.assertRaises(frappe.ValidationError) as cm:
 			create_knaps_family(head_of_family=head, members=[])
 		self.assertIn("at least one member", str(cm.exception).lower())
 
 	def test_all_members_deleted_in_one_edit(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		p1 = create_knaps_person(first_name="M1", phone_numbers=self.phone, email_address=self.email)
-		p2 = create_knaps_person(first_name="M2", phone_numbers=self.phone, email_address=self.email)
-		p3 = create_knaps_person(first_name="M3", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		p1 = create_knaps_individual(first_name="M1", phone_numbers=self.phone, email_address=self.email)
+		p2 = create_knaps_individual(first_name="M2", phone_numbers=self.phone, email_address=self.email)
+		p3 = create_knaps_individual(first_name="M3", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": p1.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": p2.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": p3.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 			],
 		)
-		self.assertEqual(frappe.db.get_value("KNAPS Person", p1.name, "family"), family.name)
-		self.assertEqual(frappe.db.get_value("KNAPS Person", p2.name, "family"), family.name)
-		self.assertEqual(frappe.db.get_value("KNAPS Person", p3.name, "family"), family.name)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", p1.name, "family"), family.name)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", p2.name, "family"), family.name)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", p3.name, "family"), family.name)
 		family.members = [row for row in family.members if row.member_name != p1.name]
 		family.save()
-		self.assertIsNone(frappe.db.get_value("KNAPS Person", p1.name, "family"))
-		self.assertEqual(frappe.db.get_value("KNAPS Person", p2.name, "family"), family.name)
+		self.assertIsNone(frappe.db.get_value("KNAPS Individual", p1.name, "family"))
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", p2.name, "family"), family.name)
 		self.assertEqual(
-			frappe.db.get_value("KNAPS Person", head.name, "family"),
+			frappe.db.get_value("KNAPS Individual", head.name, "family"),
 			family.name,
 		)
 
@@ -946,33 +946,33 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# =====================================================
 
 	def test_delete_family_clears_head_primary_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(head_of_family=head)
-		self.assertEqual(frappe.db.get_value("KNAPS Person", head.name, "family"), family.name)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", head.name, "family"), family.name)
 		family.delete()
 		self.assertFalse(frappe.db.exists("KNAPS Family", family.name))
-		self.assertIsNone(frappe.db.get_value("KNAPS Person", head.name, "family"))
+		self.assertIsNone(frappe.db.get_value("KNAPS Individual", head.name, "family"))
 
 	def test_delete_family_clears_primary_member_primary_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_person(first_name="Primary", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(first_name="Primary", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
 				{
-					"member_type": "KNAPS Person",
+					"member_type": "KNAPS Individual",
 					"member_name": member.name,
 					"relation_with_head": self.relation,
 					"membership_type": "Primary",
 				},
 			],
 		)
-		self.assertEqual(frappe.db.get_value("KNAPS Person", member.name, "family"), family.name)
+		self.assertEqual(frappe.db.get_value("KNAPS Individual", member.name, "family"), family.name)
 		family.delete()
-		self.assertIsNone(frappe.db.get_value("KNAPS Person", member.name, "family"))
+		self.assertIsNone(frappe.db.get_value("KNAPS Individual", member.name, "family"))
 
 	def test_delete_family_clears_non_individual_primary_family(self):
-		head = create_knaps_person(first_name="Head", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
 		entity = create_knaps_non_individual(legal_name="Test Entity", pan="ABCCC1234F")
 		family = create_knaps_family(
 			head_of_family=head,
@@ -989,8 +989,8 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		self.assertIsNone(frappe.db.get_value("KNAPS Non Individual", entity.name, "family"))
 
 	def test_delete_family_with_no_linked_members_succeeds(self):
-		head = create_knaps_person(first_name="Temp", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(first_name="Temp", phone_numbers=self.phone, email_address=self.email)
 		family = create_knaps_family(head_of_family=head)
-		frappe.db.set_value("KNAPS Person", head.name, "family", None)
+		frappe.db.set_value("KNAPS Individual", head.name, "family", None)
 		family.delete()
 		self.assertFalse(frappe.db.exists("KNAPS Family", family.name))

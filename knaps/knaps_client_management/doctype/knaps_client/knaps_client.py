@@ -19,7 +19,7 @@ class KNAPSClient(Document):
 		is_minor: DF.Check
 		non_individual: DF.Link | None
 		pan: DF.Data | None
-		person: DF.Link | None
+		individual: DF.Link | None
 		preferred_contact_mode: DF.Data | None
 		primary_email: DF.Data | None
 		primary_phone: DF.Phone | None

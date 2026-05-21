@@ -35,7 +35,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Head of Family",
-   "options": "KNAPS Person",
+   "options": "KNAPS Individual",
    "reqd": 1,
    "unique": 1
   },

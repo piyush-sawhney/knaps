@@ -18,7 +18,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Member Type",
-   "link_filters": "[[\"DocType\",\"name\",\"in\",[\"KNAPS Person\",\"KNAPS Non Individual\"]]]",
+   "link_filters": "[[\"DocType\",\"name\",\"in\",[\"KNAPS Individual\",\"KNAPS Non Individual\"]]]",
    "options": "DocType",
    "reqd": 1
   },

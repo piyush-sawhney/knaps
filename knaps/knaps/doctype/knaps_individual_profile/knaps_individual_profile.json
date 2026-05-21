@@ -1,12 +1,12 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:person",
+ "autoname": "field:individual",
  "creation": "2026-05-15 23:07:55.593069",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "person",
+  "individual",
   "title",
   "section_break_gqgg",
   "nationality",
@@ -19,16 +19,16 @@
   "occupational_details",
   "income_slab",
   "column_break_jrsy",
-  "politically_exposed_person",
+  "politically_exposed_individual",
   "educational_qualification"
  ],
  "fields": [
   {
-   "fieldname": "person",
+   "fieldname": "individual",
    "fieldtype": "Link",
    "in_standard_filter": 1,
-   "label": "Person",
-   "options": "KNAPS Person",
+   "label": "Individual",
+   "options": "KNAPS Individual",
    "reqd": 1,
    "unique": 1
   },
@@ -89,9 +89,9 @@
    "options": "\nBelow 1 Lakh\n1 - 5 Lakh\n5 - 10 Lakh\n10- 25 Lakh\n25 Lakh - 1 Crore\nAbove 1 Cr"
   },
   {
-   "fieldname": "politically_exposed_person",
+   "fieldname": "politically_exposed_individual",
    "fieldtype": "Select",
-   "label": "Politically Exposed Person",
+   "label": "Politically Exposed Individual",
    "options": "\nYes\nNo\nRelated to PEP"
   },
   {
@@ -122,7 +122,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-19 18:29:52.230488",
+ "modified": "2026-05-21 12:04:11.423982",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Individual Profile",

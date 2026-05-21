@@ -20,7 +20,7 @@ class KNAPSEntityContact(Document):
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data
-		person: DF.Link
+		individual: DF.Link
 	# end: auto-generated types
 
 	pass

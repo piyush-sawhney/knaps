@@ -765,10 +765,10 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 # PRIMARY CONTACT SYNC TESTS (from Entity Contacts child table)
 # =====================================================
 
-	def _create_contact_person(self, first_name: str = "Contact") -> str:
-		person = frappe.get_doc(
+	def _create_contact_individual(self, first_name: str = "Contact") -> str:
+		individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Person",
+				"doctype": "KNAPS Individual",
 				"first_name": first_name,
 				"salutation": "Mr",
 				"gender": "Male",
@@ -795,11 +795,11 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				],
 			}
 		).insert()
-		return person.name
+		return individual.name
 
 	def test_sync_primary_contact_populates_all_fields(self):
 		"""Test that primary contact sync populates name, phone, whatsapp, email, and preferred contact mode"""
-		person_name = self._create_contact_person("Primary")
+		individual_name = self._create_contact_individual("Primary")
 
 		entity = frappe.get_doc(
 			{
@@ -809,7 +809,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"person": person_name,
+						"individual": individual_name,
 						"designation": "CEO",
 						"is_primary_contact": 1,
 					}
@@ -836,7 +836,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 			}
 		).insert()
 
-		self.assertEqual(entity.primary_contact, person_name)
+		self.assertEqual(entity.primary_contact, individual_name)
 		self.assertIsNotNone(entity.primary_contact_name)
 		self.assertEqual(entity.primary_contact_phone, "+91 9876543210")
 		self.assertIsNone(entity.primary_contact_whatsapp)
@@ -845,8 +845,8 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 	def test_sync_primary_contact_multiple_primary_rejected(self):
 		"""Test that two contacts marked as primary throws ValidationError"""
-		person_a = self._create_contact_person("Alpha")
-		person_b = self._create_contact_person("Beta")
+		individual_a = self._create_contact_individual("Alpha")
+		individual_b = self._create_contact_individual("Beta")
 
 		entity = frappe.get_doc(
 			{
@@ -856,12 +856,12 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"person": person_a,
+						"individual": individual_a,
 						"designation": "CEO",
 						"is_primary_contact": 1,
 					},
 					{
-						"person": person_b,
+						"individual": individual_b,
 						"designation": "CFO",
 						"is_primary_contact": 1,
 					},
@@ -892,7 +892,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 	def test_sync_primary_contact_single_contact_auto_primary(self):
 		"""Test that a single contact with no primary flag auto-becomes primary"""
-		person_name = self._create_contact_person("AutoPrimary")
+		individual_name = self._create_contact_individual("AutoPrimary")
 
 		entity = frappe.get_doc(
 			{
@@ -902,7 +902,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"person": person_name,
+						"individual": individual_name,
 						"designation": "CEO",
 						"is_primary_contact": 0,
 					}
@@ -929,15 +929,15 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 			}
 		).insert()
 
-		self.assertEqual(entity.primary_contact, person_name)
+		self.assertEqual(entity.primary_contact, individual_name)
 		self.assertIsNotNone(entity.primary_contact_name)
 		self.assertEqual(entity.primary_contact_phone, "+91 9876543210")
 		self.assertEqual(entity.primary_contact_email, "autoprimary@example.com")
 
 	def test_sync_primary_contact_auto_primary_on_single_remaining(self):
 		"""Test that removing extra contacts leaving only one auto-sets that remaining contact"""
-		person_a = self._create_contact_person("Alpha")
-		person_b = self._create_contact_person("Beta")
+		individual_a = self._create_contact_individual("Alpha")
+		individual_b = self._create_contact_individual("Beta")
 
 		entity = frappe.get_doc(
 			{
@@ -947,12 +947,12 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"person": person_a,
+						"individual": individual_a,
 						"designation": "First",
 						"is_primary_contact": 0,
 					},
 					{
-						"person": person_b,
+						"individual": individual_b,
 						"designation": "Second",
 						"is_primary_contact": 0,
 					},
@@ -984,13 +984,13 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		entity.contacts = [entity.contacts[0]]
 		entity.save()
 
-		self.assertEqual(entity.primary_contact, person_a)
+		self.assertEqual(entity.primary_contact, individual_a)
 		self.assertIsNotNone(entity.primary_contact_name)
 
 	def test_sync_primary_contact_multiple_contacts_no_primary_clears_fields(self):
 		"""Test that multiple contacts with no primary clears all synced fields"""
-		person_a = self._create_contact_person("Alpha")
-		person_b = self._create_contact_person("Beta")
+		individual_a = self._create_contact_individual("Alpha")
+		individual_b = self._create_contact_individual("Beta")
 
 		entity = frappe.get_doc(
 			{
@@ -1000,12 +1000,12 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"person": person_a,
+						"individual": individual_a,
 						"designation": "Employee",
 						"is_primary_contact": 0,
 					},
 					{
-						"person": person_b,
+						"individual": individual_b,
 						"designation": "Manager",
 						"is_primary_contact": 0,
 					},
@@ -1077,11 +1077,11 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		self.assertIsNone(entity.primary_contact_email)
 		self.assertIsNone(entity.preferred_contact_mode)
 
-	def test_sync_primary_contact_deceased_person_rejected(self):
-		"""Test that a deceased person marked as primary contact throws ValidationError"""
-		person = frappe.get_doc(
+	def test_sync_primary_contact_deceased_individual_rejected(self):
+		"""Test that a deceased individual marked as primary contact throws ValidationError"""
+		individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Person",
+				"doctype": "KNAPS Individual",
 				"first_name": "Deceased",
 				"salutation": "Mr",
 				"gender": "Male",
@@ -1097,7 +1097,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"person": person.name,
+						"individual": individual.name,
 						"designation": "Director",
 						"is_primary_contact": 1,
 					}
@@ -1128,10 +1128,10 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 	def test_sync_primary_contact_updated_on_change(self):
 		"""Test that changing which contact is primary updates all synced fields"""
-		person_a = self._create_contact_person("FirstContact")
-		person_b = frappe.get_doc(
+		individual_a = self._create_contact_individual("FirstContact")
+		individual_b = frappe.get_doc(
 			{
-				"doctype": "KNAPS Person",
+				"doctype": "KNAPS Individual",
 				"first_name": "SecondContact",
 				"salutation": "Mr",
 				"gender": "Male",
@@ -1167,12 +1167,12 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"person": person_a,
+						"individual": individual_a,
 						"designation": "Old",
 						"is_primary_contact": 1,
 					},
 					{
-						"person": person_b.name,
+						"individual": individual_b.name,
 						"designation": "New",
 						"is_primary_contact": 0,
 					},
@@ -1199,14 +1199,14 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 			}
 		).insert()
 
-		self.assertEqual(entity.primary_contact, person_a)
+		self.assertEqual(entity.primary_contact, individual_a)
 		self.assertEqual(entity.primary_contact_phone, "+91 9876543210")
 
 		entity.contacts[0].is_primary_contact = 0
 		entity.contacts[1].is_primary_contact = 1
 		entity.save()
 
-		self.assertEqual(entity.primary_contact, person_b.name)
+		self.assertEqual(entity.primary_contact, individual_b.name)
 		self.assertEqual(entity.primary_contact_phone, "+91 9999999999")
 		self.assertEqual(entity.primary_contact_whatsapp, "+91 9999999999")
 		self.assertEqual(entity.primary_contact_email, "second@example.com")
@@ -1214,7 +1214,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 	def test_sync_primary_contact_removed_clears_fields(self):
 		"""Test that removing the primary contact row clears all synced fields"""
-		person_name = self._create_contact_person("RemoveMe")
+		individual_name = self._create_contact_individual("RemoveMe")
 
 		entity = frappe.get_doc(
 			{
@@ -1224,7 +1224,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"person": person_name,
+						"individual": individual_name,
 						"designation": "Temp",
 						"is_primary_contact": 1,
 					}
@@ -1264,10 +1264,10 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		self.assertIsNone(entity.preferred_contact_mode)
 
 	def test_sync_primary_contact_populates_whatsapp_and_preferred_mode(self):
-		"""Test that whatsapp and preferred contact mode are populated when person has them"""
-		person = frappe.get_doc(
+		"""Test that whatsapp and preferred contact mode are populated when individual has them"""
+		individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Person",
+				"doctype": "KNAPS Individual",
 				"first_name": "WhatsAppUser",
 				"salutation": "Mr",
 				"gender": "Male",
@@ -1303,7 +1303,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"person": person.name,
+						"individual": individual.name,
 						"designation": "Manager",
 						"is_primary_contact": 1,
 					}
@@ -1340,10 +1340,10 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 # =====================================================
 
 	def test_primary_contact_deceased_rejected(self):
-		"""Test that a deceased person cannot be set as primary contact via contacts table"""
-		person = frappe.get_doc(
+		"""Test that a deceased individual cannot be set as primary contact via contacts table"""
+		individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Person",
+				"doctype": "KNAPS Individual",
 				"first_name": "Deceased Person",
 				"salutation": "Mr",
 				"gender": "Male",
@@ -1359,7 +1359,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"person": person.name,
+						"individual": individual.name,
 						"designation": "Director",
 						"is_primary_contact": 1,
 					}
@@ -1389,10 +1389,10 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		self.assertRaises(frappe.ValidationError, entity.insert)
 
 	def test_primary_contact_active_accepted(self):
-		"""Test that an active person can be set as primary contact via contacts table"""
-		person = frappe.get_doc(
+		"""Test that an active individual can be set as primary contact via contacts table"""
+		individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Person",
+				"doctype": "KNAPS Individual",
 				"first_name": "Active Person",
 				"salutation": "Mr",
 				"gender": "Male",
@@ -1408,7 +1408,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"person": person.name,
+						"individual": individual.name,
 						"designation": "Manager",
 						"is_primary_contact": 1,
 					}
@@ -1435,7 +1435,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 			}
 		).insert()
 
-		self.assertEqual(entity.primary_contact, person.name)
+		self.assertEqual(entity.primary_contact, individual.name)
 
 	def test_primary_contact_empty_valid(self):
 		"""Test that entity without primary contact is valid"""

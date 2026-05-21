@@ -77,15 +77,15 @@
    "options": "KNAPS Holding Type"
   },
   {
-   "depends_on": "eval: doc.holding_type != 'Single' && doc.holder_type === 'KNAPS Person';",
+   "depends_on": "eval: doc.holding_type != 'Single' && doc.holder_type === 'KNAPS Individual';",
    "fieldname": "second_holder",
    "fieldtype": "Link",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Second Holder",
-   "link_filters": "[[\"KNAPS Person\",\"name\",\"!=\",\"eval: doc.first_holder\"]]",
-   "mandatory_depends_on": "eval: doc.holding_type != 'Single' && doc.holder_type === 'KNAPS Person';",
-   "options": "KNAPS Person"
+   "link_filters": "[[\"KNAPS Individual\",\"name\",\"!=\",\"eval: doc.first_holder\"]]",
+   "mandatory_depends_on": "eval: doc.holding_type != 'Single' && doc.holder_type === 'KNAPS Individual';",
+   "options": "KNAPS Individual"
   },
   {
    "fieldname": "section_break_iplt",
@@ -97,7 +97,7 @@
    "fieldname": "holder_type",
    "fieldtype": "Link",
    "label": "Holder Type",
-   "link_filters": "[[\"DocType\",\"name\",\"in\",[\"KNAPS Person\",\"KNAPS Non Individual\"]]]",
+   "link_filters": "[[\"DocType\",\"name\",\"in\",[\"KNAPS Individual\",\"KNAPS Non Individual\"]]]",
    "options": "DocType",
    "reqd": 1
   },
@@ -139,7 +139,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-20 18:39:46.585657",
+ "modified": "2026-05-21 12:04:11.972636",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Bank",

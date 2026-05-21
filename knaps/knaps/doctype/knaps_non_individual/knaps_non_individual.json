@@ -65,8 +65,8 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Primary Contact",
-   "link_filters": "[[\"KNAPS Person\",\"status\",\"!=\",\"Deceased\"]]",
-   "options": "KNAPS Person",
+   "link_filters": "[[\"KNAPS Individual\",\"status\",\"!=\",\"Deceased\"]]",
+   "options": "KNAPS Individual",
    "read_only": 1
   },
   {

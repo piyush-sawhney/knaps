@@ -23,7 +23,7 @@ function auto_mark_first_as_primary(rows, cdt, cdn, field) {
 }
 
 // Full name update handlers
-frappe.ui.form.on("KNAPS Person", {
+frappe.ui.form.on("KNAPS Individual", {
 	salutation: function (frm) {
 		frm.trigger("update_full_name");
 	},
@@ -46,7 +46,7 @@ frappe.ui.form.on("KNAPS Person", {
 	},
 });
 
-frappe.ui.form.on("KNAPS Person", "refresh", function (frm) {
+frappe.ui.form.on("KNAPS Individual", "refresh", function (frm) {
 	if (!frm.doc.__islocal) {
 		frappe.contacts.render_address_and_contact(frm);
 	} else {
@@ -67,7 +67,7 @@ frappe.ui.form.on("KNAPS Person", "refresh", function (frm) {
 		});
 	} else {
 		frm.add_custom_button(__("Create Profile"), function () {
-			frappe.new_doc("KNAPS Individual Profile", { person: frm.doc.name });
+			frappe.new_doc("KNAPS Individual Profile", { individual: frm.doc.name });
 		});
 	}
 });
@@ -118,7 +118,7 @@ frappe.ui.form.on("KNAPS Email", {
 });
 
 // Sync triggers for parent fields
-frappe.ui.form.on("KNAPS Person", {
+frappe.ui.form.on("KNAPS Individual", {
 	sync_primary_phone: function (frm) {
 		const primary_phone = frm.doc.phone_numbers?.find((p) => p.is_primary);
 		const value = primary_phone?.number || "";

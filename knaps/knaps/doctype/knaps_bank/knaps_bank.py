@@ -49,7 +49,7 @@ class KNAPSBank(Document):
 	def _validate_second_holder(self):
 		if not self.second_holder:
 			return
-		if self.holder_type != "KNAPS Person":
+		if self.holder_type != "KNAPS Individual":
 			frappe.throw(_("Second holder can only be set when the holder is an Individual."))
 		if self.holding_type == "Single":
 			frappe.throw(_("Second holder cannot be set when holding type is Single."))
@@ -58,13 +58,13 @@ class KNAPSBank(Document):
 
 	def _populate_holder_names(self):
 		if self.first_holder and self.holder_type:
-			name_field = "full_name" if self.holder_type == "KNAPS Person" else "legal_name"
+			name_field = "full_name" if self.holder_type == "KNAPS Individual" else "legal_name"
 			name = frappe.db.get_value(self.holder_type, self.first_holder, name_field)
 			self.first_holder_name = name or self.first_holder
 		else:
 			self.first_holder_name = None
 		if self.second_holder:
-			second_name = frappe.db.get_value("KNAPS Person", self.second_holder, "full_name")
+			second_name = frappe.db.get_value("KNAPS Individual", self.second_holder, "full_name")
 			self.second_holder_name = second_name or self.second_holder
 		else:
 			self.second_holder_name = None

@@ -26,7 +26,7 @@ from knaps.knaps.utils.party_validation import (
 )
 
 
-class KNAPSPerson(Document):
+class KNAPSIndividual(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -70,7 +70,7 @@ class KNAPSPerson(Document):
 		self.full_name = None
 		self._update_full_name()
 		normalize_pan(self)
-		validate_unique_pan(self, "KNAPS Person", "person")
+		validate_unique_pan(self, "KNAPS Individual", "individual")
 		self._validate_pan_format()
 		validate_phone_primary(self, check_whatsapp=True)
 		validate_email_primary(self, "email_address")

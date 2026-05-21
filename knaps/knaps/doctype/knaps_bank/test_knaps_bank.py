@@ -11,10 +11,10 @@ def create_holding_type(name):
 	return name
 
 
-def create_knaps_person(**kwargs):
+def create_knaps_individual(**kwargs):
 	doc = frappe.get_doc(
 		{
-			"doctype": "KNAPS Person",
+			"doctype": "KNAPS Individual",
 			"first_name": kwargs.get("first_name", "Test Person"),
 			"last_name": kwargs.get("last_name", ""),
 			"salutation": kwargs.get("salutation", "Mr"),
@@ -66,12 +66,12 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 			bank_name="Test Bank",
 			bank_account_number=frappe.generate_hash("acc", 10),
 			ifsc="HDFC0001234",
-			holder_type="KNAPS Person",
+			holder_type="KNAPS Individual",
 			holding_type="Single",
 		)
 		data = {**defaults, **kwargs}
 		if "first_holder" not in data:
-			person = create_knaps_person(first_name="Default")
+			person = create_knaps_individual(first_name="Default")
 			data["first_holder"] = person.name
 		doc = frappe.get_doc({"doctype": "KNAPS Bank", **data})
 		doc.insert()
@@ -91,7 +91,7 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 
 	def test_second_holder_non_person_rejected(self):
 		entity = create_knaps_non_individual()
-		person = create_knaps_person()
+		person = create_knaps_individual()
 		with self.assertRaises(frappe.ValidationError):
 			self._make_bank(
 				first_holder=entity.name,
@@ -100,7 +100,7 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 			)
 
 	def test_second_holder_single_holding_rejected(self):
-		second = create_knaps_person(first_name="Second")
+		second = create_knaps_individual(first_name="Second")
 		with self.assertRaises(frappe.ValidationError):
 			self._make_bank(
 				holding_type="Single",
@@ -108,7 +108,7 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 			)
 
 	def test_second_holder_same_as_first_rejected(self):
-		same = create_knaps_person(first_name="Same")
+		same = create_knaps_individual(first_name="Same")
 		with self.assertRaises(frappe.ValidationError):
 			self._make_bank(
 				first_holder=same.name,
@@ -117,7 +117,7 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 			)
 
 	def test_first_holder_name_populated_from_person(self):
-		person = create_knaps_person(first_name="John", last_name="Doe")
+		person = create_knaps_individual(first_name="John", last_name="Doe")
 		bank = self._make_bank(first_holder=person.name)
 		self.assertEqual(bank.first_holder_name, "Mr John Doe")
 
@@ -130,8 +130,8 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 		self.assertEqual(bank.first_holder_name, "Acme Corp")
 
 	def test_valid_second_holder_passes(self):
-		person = create_knaps_person(first_name="First")
-		second = create_knaps_person(first_name="Second")
+		person = create_knaps_individual(first_name="First")
+		second = create_knaps_individual(first_name="Second")
 		bank = self._make_bank(
 			first_holder=person.name,
 			holding_type="Anyone or Survivor",
@@ -140,8 +140,8 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 		self.assertIsNotNone(bank.name)
 
 	def test_clearing_second_holder_removes_second_holder_name(self):
-		person = create_knaps_person(first_name="First")
-		second = create_knaps_person(first_name="Second")
+		person = create_knaps_individual(first_name="First")
+		second = create_knaps_individual(first_name="Second")
 		bank = self._make_bank(
 			first_holder=person.name,
 			holding_type="Anyone or Survivor",
@@ -153,7 +153,7 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 		self.assertIsNone(bank.second_holder_name)
 
 	def test_title_from_holder_name_and_account(self):
-		person = create_knaps_person(first_name="John", last_name="Doe")
+		person = create_knaps_individual(first_name="John", last_name="Doe")
 		bank = self._make_bank(
 			first_holder=person.name,
 			bank_account_number="HDFC0012345",
@@ -173,8 +173,8 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 			self._make_bank(ifsc="12DF0001234")
 
 	def test_second_holder_name_populated_from_person(self):
-		person = create_knaps_person(first_name="First", last_name="Holder")
-		second = create_knaps_person(first_name="Second", last_name="Person")
+		person = create_knaps_individual(first_name="First", last_name="Holder")
+		second = create_knaps_individual(first_name="Second", last_name="Person")
 		bank = self._make_bank(
 			first_holder=person.name,
 			holding_type="Anyone or Survivor",
@@ -183,7 +183,7 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 		self.assertEqual(bank.second_holder_name, "Mr Second Person")
 
 	def test_title_with_only_holder_name(self):
-		person = create_knaps_person(first_name="John", last_name="Doe")
+		person = create_knaps_individual(first_name="John", last_name="Doe")
 		bank = self._make_bank(
 			first_holder=person.name,
 			bank_account_number="HDFC0000001",
@@ -191,7 +191,7 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 		self.assertEqual(bank.title, "Mr John Doe - 0001")
 
 	def test_title_from_last_four_digits_with_short_account(self):
-		person = create_knaps_person(first_name="Jane", last_name="Doe")
+		person = create_knaps_individual(first_name="Jane", last_name="Doe")
 		bank = self._make_bank(
 			first_holder=person.name,
 			bank_account_number="123",
@@ -199,6 +199,6 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 		self.assertEqual(bank.title, "Mr Jane Doe - 123")
 
 	def test_populate_first_holder_name_without_last_name(self):
-		person = create_knaps_person(first_name="SingleName", last_name="")
+		person = create_knaps_individual(first_name="SingleName", last_name="")
 		bank = self._make_bank(first_holder=person.name)
 		self.assertEqual(bank.first_holder_name, "Mr SingleName")

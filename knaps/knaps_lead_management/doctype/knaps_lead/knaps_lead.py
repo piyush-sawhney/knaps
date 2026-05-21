@@ -14,10 +14,7 @@ class KNAPSLead(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-
-		from knaps.knaps_lead_management.doctype.knaps_lead_interest.knaps_lead_interest import (
-			KNAPSLeadInterest,
-		)
+		from knaps.knaps_lead_management.doctype.knaps_lead_interest.knaps_lead_interest import KNAPSLeadInterest
 
 		age: DF.Int
 		email: DF.Data | None

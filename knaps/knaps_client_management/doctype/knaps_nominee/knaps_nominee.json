@@ -19,7 +19,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Nominee Name",
-   "options": "KNAPS Person"
+   "options": "KNAPS Individual"
   },
   {
    "fieldname": "nominee_date_of_birth",
@@ -44,7 +44,7 @@
    "fieldname": "guardian",
    "fieldtype": "Link",
    "label": "Guardian",
-   "options": "KNAPS Person"
+   "options": "KNAPS Individual"
   },
   {
    "default": "0",
@@ -57,7 +57,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-05-19 18:53:04.512453",
+ "modified": "2026-05-21 12:04:11.699951",
  "modified_by": "Administrator",
  "module": "KNAPS Client Management",
  "name": "KNAPS Nominee",

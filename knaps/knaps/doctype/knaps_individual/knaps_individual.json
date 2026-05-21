@@ -264,7 +264,7 @@
  "modified": "2026-05-19 18:05:55.988469",
  "modified_by": "Administrator",
  "module": "KNAPS",
- "name": "KNAPS Person",
+ "name": "KNAPS Individual",
  "naming_rule": "UUID",
  "owner": "Administrator",
  "permissions": [

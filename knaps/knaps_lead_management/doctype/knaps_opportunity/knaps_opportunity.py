@@ -15,10 +15,7 @@ class KNAPSOpportunity(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-
-		from knaps.knaps_lead_management.doctype.knaps_lead_interest.knaps_lead_interest import (
-			KNAPSLeadInterest,
-		)
+		from knaps.knaps_lead_management.doctype.knaps_lead_interest.knaps_lead_interest import KNAPSLeadInterest
 
 		client: DF.Link
 		client_name: DF.Data | None

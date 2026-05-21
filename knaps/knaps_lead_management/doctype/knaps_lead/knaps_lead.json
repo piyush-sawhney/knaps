@@ -18,11 +18,11 @@
   "lead_type",
   "lead",
   "column_break_eriv",
-  "lead_name",
-  "primary_contact",
-  "column_break_ceht",
   "source",
   "lead_interested_in",
+  "column_break_ceht",
+  "lead_name",
+  "primary_contact",
   "contact_details_section",
   "column_break_ecte",
   "preferred_contact_mode",
@@ -87,6 +87,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Lead Type",
+   "link_filters": "[[\"DocType\",\"name\",\"in\",[\"KNAPS Individual\",\"KNAPS Non Individual\"]]]",
    "options": "DocType",
    "reqd": 1
   },
@@ -103,13 +104,13 @@
    "read_only_depends_on": "eval: doc.__islocal;",
    "reqd": 1
   },
-   {
-    "fieldname": "lead_name",
-    "fieldtype": "Data",
-    "hidden": 1,
-    "label": "Lead Name",
-    "read_only": 1
-   },
+  {
+   "fieldname": "lead_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Lead Name",
+   "read_only": 1
+  },
   {
    "fieldname": "lead_interested_in",
    "fieldtype": "Table MultiSelect",
@@ -211,18 +212,18 @@
    "fieldtype": "Column Break"
   },
   {
-"depends_on": "eval: doc.lead_type === \"KNAPS Non Individual\"",
-    "fieldname": "primary_contact",
-    "fieldtype": "Link",
-    "label": "Primary Contact",
-    "options": "KNAPS Individual",
-    "read_only": 1
+   "depends_on": "eval: doc.lead_type === \"KNAPS Non Individual\"",
+   "fieldname": "primary_contact",
+   "fieldtype": "Link",
+   "label": "Primary Contact",
+   "options": "KNAPS Individual",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-21 13:19:57.189985",
+ "modified": "2026-05-21 13:54:25.289432",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Lead",
@@ -284,7 +285,7 @@
  "sort_order": "DESC",
  "states": [
   {
-   "color": "Purple",
+   "color": "Pink",
    "title": "New"
   },
   {
@@ -296,7 +297,7 @@
    "title": "Nurture"
   },
   {
-   "color": "Yellow",
+   "color": "Purple",
    "title": "Prospect"
   },
   {

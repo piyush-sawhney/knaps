@@ -9,13 +9,16 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "column_break_rbkm",
+  "column_break_qlms",
+  "column_break_eudt",
+  "status",
+  "section_break_gsej",
   "client",
   "client_name",
   "column_break_hsfl",
   "source",
   "opportunity_type",
-  "column_break_ymrq",
-  "status",
   "section_break_nchk",
   "phone",
   "column_break_goyu",
@@ -51,10 +54,6 @@
   },
   {
    "fieldname": "column_break_hsfl",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "column_break_ymrq",
    "fieldtype": "Column Break"
   },
   {
@@ -169,12 +168,28 @@
    "label": "Source",
    "options": "KNAPS Lead Source",
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_rbkm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_qlms",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_eudt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_gsej",
+   "fieldtype": "Section Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-14 15:07:18.380689",
+ "modified": "2026-05-21 13:57:31.703635",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Opportunity",

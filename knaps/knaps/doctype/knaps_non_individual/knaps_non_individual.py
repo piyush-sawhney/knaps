@@ -102,27 +102,20 @@ class KNAPSNonIndividual(Document):
 			primary_individual = self.contacts[0].individual
 
 		if primary_individual:
-			status = frappe.db.get_value("KNAPS Individual", primary_individual, "status")
-			if status == "Deceased":
+			individual = frappe.get_cached_doc("KNAPS Individual", primary_individual)
+
+			if individual.status == "Deceased":
 				frappe.throw(
 					_("Cannot set a deceased individual as primary contact."),
 					title=_("Invalid Contact"),
 				)
 
 			self.primary_contact = primary_individual
-
-			individual_data = frappe.db.get_value(
-				"KNAPS Individual",
-				primary_individual,
-				["full_name", "primary_phone", "primary_whatsapp", "primary_email", "preferred_contact_mode"],
-			)
-
-			if individual_data:
-				self.primary_contact_name = individual_data[0] or primary_individual
-				self.primary_contact_phone = individual_data[1] or None
-				self.primary_contact_whatsapp = individual_data[2] or None
-				self.primary_contact_email = individual_data[3] or None
-				self.preferred_contact_mode = individual_data[4] or None
+			self.primary_contact_name = individual.full_name or primary_individual
+			self.primary_contact_phone = individual.primary_phone or None
+			self.primary_contact_whatsapp = individual.primary_whatsapp or None
+			self.primary_contact_email = individual.primary_email or None
+			self.preferred_contact_mode = individual.preferred_contact_mode or None
 		else:
 			self.primary_contact = None
 			self.primary_contact_name = None

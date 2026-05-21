@@ -1,22 +1,27 @@
-# Copyright (c) 2026, KNAPS and Contributors and Contributors
-# See license.txt
-
-# import frappe
+import frappe
 from frappe.tests import IntegrationTestCase
 
-
-# On IntegrationTestCase, the doctype test records and all
-# link-field test record dependencies are recursively loaded
-# Use these module variables to add/remove to/from that list
-EXTRA_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
-IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
-
+EXTRA_TEST_RECORD_DEPENDENCIES = []
+IGNORE_TEST_RECORD_DEPENDENCIES = []
 
 
 class IntegrationTestKNAPSLeadSource(IntegrationTestCase):
-	"""
-	Integration tests for KNAPSLeadSource.
-	Use this class for testing interactions between multiple components.
-	"""
+    def setUp(self):
+        super().setUp()
+        frappe.db.savepoint("knaps_lead_source_sp")
 
-	pass
+    def tearDown(self):
+        frappe.db.rollback(save_point="knaps_lead_source_sp")
+        super().tearDown()
+
+    def test_create_lead_source(self):
+        source = frappe.get_doc(
+            {
+                "doctype": "KNAPS Lead Source",
+                "source_name": "Online Ad",
+            }
+        )
+        source.insert()
+
+        self.assertEqual(source.source_name, "Online Ad")
+        self.assertTrue(source.name)

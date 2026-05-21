@@ -70,27 +70,24 @@
    "fieldtype": "Section Break",
    "label": "Contact Details"
   },
-  {
-   "fetch_from": "client.primary_phone",
-   "fieldname": "phone",
+   {
+    "fieldname": "phone",
    "fieldtype": "Phone",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Phone",
    "read_only": 1
   },
-  {
-   "fetch_from": "client.primary_whatsapp",
-   "fieldname": "whatsapp",
+   {
+    "fieldname": "whatsapp",
    "fieldtype": "Phone",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Whatsapp",
    "read_only": 1
   },
-  {
-   "fetch_from": "client.primary_email",
-   "fieldname": "email",
+   {
+    "fieldname": "email",
    "fieldtype": "Data",
    "in_list_view": 1,
    "in_standard_filter": 1,
@@ -105,9 +102,8 @@
    "fieldname": "column_break_ieea",
    "fieldtype": "Column Break"
   },
-  {
-   "fetch_from": "client.client_name",
-   "fieldname": "client_name",
+   {
+    "fieldname": "client_name",
    "fieldtype": "Data",
    "label": "Client Name",
    "read_only": 1

@@ -33,6 +33,19 @@ class KNAPSOpportunity(Document):
 		whatsapp: DF.Phone | None
 	# end: auto-generated types
 
+	def before_save(self):
+		self._sync_client_data()
+
+	def _sync_client_data(self):
+		if not self.client:
+			return
+
+		client = frappe.get_cached_doc("KNAPS Client", self.client)
+		self.client_name = client.client_name
+		self.phone = client.primary_phone
+		self.whatsapp = client.primary_whatsapp
+		self.email = client.primary_email
+
 	def validate(self):
 		self._validate_unique_opportunity()
 

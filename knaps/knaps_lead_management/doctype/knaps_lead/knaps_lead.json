@@ -185,12 +185,13 @@
    "fieldname": "column_break_gafp",
    "fieldtype": "Column Break"
   },
-  {
-   "fieldname": "preferred_contact_mode",
-   "fieldtype": "Data",
-   "label": "Preferred Contact Mode",
-   "read_only": 1
-  },
+   {
+    "fieldname": "preferred_contact_mode",
+    "fieldtype": "Select",
+    "label": "Preferred Contact Mode",
+    "options": "\nPhone\nWhatsapp\nEmail",
+    "read_only": 1
+   },
   {
    "fieldname": "lead",
    "fieldtype": "Dynamic Link",

@@ -58,7 +58,7 @@ class KNAPSNonIndividual(Document):
 		non_individual_type: DF.Link
 		pan: DF.Data | None
 		phone_numbers: DF.Table[KNAPSPhoneNumber]
-		preferred_contact_mode: DF.Data | None
+		preferred_contact_mode: DF.Literal["", "Phone", "Whatsapp", "Email"] | None
 		primary_contact: DF.Link | None
 		primary_contact_email: DF.Data | None
 		primary_contact_name: DF.Data | None

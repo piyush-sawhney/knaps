@@ -23,7 +23,7 @@ class KNAPSLead(Document):
 		lead_name: DF.Data | None
 		lead_type: DF.Link
 		phone: DF.Phone | None
-		preferred_contact_mode: DF.Data | None
+		preferred_contact_mode: DF.Literal["", "Phone", "Whatsapp", "Email"] | None
 		primary_contact: DF.Link | None
 		source: DF.Link
 		status: DF.Literal["", "New", "Qualified", "Nurture", "Prospect", "Won", "Lost", "Junk"]

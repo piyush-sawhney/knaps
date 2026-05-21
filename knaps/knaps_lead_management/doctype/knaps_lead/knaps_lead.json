@@ -16,10 +16,10 @@
   "status",
   "lead_details_section",
   "lead_type",
-  "column_break_eriv",
   "lead",
+  "column_break_eriv",
   "lead_name",
-  "organisation_name",
+  "primary_contact",
   "column_break_ceht",
   "source",
   "lead_interested_in",
@@ -30,10 +30,6 @@
   "column_break_vaic",
   "phone",
   "whatsapp",
-  "section_break_cwrs",
-  "gender",
-  "column_break_hzwo",
-  "age",
   "additional_details_tab",
   "marketing_metadata_section",
   "utm_source",
@@ -61,16 +57,6 @@
    "label": "Contact Details"
   },
   {
-   "depends_on": "eval: doc.lead_type === \"Non-Individual\"",
-   "fieldname": "organisation_name",
-   "fieldtype": "Link",
-   "label": "Organisation Name",
-   "mandatory_depends_on": "eval: doc.lead_type === \"Non-Individual\"",
-   "options": "KNAPS Non Individual"
-  },
-  {
-   "default": "+91-",
-   "fetch_from": "lead.primary_phone",
    "fieldname": "phone",
    "fieldtype": "Phone",
    "in_list_view": 1,
@@ -79,7 +65,6 @@
    "read_only": 1
   },
   {
-   "fetch_from": "lead.primary_whatsapp",
    "fieldname": "whatsapp",
    "fieldtype": "Phone",
    "in_list_view": 1,
@@ -88,7 +73,6 @@
    "read_only": 1
   },
   {
-   "fetch_from": "lead.primary_email",
    "fieldname": "email",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -99,11 +83,11 @@
   },
   {
    "fieldname": "lead_type",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Lead Type",
-   "options": "\nIndividual\nNon-Individual",
+   "options": "DocType",
    "reqd": 1
   },
   {
@@ -119,14 +103,13 @@
    "read_only_depends_on": "eval: doc.__islocal;",
    "reqd": 1
   },
-  {
-   "fetch_from": "lead.full_name",
-   "fieldname": "lead_name",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Lead Name",
-   "read_only": 1
-  },
+   {
+    "fieldname": "lead_name",
+    "fieldtype": "Data",
+    "hidden": 1,
+    "label": "Lead Name",
+    "read_only": 1
+   },
   {
    "fieldname": "lead_interested_in",
    "fieldtype": "Table MultiSelect",
@@ -202,44 +185,18 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "lead.preferred_contact_mode",
    "fieldname": "preferred_contact_mode",
    "fieldtype": "Data",
    "label": "Preferred Contact Mode",
    "read_only": 1
   },
   {
-   "fetch_from": "lead.gender",
-   "fieldname": "gender",
-   "fieldtype": "Link",
-   "label": "Gender",
-   "options": "Gender",
-   "read_only": 1
-  },
-  {
    "fieldname": "lead",
-   "fieldtype": "Link",
+   "fieldtype": "Dynamic Link",
    "in_standard_filter": 1,
    "label": "Lead",
-   "options": "KNAPS Individual",
+   "options": "lead_type",
    "reqd": 1
-  },
-  {
-   "depends_on": "eval: !doc.__islocal",
-   "fieldname": "section_break_cwrs",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "column_break_hzwo",
-   "fieldtype": "Column Break"
-  },
-  {
-   "depends_on": "eval: doc.age !==0;",
-   "fetch_from": "lead.age",
-   "fieldname": "age",
-   "fieldtype": "Int",
-   "label": "Age",
-   "read_only": 1
   },
   {
    "fieldname": "column_break_cxfn",
@@ -252,12 +209,20 @@
   {
    "fieldname": "column_break_uhry",
    "fieldtype": "Column Break"
+  },
+  {
+"depends_on": "eval: doc.lead_type === \"KNAPS Non Individual\"",
+    "fieldname": "primary_contact",
+    "fieldtype": "Link",
+    "label": "Primary Contact",
+    "options": "KNAPS Individual",
+    "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-21 12:04:11.540248",
+ "modified": "2026-05-21 13:19:57.189985",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "KNAPS Lead",

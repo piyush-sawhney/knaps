@@ -16,17 +16,15 @@ class KNAPSLead(Document):
 		from frappe.types import DF
 		from knaps.knaps_lead_management.doctype.knaps_lead_interest.knaps_lead_interest import KNAPSLeadInterest
 
-		age: DF.Int
 		email: DF.Data | None
-		gender: DF.Link | None
 		internal_notes: DF.TextEditor | None
-		lead: DF.Link
+		lead: DF.DynamicLink
 		lead_interested_in: DF.TableMultiSelect[KNAPSLeadInterest]
 		lead_name: DF.Data | None
-		lead_type: DF.Literal["", "Individual", "Non-Individual"]
-		organisation_name: DF.Link | None
+		lead_type: DF.Link
 		phone: DF.Phone | None
 		preferred_contact_mode: DF.Data | None
+		primary_contact: DF.Link | None
 		source: DF.Link
 		status: DF.Literal["", "New", "Qualified", "Nurture", "Prospect", "Won", "Lost", "Junk"]
 		utm_campaign: DF.Data | None
@@ -37,34 +35,27 @@ class KNAPSLead(Document):
 		whatsapp: DF.Phone | None
 	# end: auto-generated types
 
-	def validate(self):
-		self.validate_unique_lead_name()
-		self._validate_lead_type_and_organisation()
+	def before_save(self):
+		self._sync_lead_data()
 
-	def _validate_lead_type_and_organisation(self):
-		if self.lead_type == "Individual" and self.organisation_name:
-			frappe.throw(
-				_("Organisation Name should be empty for Individual lead type."), title=_("Invalid Lead Type")
-			)
-		elif self.lead_type == "Non-Individual" and not self.organisation_name:
-			frappe.throw(
-				_("Organisation Name is required for Non-Individual lead type."), title=_("Invalid Lead Type")
-			)
+	def _sync_lead_data(self):
+		if not self.lead or not self.lead_type:
+			return
 
-	def validate_unique_lead_name(self):
-		if self.lead_name:
-			exists = frappe.db.exists(
-				"KNAPS Lead",
-				{
-					"lead": self.lead,
-					"status": ["not in", ["Lost", "Won", "Junk"]],
-					"name": ["!=", self.name],
-					"lead_type": self.lead_type,
-				},
-			)
+		if self.lead_type == "KNAPS Individual":
+			individual = frappe.get_cached_doc("KNAPS Individual", self.lead)
+			self.lead_name = individual.full_name
+			self.preferred_contact_mode = individual.preferred_contact_mode
+			self.phone = individual.primary_phone
+			self.whatsapp = individual.primary_whatsapp
+			self.email = individual.primary_email
+			self.primary_contact = None
 
-			if exists:
-				frappe.throw(
-					_("A lead with the name '{}' already exists.").format(self.lead_name),
-					title=_("Duplicate Lead Name"),
-				)
+		elif self.lead_type == "KNAPS Non Individual":
+			entity = frappe.get_cached_doc("KNAPS Non Individual", self.lead)
+			self.lead_name = entity.legal_name
+			self.primary_contact = entity.primary_contact
+			self.preferred_contact_mode = entity.preferred_contact_mode
+			self.phone = entity.primary_contact_phone
+			self.whatsapp = entity.primary_contact_whatsapp
+			self.email = entity.primary_contact_email

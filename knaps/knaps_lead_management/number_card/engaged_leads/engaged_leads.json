@@ -6,7 +6,7 @@
  "doctype": "Number Card",
  "document_type": "KNAPS Lead",
  "dynamic_filters_json": "[]",
- "filters_json": "[[\"KNAPS Lead\",\"status\",\"not in\",[\"New\",\"Won\",\"Lost\",\"Junk\"]]]",
+ "filters_json": "[[\"KNAPS Lead\",\"status\",\"not in\",[\"New\",\"Won\",\"Lost\",\"Junk\"]],[\"KNAPS Lead\",\"modified\",\"Timespan\",\"last 90 days\"]]",
  "function": "Count",
  "idx": 0,
  "is_public": 1,

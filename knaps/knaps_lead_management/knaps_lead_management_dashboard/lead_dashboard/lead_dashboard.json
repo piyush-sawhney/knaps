@@ -1,16 +1,16 @@
 {
  "cards": [
   {
-   "card": "New Leads Generated (Last 90 Days)"
+   "card": "New Leads"
   },
   {
    "card": "Engaged Leads"
   },
   {
-   "card": "Leads Lost (Last 90 Days)"
+   "card": "Leads Lost"
   },
   {
-   "card": "New Opportunities (Last 90 Days)"
+   "card": "New Opportunity"
   },
   {
    "card": "Engaged Opportunities"
@@ -44,7 +44,7 @@
  "idx": 0,
  "is_default": 1,
  "is_standard": 1,
- "modified": "2026-05-14 19:03:27.014804",
+ "modified": "2026-05-21 14:18:01.713325",
  "modified_by": "Administrator",
  "module": "KNAPS Lead Management",
  "name": "Lead Dashboard",

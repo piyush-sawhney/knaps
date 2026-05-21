@@ -21,6 +21,7 @@ class KNAPSEntityIndividual(Document):
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data
+		registration_number: DF.Data | None
 		role: DF.Link
 		to_date: DF.Date | None
 	# end: auto-generated types

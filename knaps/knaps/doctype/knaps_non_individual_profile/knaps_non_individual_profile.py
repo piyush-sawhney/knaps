@@ -13,12 +13,14 @@ class KNAPSNonIndividualProfile(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+		from knaps.knaps.doctype.knaps_entity_individual.knaps_entity_individual import KNAPSEntityIndividual
 
 		country_of_incorporation: DF.Link | None
 		date_of_incorporation: DF.Date | None
 		industry_sector: DF.Link | None
 		is_listed_entity: DF.Check
 		is_politcally_exposed_entity: DF.Check
+		members: DF.Table[KNAPSEntityIndividual]
 		non_individual_entity: DF.Link
 		place_of_incorporation: DF.Data | None
 		registration_number: DF.Data | None

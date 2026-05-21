@@ -17,7 +17,9 @@
   "column_break_ytvn",
   "date_of_incorporation",
   "place_of_incorporation",
-  "country_of_incorporation"
+  "country_of_incorporation",
+  "section_break_wugb",
+  "members"
  ],
  "fields": [
   {
@@ -90,12 +92,23 @@
    "fieldname": "is_politcally_exposed_entity",
    "fieldtype": "Check",
    "label": "Is Politically Exposed Entity?"
+  },
+  {
+   "fieldname": "section_break_wugb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "members",
+   "fieldtype": "Table",
+   "label": "Members",
+   "options": "KNAPS Entity Individual",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-20 18:47:45.775635",
+ "modified": "2026-05-21 17:39:54.345788",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual Profile",

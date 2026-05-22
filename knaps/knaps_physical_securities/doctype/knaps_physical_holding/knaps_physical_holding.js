@@ -1,7 +1,7 @@
 // Copyright (c) 2026, KNAPS and Contributors and contributors
 // For license information, please see license.txt
 
-// frappe.ui.form.on("KNAPS Depository Participant", {
+// frappe.ui.form.on("KNAPS Physical Holding", {
 // 	refresh(frm) {
 
 // 	},

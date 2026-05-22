@@ -1,35 +1,47 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
- "creation": "2026-05-01 13:53:19.103175",
+ "autoname": "field:isin",
+ "creation": "2026-05-22 13:27:40.257698",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "company",
+  "company_name",
+  "isin",
   "cin"
  ],
  "fields": [
   {
-   "fieldname": "company",
-   "fieldtype": "Link",
+   "fieldname": "company_name",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Name",
    "options": "KNAPS Non Individual",
    "reqd": 1
   },
   {
+   "fieldname": "isin",
+   "fieldtype": "Data",
+   "label": "ISIN",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
    "fieldname": "cin",
    "fieldtype": "Data",
-   "label": "CIN"
+   "label": "CIN",
+   "unique": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-01 13:53:59.457545",
+ "modified": "2026-05-22 15:49:46.581789",
  "modified_by": "Administrator",
- "module": "KNAPS Equity",
- "name": "KNAPS Shareholding Company",
+ "module": "KNAPS Physical Securities",
+ "name": "KNAPS Physical Holding Company",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -47,7 +59,9 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "company_name"
 }

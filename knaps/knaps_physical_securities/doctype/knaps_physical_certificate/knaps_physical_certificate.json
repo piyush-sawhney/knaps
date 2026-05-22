@@ -1,0 +1,93 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-22 14:48:18.132733",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "is_valid_certificate",
+  "certificate_number",
+  "face_value",
+  "distinctive_number_from",
+  "distinctive_number_to",
+  "company_name_as_per_certificate",
+  "quantity"
+ ],
+ "fields": [
+  {
+   "fieldname": "certificate_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Certificate Number",
+   "reqd": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "face_value",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Face Value",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "distinctive_number_from",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Distinctive Number From",
+   "reqd": 1
+  },
+  {
+   "fieldname": "distinctive_number_to",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Distinctive Number To",
+   "reqd": 1
+  },
+  {
+   "description": "Only if different from the current Name",
+   "fieldname": "company_name_as_per_certificate",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Company Name as per Certificate"
+  },
+  {
+   "columns": 1,
+   "fieldname": "quantity",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Quantity",
+   "read_only": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "is_valid_certificate",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Is Valid Certificate?"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-05-22 15:55:35.878926",
+ "modified_by": "Administrator",
+ "module": "KNAPS Physical Securities",
+ "name": "KNAPS Physical Certificate",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

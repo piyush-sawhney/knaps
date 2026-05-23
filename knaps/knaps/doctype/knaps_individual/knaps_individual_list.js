@@ -25,7 +25,7 @@ frappe.listview_settings["KNAPS Individual"] = {
 	formatters: {
 		age: function (val, df, doc) {
 			if (!doc.date_of_birth || val == null) return "";
-			return val + " yrs";
+			return val + " " + __("yrs");
 		},
 		pan: function (val) {
 			if (!val) return "";
@@ -38,7 +38,7 @@ frappe.listview_settings["KNAPS Individual"] = {
 				Whatsapp: "fa fa-whatsapp",
 				Email: "fa fa-envelope",
 			};
-			return `<i class="${icons[val] || "fa fa-circle"}"></i> ${val}`;
+			return `<i class="${icons[val] || "fa fa-circle"}"></i> ${__(val)}`;
 		},
 		primary_phone: function (val) {
 			if (!val) return "";

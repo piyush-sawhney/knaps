@@ -1,26 +1,8 @@
 // Copyright (c) 2026, KNAPS and Contributors and contributors
 // For license information, please see license.txt
 
-// Shared helpers for child table row management
-function enforce_single_primary(rows, cdt, cdn, field) {
-	if (!rows) return;
-	rows.forEach((row) => {
-		if (row.name !== cdn && row[field]) {
-			frappe.model.set_value(cdt, row.name, field, 0);
-		}
-	});
-}
-
-function auto_mark_first_as_primary(rows, cdt, cdn, field) {
-	if (!rows) return;
-	const row = rows.find((r) => r.name === cdn);
-	if (row && !row[field]) {
-		const hasExistingPrimary = rows.some((r) => r.name !== cdn && r[field]);
-		if (!hasExistingPrimary) {
-			frappe.model.set_value(cdt, cdn, field, 1);
-		}
-	}
-}
+// Shared helpers (enforce_single_primary, auto_mark_first_as_primary)
+// are loaded globally via app_include_js from child_table_helpers.js
 
 // Full name update handlers
 frappe.ui.form.on("KNAPS Individual", {
@@ -123,33 +105,21 @@ frappe.ui.form.on("KNAPS Individual", {
 		const primary_phone = frm.doc.phone_numbers?.find((p) => p.is_primary);
 		const value = primary_phone?.number || "";
 		if (frm.doc.primary_phone !== value) {
-			frm.doc.primary_phone = value;
-			const field = frm.fields_dict.primary_phone;
-			if (field && field.$input) {
-				field.$input.val(value).trigger("change");
-			}
+			frm.set_value("primary_phone", value);
 		}
 	},
 	sync_primary_whatsapp: function (frm) {
 		const whatsapp_phone = frm.doc.phone_numbers?.find((p) => p.is_whatsapp);
 		const value = whatsapp_phone?.number || "";
 		if (frm.doc.primary_whatsapp !== value) {
-			frm.doc.primary_whatsapp = value;
-			const field = frm.fields_dict.primary_whatsapp;
-			if (field && field.$input) {
-				field.$input.val(value).trigger("change");
-			}
+			frm.set_value("primary_whatsapp", value);
 		}
 	},
 	sync_primary_email: function (frm) {
 		const primary_email = frm.doc.email_address?.find((e) => e.is_primary);
 		const value = primary_email?.email_address || "";
 		if (frm.doc.primary_email !== value) {
-			frm.doc.primary_email = value;
-			const field = frm.fields_dict.primary_email;
-			if (field && field.$input) {
-				field.$input.val(value).trigger("change");
-			}
+			frm.set_value("primary_email", value);
 		}
 	},
 });

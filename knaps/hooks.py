@@ -26,7 +26,7 @@ add_to_apps_screen = [
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/knaps/css/knaps.css"
-# app_include_js = "/assets/knaps/js/knaps.js"
+app_include_js = "/assets/knaps/js/child_table_helpers.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/knaps/css/knaps.css"

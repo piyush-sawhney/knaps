@@ -24,60 +24,28 @@ frappe.ui.form.on("KNAPS Non Individual", "refresh", function (frm) {
 // Phone Numbers - Primary validation
 frappe.ui.form.on("KNAPS Phone Number", {
 	is_primary: function (frm, cdt, cdn) {
-		if (frm.doc.phone_numbers) {
-			frm.doc.phone_numbers.forEach((row) => {
-				if (row.name !== cdn && row.is_primary) {
-					frappe.model.set_value(cdt, row.name, "is_primary", 0);
-				}
-			});
-		}
+		enforce_single_primary(frm.doc.phone_numbers, cdt, cdn, "is_primary");
 	},
 
 	number: function (frm, cdt, cdn) {
-		const row = frm.doc.phone_numbers?.find((r) => r.name === cdn);
-		if (row && !row.is_primary) {
-			const otherRows = frm.doc.phone_numbers?.filter((r) => r.name !== cdn);
-			const hasExistingPrimary = otherRows?.some((r) => r.is_primary);
-			if (!hasExistingPrimary) {
-				frappe.model.set_value(cdt, cdn, "is_primary", 1);
-			}
-		}
+		auto_mark_first_as_primary(frm.doc.phone_numbers, cdt, cdn, "is_primary");
 	},
 });
 
 // Email Addresses - Primary validation
 frappe.ui.form.on("KNAPS Email", {
 	is_primary: function (frm, cdt, cdn) {
-		if (frm.doc.email_addresses) {
-			frm.doc.email_addresses.forEach((row) => {
-				if (row.name !== cdn && row.is_primary) {
-					frappe.model.set_value(cdt, row.name, "is_primary", 0);
-				}
-			});
-		}
+		enforce_single_primary(frm.doc.email_addresses, cdt, cdn, "is_primary");
 	},
 
 	email_address: function (frm, cdt, cdn) {
-		const row = frm.doc.email_addresses?.find((r) => r.name === cdn);
-		if (row && !row.is_primary) {
-			const otherRows = frm.doc.email_addresses?.filter((r) => r.name !== cdn);
-			const hasExistingPrimary = otherRows?.some((r) => r.is_primary);
-			if (!hasExistingPrimary) {
-				frappe.model.set_value(cdt, cdn, "is_primary", 1);
-			}
-		}
+		auto_mark_first_as_primary(frm.doc.email_addresses, cdt, cdn, "is_primary");
 	},
 });
 
 // Entity Contacts - Single primary enforcement
 frappe.ui.form.on("KNAPS Entity Contact", {
 	is_primary_contact: function (frm, cdt, cdn) {
-		if (frm.doc.contacts) {
-			frm.doc.contacts.forEach((row) => {
-				if (row.name !== cdn && row.is_primary_contact) {
-					frappe.model.set_value(cdt, row.name, "is_primary_contact", 0);
-				}
-			});
-		}
+		enforce_single_primary(frm.doc.contacts, cdt, cdn, "is_primary_contact");
 	},
 });

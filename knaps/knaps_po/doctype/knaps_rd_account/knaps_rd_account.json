@@ -43,37 +43,47 @@
    "options": "KNAPS PO Investment"
   },
   {
+   "fetch_from": "po_rd_investment.client_name",
    "fieldname": "client_name",
    "fieldtype": "Data",
-   "label": "Client Name"
+   "label": "Client Name",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_xcal",
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "po_rd_investment.account_number",
    "fieldname": "account_number",
    "fieldtype": "Data",
-   "label": "Account Number"
+   "label": "Account Number",
+   "read_only": 1
   },
   {
+   "fetch_from": "po_rd_investment.amount",
    "fieldname": "amount",
    "fieldtype": "Currency",
-   "label": "Amount"
+   "label": "Amount",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_svly",
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "po_rd_investment.status",
    "fieldname": "status",
    "fieldtype": "Data",
-   "label": "Status"
+   "label": "Status",
+   "read_only": 1
   },
   {
+   "fetch_from": "po_rd_investment.start_date",
    "fieldname": "start_date",
    "fieldtype": "Date",
-   "label": "Start Date"
+   "label": "Start Date",
+   "read_only": 1
   },
   {
    "fieldname": "portal_details_section",
@@ -196,7 +206,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-27 13:07:26.883137",
+ "modified": "2026-05-23 17:41:08.200626",
  "modified_by": "Administrator",
  "module": "KNAPS PO",
  "name": "KNAPS RD Account",

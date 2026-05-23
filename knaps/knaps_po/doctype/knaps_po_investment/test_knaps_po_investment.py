@@ -37,6 +37,7 @@ class TestKNAPSPOInvestment(IntegrationTestCase):
 		self.guardian_client = self._create_client("Individual", self.guardian_individual)
 		self.nominee_client = self._create_client("Individual", self.nominee_individual)
 		self.relationship = self._create_relationship("Spouse")
+		self.payment_type = self._create_payment_type("Cash")
 
 	def _create_holding_type(self, name: str) -> str:
 		if frappe.db.exists("KNAPS Holding Type", name):
@@ -93,6 +94,17 @@ class TestKNAPSPOInvestment(IntegrationTestCase):
 		}).insert()
 		return name
 
+	def _create_payment_type(self, name: str) -> str:
+		existing = frappe.db.get_value("KNAPS Payment Type", {"payment_type": name}, "name")
+		if existing:
+			return existing
+		doc = frappe.get_doc({
+			"doctype": "KNAPS Payment Type",
+			"payment_type": name,
+		})
+		doc.insert()
+		return doc.name
+
 	def _make_investment(self, **kwargs):
 		defaults = {
 			"doctype": "KNAPS PO Investment",
@@ -127,12 +139,14 @@ class TestKNAPSPOInvestment(IntegrationTestCase):
 		doc.append("payments", {
 			"payment_date": today(),
 			"payment_amount": 10000,
+			"payment_type": self.payment_type,
+			"status": "Pending",
 		})
 
 	def test_autoname_format(self):
 		doc = self._make_investment(
-			start_date="2026-06-01",
-			entry_date="2026-06-01",
+			start_date=today(),
+			entry_date=today(),
 		)
 		self._add_holder(doc, self.adult_client, "First")
 		self._add_nominee(doc, self.nominee_individual)

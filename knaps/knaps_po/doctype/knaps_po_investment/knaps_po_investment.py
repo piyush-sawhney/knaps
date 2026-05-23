@@ -1,11 +1,10 @@
 from datetime import date
 
 import frappe
+from dateutil.relativedelta import relativedelta
 from frappe import _
 from frappe.model.document import Document
-from dateutil.relativedelta import relativedelta
-
-from frappe.utils import add_months, getdate, today
+from frappe.utils import add_months, formatdate, getdate, today
 
 
 class KNAPSPOInvestment(Document):
@@ -16,6 +15,7 @@ class KNAPSPOInvestment(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from knaps.knaps.doctype.knaps_payment.knaps_payment import KNAPSPayment
 		from knaps.knaps_client_management.doctype.knaps_holder.knaps_holder import KNAPSHolder
 		from knaps.knaps_client_management.doctype.knaps_nominee.knaps_nominee import KNAPSNominee
@@ -84,10 +84,9 @@ class KNAPSPOInvestment(Document):
 		self._set_maturity_date()
 
 	def validate(self) -> None:
+		self._nominee_name_cache = self._build_nominee_name_cache()
 		self._validate_unique_holders()
 		self._validate_minor_holder()
-		self._validate_minor_guardian()
-		self._validate_guardian_not_minor()
 		self._validate_holders_by_holding_type()
 		self._validate_nominee_not_holder()
 		self._validate_unique_nominees()
@@ -95,8 +94,10 @@ class KNAPSPOInvestment(Document):
 		self._validate_nominee_minor_guardian()
 		self._validate_nominees()
 		self._validate_payments()
+		self._validate_entry_date_not_future()
 		self._validate_no_dates_for_entry_status()
 		self._validate_start_date_with_account()
+		self._validate_extension_sequence()
 
 	def _set_title(self) -> None:
 		if self.client_name and self.scheme_code:
@@ -233,28 +234,46 @@ class KNAPSPOInvestment(Document):
 	def _get_nominee_display(self, nominee) -> str:
 		if not nominee.nominee_name:
 			return ""
-		return (
-			frappe.db.get_value("KNAPS Individual", nominee.nominee_name, "full_name")
-			or nominee.nominee_name
+		return self._nominee_name_cache.get(nominee.nominee_name, nominee.nominee_name)
+
+	def _build_nominee_name_cache(self) -> dict[str, str]:
+		nominees = self.get("nominees")
+		if not nominees:
+			return {}
+		names = [n.nominee_name for n in nominees if n.nominee_name]
+		if not names:
+			return {}
+		records = frappe.db.get_all(
+			"KNAPS Individual",
+			filters={"name": ["in", names]},
+			fields=["name", "full_name"],
 		)
+		return {r["name"]: r["full_name"] or r["name"] for r in records}
 
 	def _set_nominee_minor_status(self) -> None:
+		reference_date = self.entry_date or today()
 		for nominee in self.get("nominees"):
 			if nominee.nominee_date_of_birth:
-				age = relativedelta(getdate(today()), getdate(nominee.nominee_date_of_birth)).years
+				age = relativedelta(getdate(reference_date), getdate(nominee.nominee_date_of_birth)).years
 				nominee.is_minor = 1 if age < 18 else 0
 
 	def _validate_nominee_not_holder(self) -> None:
-		if not self.get("holders") or not self.get("nominees"):
+		holders = self.get("holders")
+		nominees = self.get("nominees")
+		if not holders or not nominees:
 			return
 
-		holder_individuals: set[str] = set()
-		for holder in self.get("holders"):
-			individual = frappe.db.get_value("KNAPS Client", holder.holder, "individual")
-			if individual:
-				holder_individuals.add(individual)
+		holder_names = [h.holder for h in holders]
+		client_data = frappe.db.get_all(
+			"KNAPS Client",
+			filters={"name": ["in", holder_names]},
+			fields=["name", "individual"],
+		)
+		holder_individuals: set[str] = {
+			c["individual"] for c in client_data if c["individual"]
+		}
 
-		for nominee in self.get("nominees"):
+		for nominee in nominees:
 			if nominee.nominee_name in holder_individuals:
 				frappe.throw(
 					_("Nominee {} cannot be a holder of this investment.").format(
@@ -342,3 +361,44 @@ class KNAPSPOInvestment(Document):
 				_("Start Date is required when Account Number is provided."),
 				title=_("Missing Start Date"),
 			)
+
+	def _validate_entry_date_not_future(self) -> None:
+		if getdate(self.entry_date) > getdate(today()):
+			frappe.throw(
+				_("Entry Date cannot be in the future."),
+				title=_("Invalid Entry Date"),
+			)
+
+	def _validate_extension_sequence(self) -> None:
+		extensions = self.get("extensions")
+		if not extensions:
+			return
+
+		if not self.extend_investment:
+			frappe.throw(
+				_("Extensions can only be added when Extend Investment is checked."),
+				title=_("Invalid Extension"),
+			)
+
+		original_maturity = add_months(getdate(self.start_date), self.period_in_months)
+
+		for i, ext in enumerate(extensions):
+			ext_num = ext.idx
+			if i == 0:
+				if getdate(ext.extension_date) < getdate(original_maturity):
+					frappe.throw(
+						_("Extension #{}: Date must be on or after the maturity date {}.").format(
+							ext_num, formatdate(original_maturity, "dd-mm-yyyy")
+						),
+						title=_("Invalid Extension Date"),
+					)
+			else:
+				prev = extensions[i - 1]
+				prev_maturity = add_months(getdate(prev.extension_date), prev.extension_period)
+				if getdate(ext.extension_date) < getdate(prev_maturity):
+					frappe.throw(
+						_("Extension #{}: Date must be on or after the previous maturity date {}.").format(
+							ext_num, formatdate(prev_maturity, "dd-mm-yyyy")
+						),
+						title=_("Invalid Extension Date"),
+					)

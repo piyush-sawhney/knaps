@@ -20,10 +20,10 @@ class KNAPSPayment(Document):
 		payment_amount: DF.Currency
 		payment_bank: DF.Link | None
 		payment_currency: DF.Link | None
-		payment_date: DF.Date | None
+		payment_date: DF.Date
 		payment_reference_number: DF.Data | None
-		payment_type: DF.Link | None
-		status: DF.Literal[None]
+		payment_type: DF.Link
+		status: DF.Literal["", "Pending", "Collected", "Deposited", "Cleared", "Failed", "Refunded"]
 	# end: auto-generated types
 
 	pass

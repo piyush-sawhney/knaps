@@ -17,9 +17,9 @@ class KNAPSNominee(Document):
 		guardian: DF.Link | None
 		is_minor: DF.Check
 		nominee_date_of_birth: DF.Date | None
-		nominee_name: DF.Link | None
-		nominee_percent: DF.Percent
-		nominee_relation: DF.Link | None
+		nominee_name: DF.Link
+		nominee_percent: DF.Float
+		nominee_relation: DF.Link
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data

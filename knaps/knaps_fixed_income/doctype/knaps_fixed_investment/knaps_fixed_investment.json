@@ -22,7 +22,7 @@
   "third_holder",
   "column_break_znoy",
   "through_us",
-  "existing_investment",
+  "is_existing_investment",
   "through_partner",
   "partner",
   "column_break_vopc",
@@ -130,7 +130,7 @@
   {
    "default": "0",
    "description": "Check if at the date of entry, investment is already created",
-   "fieldname": "existing_investment",
+   "fieldname": "is_existing_investment",
    "fieldtype": "Check",
    "label": "Existing Investment?"
   },

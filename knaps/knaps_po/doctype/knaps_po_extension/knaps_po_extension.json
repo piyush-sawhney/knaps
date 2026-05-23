@@ -15,6 +15,7 @@
    "fieldname": "extension_date",
    "fieldtype": "Date",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Extension Date",
    "reqd": 1
   },
@@ -22,6 +23,7 @@
    "fieldname": "extension_period",
    "fieldtype": "Int",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Extension Period",
    "non_negative": 1,
    "reqd": 1
@@ -29,6 +31,8 @@
   {
    "fieldname": "extension_roi",
    "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Extension RoI",
    "non_negative": 1,
    "reqd": 1
@@ -38,7 +42,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-25 12:29:43.606355",
+ "modified": "2026-05-23 16:20:06.049767",
  "modified_by": "Administrator",
  "module": "KNAPS PO",
  "name": "KNAPS PO Extension",

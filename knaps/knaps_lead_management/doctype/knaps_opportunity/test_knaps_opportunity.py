@@ -81,21 +81,23 @@ class IntegrationTestKNAPSOpportunity(IntegrationTestCase):
         return doc
 
     def test_client_syncs_contact_fields(self):
-        client, individual = create_test_client(
-            client_name="Jane Doe",
+        individual = create_test_individual(
+            first_name="Jane",
+            last_name="Doe",
             phone="+91 7777777777",
             email="jane@example.com",
         )
+        client, _ = create_test_client(individual=individual)
 
         opp = self._make_opportunity(
             client=client.name,
             opportunity_type=[{"product": "Mutual Funds"}],
         )
 
-        self.assertEqual(opp.client_name, "Jane Doe")
-        self.assertEqual(opp.phone, "+91 7777777777")
-        self.assertEqual(opp.whatsapp, "+91 7777777777")
-        self.assertEqual(opp.email, "jane@example.com")
+        self.assertEqual(opp.client_name, client.client_name)
+        self.assertEqual(opp.phone, client.primary_phone)
+        self.assertEqual(opp.whatsapp, client.primary_whatsapp)
+        self.assertEqual(opp.email, client.primary_email)
 
     def test_duplicate_opportunity_rejected(self):
         client, _ = create_test_client()

@@ -43,10 +43,11 @@
   },
   {
    "fieldname": "status",
-   "fieldtype": "Data",
+   "fieldtype": "Select",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Status",
+   "options": "Active\nInactive\nPassive\nDeceased",
    "read_only": 1
   },
   {
@@ -89,7 +90,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Primary Individual",
+   "label": "Primary Contact",
    "mandatory_depends_on": "eval: doc.client_type === 'Individual' || doc.client_type === 'Sole Proprietor'",
    "options": "KNAPS Individual",
    "read_only_depends_on": "eval: doc.client_type === \"Non Individual\""
@@ -161,7 +162,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-21 12:04:11.821796",
+ "modified": "2026-05-23 12:29:24.924131",
  "modified_by": "Administrator",
  "module": "KNAPS Client Management",
  "name": "KNAPS Client",

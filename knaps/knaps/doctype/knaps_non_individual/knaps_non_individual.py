@@ -45,6 +45,7 @@ class KNAPSNonIndividual(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from knaps.knaps.doctype.knaps_email.knaps_email import KNAPSEmail
 		from knaps.knaps.doctype.knaps_entity_contact.knaps_entity_contact import KNAPSEntityContact
 		from knaps.knaps.doctype.knaps_phone_number.knaps_phone_number import KNAPSPhoneNumber

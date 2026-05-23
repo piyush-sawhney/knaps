@@ -1,9 +1,8 @@
 # Copyright (c) 2026, KNAPS and Contributors and contributors
 # For license information, please see license.txt
 
-from dateutil.relativedelta import relativedelta
-
 import frappe
+from dateutil.relativedelta import relativedelta
 from frappe import _
 from frappe.model.document import Document
 from frappe.utils import getdate, today

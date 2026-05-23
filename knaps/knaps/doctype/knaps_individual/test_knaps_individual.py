@@ -78,126 +78,7 @@ class IntegrationTestKNAPSIndividual(IntegrationTestCase):
 	# PRIMARY PHONE SYNC TESTS
 	# =====================================================
 
-	def test_primary_phone_synced(self):
-		"""Test that primary phone is synced from child table."""
-		individual = create_knaps_individual(
-			first_name="John",
-			phone_numbers=[
-				{
-					"number": "+91 9876543210",
-					"is_primary": 1,
-					"is_whatsapp": 0,
-					"is_active": 1,
-					"ownership": "Self",
-					"type": "Mobile",
-				}
-			],
-			save=False,
-		)
-		individual.insert()
 
-		self.assertEqual(individual.primary_phone, "+91 9876543210")
-
-	def test_primary_phone_multiple_phones(self):
-		"""Test that only the primary phone is synced when multiple phones exist."""
-		individual = create_knaps_individual(
-			first_name="John",
-			phone_numbers=[
-				{
-					"number": "+91 9876543210",
-					"is_primary": 0,
-					"is_whatsapp": 0,
-					"is_active": 1,
-					"ownership": "Self",
-					"type": "Mobile",
-				},
-				{
-					"number": "+91 9876543211",
-					"is_primary": 1,
-					"is_whatsapp": 0,
-					"is_active": 1,
-					"ownership": "Self",
-					"type": "Mobile",
-				},
-			],
-			save=False,
-		)
-		individual.insert()
-
-		self.assertEqual(individual.primary_phone, "+91 9876543211")
-
-	# =====================================================
-	# PRIMARY WHATSAPP SYNC TESTS
-	# =====================================================
-
-	def test_primary_whatsapp_synced(self):
-		"""Test that primary WhatsApp is synced from child table."""
-		individual = create_knaps_individual(
-			first_name="John",
-			phone_numbers=[
-				{
-					"number": "+91 9876543210",
-					"is_primary": 1,
-					"is_whatsapp": 1,
-					"is_active": 1,
-					"ownership": "Self",
-					"type": "Mobile",
-				}
-			],
-			save=False,
-		)
-		individual.insert()
-
-		self.assertEqual(individual.primary_whatsapp, "+91 9876543210")
-
-	# =====================================================
-	# PRIMARY EMAIL SYNC TESTS
-	# =====================================================
-
-	def test_primary_email_synced(self):
-		"""Test that primary email is synced from child table."""
-		individual = create_knaps_individual(
-			first_name="John",
-			email_address=[
-				{
-					"email_address": "john@example.com",
-					"is_primary": 1,
-					"is_active": 1,
-					"ownership": "Self",
-					"type": "Personal",
-				}
-			],
-			save=False,
-		)
-		individual.insert()
-
-		self.assertEqual(individual.primary_email, "john@example.com")
-
-	def test_primary_email_multiple_emails(self):
-		"""Test that only the primary email is synced when multiple emails exist."""
-		individual = create_knaps_individual(
-			first_name="John",
-			email_address=[
-				{
-					"email_address": "john.personal@example.com",
-					"is_primary": 0,
-					"is_active": 1,
-					"ownership": "Self",
-					"type": "Personal",
-				},
-				{
-					"email_address": "john.official@example.com",
-					"is_primary": 1,
-					"is_active": 1,
-					"ownership": "Self",
-					"type": "Official",
-				},
-			],
-			save=False,
-		)
-		individual.insert()
-
-		self.assertEqual(individual.primary_email, "john.official@example.com")
 
 	# =====================================================
 	# VALIDATION TESTS - SINGLE PRIMARY
@@ -581,7 +462,7 @@ class IntegrationTestKNAPSIndividual(IntegrationTestCase):
 	# =====================================================
 
 	def test_complete_individual_creation(self):
-		"""Test creating a complete individual with all fields populated."""
+		"""Test creating a complete individual with all fields populated, including multi-row selection."""
 		individual = create_knaps_individual(
 			first_name="John",
 			middle_name="Michael",
@@ -589,36 +470,47 @@ class IntegrationTestKNAPSIndividual(IntegrationTestCase):
 			phone_numbers=[
 				{
 					"number": "+91 9876543210",
+					"is_primary": 0,
+					"is_whatsapp": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				},
+				{
+					"number": "+91 9876543211",
 					"is_primary": 1,
 					"is_whatsapp": 1,
 					"is_active": 1,
 					"ownership": "Self",
 					"type": "Mobile",
-				}
+				},
 			],
 			email_address=[
+				{
+					"email_address": "john.personal@example.com",
+					"is_primary": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Personal",
+				},
 				{
 					"email_address": "john.doe@example.com",
 					"is_primary": 1,
 					"is_active": 1,
 					"ownership": "Self",
-					"type": "Personal",
-				}
+					"type": "Official",
+				},
 			],
 			save=False,
 		)
 		individual.insert()
 
-		# Verify full name
 		self.assertEqual(individual.full_name, "Mr John Michael Doe")
 
-		# Verify primary phone
-		self.assertEqual(individual.primary_phone, "+91 9876543210")
+		self.assertEqual(individual.primary_phone, "+91 9876543211")
 
-		# Verify primary WhatsApp
-		self.assertEqual(individual.primary_whatsapp, "+91 9876543210")
+		self.assertEqual(individual.primary_whatsapp, "+91 9876543211")
 
-		# Verify primary email
 		self.assertEqual(individual.primary_email, "john.doe@example.com")
 
 	def test_individual_with_no_contacts(self):
@@ -1429,3 +1321,63 @@ class IntegrationTestKNAPSIndividual(IntegrationTestCase):
 			],
 		)
 		individual.delete()
+
+	def test_pan_update_on_existing_individual(self):
+		"""Test that PAN can be updated on an existing individual."""
+		individual = create_knaps_individual(
+			first_name="John",
+			last_name="Doe",
+			phone_numbers=[
+				{
+					"number": "+91 9876543210",
+					"is_primary": 1,
+					"is_whatsapp": 0,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Mobile",
+				}
+			],
+			email_address=[
+				{
+					"email_address": "john@example.com",
+					"is_primary": 1,
+					"is_active": 1,
+					"ownership": "Self",
+					"type": "Personal",
+				}
+			],
+			save=False,
+		)
+		individual.pan = "ABCPE1234F"
+		individual.insert()
+
+		self.assertEqual(individual.pan, "ABCPE1234F")
+
+		individual.pan = "ABCPF5678G"
+		individual.save()
+
+		self.assertEqual(individual.pan, "ABCPF5678G")
+
+	def test_dob_exactly_18_years_is_adult(self):
+		"""Test that an individual with DOB exactly 18 years ago is adult (not minor)."""
+		individual = create_knaps_individual(
+			first_name="Edge",
+			last_name="Case",
+			save=False,
+		)
+		individual.date_of_birth = frappe.utils.add_years(frappe.utils.today(), -18)
+		individual.insert()
+
+		self.assertEqual(individual.age, 18)
+		self.assertEqual(individual.age_formatted, "18 Years")
+
+	def test_age_formatted_years_and_months_only(self):
+		from frappe.utils import add_years, add_days, today
+
+		individual = create_knaps_individual(first_name="YM", last_name="Case", save=False)
+		individual.date_of_birth = add_years(add_days(today(), -90), -18)
+		individual.insert()
+
+		self.assertIn("18 Years", individual.age_formatted)
+		self.assertIn("3 Months", individual.age_formatted)
+		self.assertNotIn("0 Days", individual.age_formatted)

@@ -202,3 +202,19 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 		person = create_knaps_individual(first_name="SingleName", last_name="")
 		bank = self._make_bank(first_holder=person.name)
 		self.assertEqual(bank.first_holder_name, "Mr SingleName")
+
+	def test_duplicate_account_number_rejected(self):
+		person = create_knaps_individual(first_name="Dupe", last_name="Test")
+		account_number = "UNIQUEACC01"
+		bank = self._make_bank(
+			first_holder=person.name,
+			bank_account_number=account_number,
+		)
+		self.assertIsNotNone(bank.name)
+
+		other = create_knaps_individual(first_name="Other", last_name="Person")
+		with self.assertRaises(frappe.ValidationError):
+			self._make_bank(
+				first_holder=other.name,
+				bank_account_number=account_number,
+			)

@@ -97,6 +97,9 @@ class KNAPSPOInvestment(Document):
 		self._validate_entry_date_not_future()
 		self._validate_no_dates_for_entry_status()
 		self._validate_start_date_with_account()
+		self._validate_amount()
+		self._validate_rate_of_interest()
+		self._validate_period_in_months()
 		self._validate_extension_sequence()
 
 	def _set_title(self) -> None:
@@ -361,6 +364,18 @@ class KNAPSPOInvestment(Document):
 				_("Start Date is required when Account Number is provided."),
 				title=_("Missing Start Date"),
 			)
+
+	def _validate_amount(self) -> None:
+		if self.amount <= 0:
+			frappe.throw(_("Amount must be positive."), title=_("Invalid Amount"))
+
+	def _validate_rate_of_interest(self) -> None:
+		if self.rate_of_interest <= 0:
+			frappe.throw(_("Rate of Interest must be positive."), title=_("Invalid Rate"))
+
+	def _validate_period_in_months(self) -> None:
+		if self.period_in_months <= 0:
+			frappe.throw(_("Period in months must be positive."), title=_("Invalid Period"))
 
 	def _validate_entry_date_not_future(self) -> None:
 		if getdate(self.entry_date) > getdate(today()):

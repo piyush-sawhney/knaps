@@ -90,10 +90,14 @@ class KNAPSIndividual(Document):
 		diff = relativedelta(getdate(today()), getdate(self.date_of_birth))
 		if diff.years == 0 and diff.months == 0 and diff.days == 0:
 			return "Newborn"
-		elif diff.years == 0:
-			return f"{diff.months} Months {diff.days} Days"
-		else:
-			return f"{diff.years} Years {diff.months} Months {diff.days} Days"
+		parts = []
+		if diff.years:
+			parts.append(f"{diff.years} Years")
+		if diff.months:
+			parts.append(f"{diff.months} Months")
+		if diff.days:
+			parts.append(f"{diff.days} Days")
+		return " ".join(parts)
 
 	def _validate_preferred_contact_mode(self):
 		if not self.preferred_contact_mode:

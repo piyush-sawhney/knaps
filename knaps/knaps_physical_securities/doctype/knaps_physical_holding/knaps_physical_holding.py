@@ -13,9 +13,16 @@ class KNAPSPhysicalHolding(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-		from knaps.knaps_physical_securities.doctype.knaps_physical_certificate.knaps_physical_certificate import KNAPSPhysicalCertificate
-		from knaps.knaps_physical_securities.doctype.knaps_physical_claimant.knaps_physical_claimant import KNAPSPhysicalClaimant
-		from knaps.knaps_physical_securities.doctype.knaps_physical_holder.knaps_physical_holder import KNAPSPhysicalHolder
+
+		from knaps.knaps_physical_securities.doctype.knaps_physical_certificate.knaps_physical_certificate import (
+			KNAPSPhysicalCertificate,
+		)
+		from knaps.knaps_physical_securities.doctype.knaps_physical_claimant.knaps_physical_claimant import (
+			KNAPSPhysicalClaimant,
+		)
+		from knaps.knaps_physical_securities.doctype.knaps_physical_holder.knaps_physical_holder import (
+			KNAPSPhysicalHolder,
+		)
 
 		certificate_details: DF.Table[KNAPSPhysicalCertificate]
 		claimants: DF.Table[KNAPSPhysicalClaimant]

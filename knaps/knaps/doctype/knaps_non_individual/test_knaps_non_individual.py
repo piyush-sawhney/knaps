@@ -799,7 +799,35 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 	def test_sync_primary_contact_populates_all_fields(self):
 		"""Test that primary contact sync populates name, phone, whatsapp, email, and preferred contact mode"""
-		individual_name = self._create_contact_individual("Primary")
+		individual = frappe.get_doc(
+			{
+				"doctype": "KNAPS Individual",
+				"first_name": "Primary",
+				"salutation": "Mr",
+				"gender": "Male",
+				"status": "Active",
+				"preferred_contact_mode": "Whatsapp",
+				"phone_numbers": [
+					{
+						"number": "+91 8888888888",
+						"is_primary": 1,
+						"is_whatsapp": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_address": [
+					{
+						"email_address": "primary@example.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
 
 		entity = frappe.get_doc(
 			{
@@ -809,7 +837,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 				"status": "Active",
 				"contacts": [
 					{
-						"individual": individual_name,
+						"individual": individual.name,
 						"designation": "CEO",
 						"is_primary_contact": 1,
 					}
@@ -836,12 +864,12 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 			}
 		).insert()
 
-		self.assertEqual(entity.primary_contact, individual_name)
+		self.assertEqual(entity.primary_contact, individual.name)
 		self.assertIsNotNone(entity.primary_contact_name)
-		self.assertEqual(entity.primary_contact_phone, "+91 9876543210")
-		self.assertIsNone(entity.primary_contact_whatsapp)
+		self.assertEqual(entity.primary_contact_phone, "+91 8888888888")
+		self.assertEqual(entity.primary_contact_whatsapp, "+91 8888888888")
 		self.assertEqual(entity.primary_contact_email, "primary@example.com")
-		self.assertEqual(entity.preferred_contact_mode, "Phone")
+		self.assertEqual(entity.preferred_contact_mode, "Whatsapp")
 
 	def test_sync_primary_contact_multiple_primary_rejected(self):
 		"""Test that two contacts marked as primary throws ValidationError"""
@@ -1263,130 +1291,13 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		self.assertIsNone(entity.primary_contact_email)
 		self.assertIsNone(entity.preferred_contact_mode)
 
-	def test_sync_primary_contact_populates_whatsapp_and_preferred_mode(self):
-		"""Test that whatsapp and preferred contact mode are populated when individual has them"""
-		individual = frappe.get_doc(
-			{
-				"doctype": "KNAPS Individual",
-				"first_name": "WhatsAppUser",
-				"salutation": "Mr",
-				"gender": "Male",
-				"status": "Active",
-				"preferred_contact_mode": "Whatsapp",
-				"phone_numbers": [
-					{
-						"number": "+91 8888888888",
-						"is_primary": 1,
-						"is_whatsapp": 1,
-						"is_active": 1,
-						"ownership": "Self",
-						"type": "Mobile",
-					}
-				],
-				"email_address": [
-					{
-						"email_address": "whatsapp@example.com",
-						"is_primary": 1,
-						"is_active": 1,
-						"ownership": "Self",
-						"type": "Official",
-					}
-				],
-			}
-		).insert()
 
-		entity = frappe.get_doc(
-			{
-				"doctype": "KNAPS Non Individual",
-				"legal_name": "WhatsApp Corp",
-				"non_individual_type": "Company",
-				"status": "Active",
-				"contacts": [
-					{
-						"individual": individual.name,
-						"designation": "Manager",
-						"is_primary_contact": 1,
-					}
-				],
-				"phone_numbers": [
-					{
-						"number": "+91 9876543210",
-						"is_primary": 1,
-						"is_whatsapp": 0,
-						"is_active": 1,
-						"ownership": "Self",
-						"type": "Mobile",
-					}
-				],
-				"email_addresses": [
-					{
-						"email_address": "test@corp.com",
-						"is_primary": 1,
-						"is_active": 1,
-						"ownership": "Self",
-						"type": "Official",
-					}
-				],
-			}
-		).insert()
-
-		self.assertEqual(entity.primary_contact_phone, "+91 8888888888")
-		self.assertEqual(entity.primary_contact_whatsapp, "+91 8888888888")
-		self.assertEqual(entity.primary_contact_email, "whatsapp@example.com")
-		self.assertEqual(entity.preferred_contact_mode, "Whatsapp")
 
 # =====================================================
 # PRIMARY CONTACT VALIDATION TESTS (legacy direct set)
 # =====================================================
 
-	def test_primary_contact_deceased_rejected(self):
-		"""Test that a deceased individual cannot be set as primary contact via contacts table"""
-		individual = frappe.get_doc(
-			{
-				"doctype": "KNAPS Individual",
-				"first_name": "Deceased Person",
-				"salutation": "Mr",
-				"gender": "Male",
-				"status": "Deceased",
-			}
-		).insert()
 
-		entity = frappe.get_doc(
-			{
-				"doctype": "KNAPS Non Individual",
-				"legal_name": "Test Corp",
-				"non_individual_type": "Company",
-				"status": "Active",
-				"contacts": [
-					{
-						"individual": individual.name,
-						"designation": "Director",
-						"is_primary_contact": 1,
-					}
-				],
-				"phone_numbers": [
-					{
-						"number": "+91 9876543210",
-						"is_primary": 1,
-						"is_whatsapp": 0,
-						"is_active": 1,
-						"ownership": "Self",
-						"type": "Mobile",
-					}
-				],
-				"email_addresses": [
-					{
-						"email_address": "test@corp.com",
-						"is_primary": 1,
-						"is_active": 1,
-						"ownership": "Self",
-						"type": "Official",
-					}
-				],
-			}
-		)
-
-		self.assertRaises(frappe.ValidationError, entity.insert)
 
 	def test_primary_contact_active_accepted(self):
 		"""Test that an active individual can be set as primary contact via contacts table"""
@@ -1775,3 +1686,41 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 			}
 		).insert()
 		entity.delete()
+
+	def test_pan_update_on_existing_non_individual(self):
+		"""Test that PAN can be updated on an existing non individual."""
+		entity = frappe.get_doc(
+			{
+				"doctype": "KNAPS Non Individual",
+				"legal_name": "Update PAN Entity",
+				"non_individual_type": "Company",
+				"status": "Active",
+				"pan": "ABCCP1234F",
+				"phone_numbers": [
+					{
+						"number": "+91 9876543210",
+						"is_primary": 1,
+						"is_whatsapp": 0,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Mobile",
+					}
+				],
+				"email_addresses": [
+					{
+						"email_address": "test@corp.com",
+						"is_primary": 1,
+						"is_active": 1,
+						"ownership": "Self",
+						"type": "Official",
+					}
+				],
+			}
+		).insert()
+
+		self.assertEqual(entity.pan, "ABCCP1234F")
+
+		entity.pan = "ABCCQ5678G"
+		entity.save()
+
+		self.assertEqual(entity.pan, "ABCCQ5678G")

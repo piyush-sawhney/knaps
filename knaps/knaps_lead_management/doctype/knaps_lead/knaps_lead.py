@@ -14,7 +14,10 @@ class KNAPSLead(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-		from knaps.knaps_lead_management.doctype.knaps_lead_interest.knaps_lead_interest import KNAPSLeadInterest
+
+		from knaps.knaps_lead_management.doctype.knaps_lead_interest.knaps_lead_interest import (
+			KNAPSLeadInterest,
+		)
 
 		email: DF.Data | None
 		internal_notes: DF.TextEditor | None

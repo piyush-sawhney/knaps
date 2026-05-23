@@ -1,9 +1,8 @@
 # Copyright (c) 2026, KNAPS and Contributors and Contributors
 # See license.txt
 
-from dateutil.relativedelta import relativedelta
-
 import frappe
+from dateutil.relativedelta import relativedelta
 from frappe.tests import IntegrationTestCase
 from frappe.utils import getdate, today
 
@@ -319,3 +318,26 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 		)
 		ni_client.insert()
 		self.assertEqual(ni_client.pan, "AABCC1234D")
+
+	def test_is_minor_at_exactly_18(self):
+		from frappe.utils import add_years, today
+
+		adult_dob = add_years(today(), -18)
+		adult_individual = frappe.get_doc(
+			{
+				"doctype": "KNAPS Individual",
+				"first_name": "Exactly",
+				"middle_name": "18",
+				"last_name": "Adult",
+				"salutation": "Mr",
+				"gender": "Male",
+				"status": "Active",
+				"date_of_birth": adult_dob,
+				"pan": "ABCPL1234E",
+			}
+		).insert()
+
+		client = self._make_client(individual=adult_individual.name)
+		client.insert()
+
+		self.assertEqual(client.is_minor, 0)

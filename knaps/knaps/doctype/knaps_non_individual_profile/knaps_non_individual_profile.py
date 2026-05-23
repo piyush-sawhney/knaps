@@ -13,6 +13,7 @@ class KNAPSNonIndividualProfile(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from knaps.knaps.doctype.knaps_entity_individual.knaps_entity_individual import KNAPSEntityIndividual
 
 		country_of_incorporation: DF.Link | None

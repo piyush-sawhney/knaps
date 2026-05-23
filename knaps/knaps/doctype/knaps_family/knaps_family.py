@@ -34,6 +34,11 @@ class KNAPSFamily(Document):
 		self._validate_relation_with_head()
 		self._validate_has_at_least_one_member()
 		before_save = self.get_doc_before_save()
+		self._assert_head_of_family_valid(before_save)
+		self._assert_member_validity(before_save)
+
+	def on_update(self):
+		before_save = self.get_doc_before_save()
 		self._update_head_of_family(before_save)
 		self._sync_primary_members(before_save)
 
@@ -88,6 +93,29 @@ class KNAPSFamily(Document):
 					title = self._get_party_display_name("KNAPS Individual", row.member_name)
 					frappe.throw(_("{} is deceased and cannot be added as a member.").format(title))
 
+	def _assert_head_of_family_valid(self, before_save):
+		if not self.head_of_family:
+			return
+
+		previous_head = before_save.head_of_family if before_save else None
+		if self.head_of_family == previous_head:
+			return
+
+		self._raise_if_primary_elsewhere("KNAPS Individual", self.head_of_family)
+
+	def _assert_member_validity(self, before_save):
+		old_primaries = set()
+		if before_save:
+			for row in before_save.members:
+				if row.membership_type == "Primary":
+					old_primaries.add((row.member_type, row.member_name))
+
+		for row in self.members or []:
+			key = (row.member_type, row.member_name)
+			if row.membership_type == "Primary" and key not in old_primaries:
+				if row.member_type in ("KNAPS Individual", "KNAPS Non Individual"):
+					self._raise_if_primary_elsewhere(row.member_type, row.member_name)
+
 	def _update_head_of_family(self, before_save):
 		if not self.head_of_family:
 			return
@@ -99,9 +127,10 @@ class KNAPSFamily(Document):
 		if previous_head:
 			current = frappe.db.get_value("KNAPS Individual", previous_head, "family")
 			if current == self.name:
+				frappe.has_permission("KNAPS Individual", "write", previous_head, throw=True)
 				frappe.db.set_value("KNAPS Individual", previous_head, "family", None)
 
-		self._raise_if_primary_elsewhere("KNAPS Individual", self.head_of_family)
+		frappe.has_permission("KNAPS Individual", "write", self.head_of_family, throw=True)
 		frappe.db.set_value("KNAPS Individual", self.head_of_family, "family", self.name)
 		frappe.db.set_value("KNAPS Individual", self.head_of_family, "family_name", self.family_name)
 
@@ -120,7 +149,7 @@ class KNAPSFamily(Document):
 					old_primaries.pop(key)
 					continue
 				if row.member_type in ("KNAPS Individual", "KNAPS Non Individual"):
-					self._raise_if_primary_elsewhere(row.member_type, row.member_name)
+					frappe.has_permission(row.member_type, "write", row.member_name, throw=True)
 					frappe.db.set_value(row.member_type, row.member_name, "family", self.name)
 					frappe.db.set_value(row.member_type, row.member_name, "family_name", self.family_name)
 
@@ -147,6 +176,7 @@ class KNAPSFamily(Document):
 			return
 		current = frappe.db.get_value(doctype, name, "family")
 		if current == self.name:
+			frappe.has_permission(doctype, "write", name, throw=True)
 			frappe.db.set_value(doctype, name, "family", None)
 			frappe.db.set_value(doctype, name, "family_name", None)
 

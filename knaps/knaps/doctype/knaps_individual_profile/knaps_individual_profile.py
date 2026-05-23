@@ -33,8 +33,10 @@ class KNAPSIndividualProfile(Document):
 			self.title = f"{individual_title} Profile"
 
 	def after_insert(self):
+		frappe.has_permission("KNAPS Individual", "write", self.individual, throw=True)
 		frappe.db.set_value("KNAPS Individual", self.individual, "profile_link", self.name)
 
 	def on_trash(self):
 		if self.individual:
+			frappe.has_permission("KNAPS Individual", "write", self.individual, throw=True)
 			frappe.db.set_value("KNAPS Individual", self.individual, "profile_link", None)

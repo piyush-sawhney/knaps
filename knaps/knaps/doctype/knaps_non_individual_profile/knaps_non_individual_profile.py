@@ -36,8 +36,10 @@ class KNAPSNonIndividualProfile(Document):
 			self.title = f"{entity_title} Profile"
 
 	def after_insert(self):
+		frappe.has_permission("KNAPS Non Individual", "write", self.non_individual_entity, throw=True)
 		frappe.db.set_value("KNAPS Non Individual", self.non_individual_entity, "entity_profile", self.name)
 
 	def on_trash(self):
 		if self.non_individual_entity:
+			frappe.has_permission("KNAPS Non Individual", "write", self.non_individual_entity, throw=True)
 			frappe.db.set_value("KNAPS Non Individual", self.non_individual_entity, "entity_profile", None)

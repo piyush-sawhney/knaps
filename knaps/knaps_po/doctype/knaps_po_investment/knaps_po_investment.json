@@ -160,6 +160,7 @@
    "fieldname": "extensions",
    "fieldtype": "Table",
    "label": "Extensions",
+   "mandatory_depends_on": "eval: doc.extend_investment;",
    "options": "KNAPS PO Extension"
   },
   {
@@ -309,7 +310,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-23 16:04:28.440574",
+ "modified": "2026-05-23 16:23:00.786485",
  "modified_by": "Administrator",
  "module": "KNAPS PO",
  "name": "KNAPS PO Investment",

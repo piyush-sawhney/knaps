@@ -5,7 +5,7 @@
 from frappe.model.document import Document
 
 
-class KNAPSFixedInvestment(Document):
+class KNAPSHealthInsurance(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -14,36 +14,29 @@ class KNAPSFixedInvestment(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 		from knaps.knaps.doctype.knaps_payment.knaps_payment import KNAPSPayment
-		from knaps.knaps_client_management.doctype.knaps_holder.knaps_holder import KNAPSHolder
 		from knaps.knaps_client_management.doctype.knaps_nominee.knaps_nominee import KNAPSNominee
-		from knaps.knaps_po.doctype.knaps_po_extension.knaps_po_extension import KNAPSPOExtension
+		from knaps.knaps_insurance.doctype.knaps_insurance_member.knaps_insurance_member import KNAPSInsuranceMember
 
-		account_number: DF.Data | None
-		amount: DF.Currency
 		broker_details: DF.Link | None
 		client_name: DF.Data | None
 		currency: DF.Link | None
 		entry_date: DF.Date
-		extend_investment: DF.Check
-		extensions: DF.Table[KNAPSPOExtension]
-		holders: DF.Table[KNAPSHolder]
-		holding_mode: DF.Literal["Physical", "Demat"]
-		holding_type: DF.Link
+		holders: DF.Table[KNAPSInsuranceMember]
+		holding_type: DF.Literal["Multi-Individual", "Floater"]
+		insurance_plan_name: DF.Data | None
 		investment_company: DF.Link
-		investment_mode: DF.Literal["", "Monthly", "Quarterly", "Half-Yearly", "Yearly", "Cummulative"]
-		investment_type: DF.Literal["FD- Fixed Deposit", "NCD - Non Convertible Debentures", "BOND"]
-		is_existing_investment: DF.Check
+		is_existing_policy: DF.Check
 		maturity_date: DF.Date | None
 		nominees: DF.Table[KNAPSNominee]
 		partner: DF.Link | None
-		passbook_status: DF.Literal["Not Created", "With Us", "With Client", "With Company"]
 		payments: DF.Table[KNAPSPayment]
 		period_in_months: DF.Int
+		policy_number: DF.Data | None
+		premium: DF.Currency
 		primary_client: DF.Link | None
-		rate_of_interest: DF.Float
-		scheme_name: DF.Data | None
 		start_date: DF.Date | None
-		status: DF.Literal["Entry Done", "Submitted", "Active", "Renewed", "Matured", "Pre-Matured", "Transmitted", "Rejected"]
+		status: DF.Literal["Proposal", "Active", "Renewed", "Surrendered", "Rejected"]
+		sum_insured: DF.Currency
 		through_broker: DF.Check
 		through_partner: DF.Check
 		through_us: DF.Check

@@ -4,6 +4,7 @@
 # import frappe
 from frappe.tests import IntegrationTestCase
 
+
 # On IntegrationTestCase, the doctype test records and all
 # link-field test record dependencies are recursively loaded
 # Use these module variables to add/remove to/from that list
@@ -12,9 +13,9 @@ IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 
 
 
-class IntegrationTestKNAPSFixedInvestmentProvider(IntegrationTestCase):
+class IntegrationTestKNAPSHealthInsurance(IntegrationTestCase):
 	"""
-	Integration tests for KNAPSFixedInvestmentProvider.
+	Integration tests for KNAPSHealthInsurance.
 	Use this class for testing interactions between multiple components.
 	"""
 

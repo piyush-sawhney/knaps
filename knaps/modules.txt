@@ -12,3 +12,4 @@ KNAPS AIF
 KNAPS Lead Management
 KNAPS Client Management
 KNAPS Physical Securities
+KNAPS Insurance

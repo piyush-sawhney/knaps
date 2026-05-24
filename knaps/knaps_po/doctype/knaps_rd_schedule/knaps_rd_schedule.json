@@ -1,0 +1,165 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-24 16:10:02.698316",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "schedule_type",
+  "column_break_pbwp",
+  "schedule_document",
+  "section_break_rmeh",
+  "schedule_number",
+  "schedule_date",
+  "column_break_mjzc",
+  "deposit_amount",
+  "schedule_amount",
+  "column_break_ykvq",
+  "total_rebate",
+  "total_surcharge",
+  "section_break_rtah",
+  "rd_accounts",
+  "section_break_nv6h",
+  "amended_from"
+ ],
+ "fields": [
+   {
+   "fieldname": "section_break_nv6h",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "KNAPS RD Schedule",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "column_break_mjzc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "schedule_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Schedule Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "schedule_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Schedule Number",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_rtah",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "rd_accounts",
+   "fieldtype": "Table",
+   "label": "RD Accounts",
+   "options": "KNAPS RD Transaction",
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_rebate",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Total Rebate",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_surcharge",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Total Surcharge",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "schedule_amount",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Schedule Amount",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_ykvq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "deposit_amount",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Deposit Amount",
+   "non_negative": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "schedule_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Schedule Type",
+   "options": "Cash\nCheque",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_rmeh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_pbwp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "schedule_document",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Schedule Document",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-05-24 16:10:02.698316",
+ "modified_by": "Administrator",
+ "module": "KNAPS PO",
+ "name": "KNAPS RD Schedule",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

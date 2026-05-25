@@ -9,9 +9,7 @@
   "relationship",
   "column_break_qomj",
   "partner",
-  "partner_name",
-  "section_break_gegg",
-  "representatives"
+  "partner_name"
  ],
  "fields": [
   {
@@ -40,16 +38,6 @@
    "fieldtype": "Select",
    "label": "Relationship",
    "options": "\nPrincipal (Upstream)\nAssociate (Downstream)\nReferral (Horizontal)"
-  },
-  {
-   "fieldname": "section_break_gegg",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "representatives",
-   "fieldtype": "Table",
-   "label": "Representatives",
-   "options": "KNAPS Representative"
   }
  ],
  "grid_page_length": 50,

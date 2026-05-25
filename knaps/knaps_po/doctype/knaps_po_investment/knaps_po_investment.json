@@ -309,8 +309,14 @@
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2026-05-23 16:23:00.786485",
+ "links": [
+  {
+   "group": "RD Account",
+   "link_doctype": "KNAPS RD Account",
+   "link_fieldname": "po_rd_investment"
+  }
+ ],
+ "modified": "2026-05-25 13:31:37.397411",
  "modified_by": "Administrator",
  "module": "KNAPS PO",
  "name": "KNAPS PO Investment",

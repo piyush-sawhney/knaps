@@ -1,12 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:rd_account_number",
  "creation": "2026-04-27 12:58:09.548065",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "po_rd_investment",
   "client_name",
+  "title",
   "column_break_xcal",
   "account_number",
   "amount",
@@ -21,26 +23,33 @@
   "effective_card_number",
   "bank",
   "portal_details_section",
+  "rd_account_number",
   "holder_name",
   "account_opening_date",
   "denomination",
   "currency",
+  "last_updated",
   "column_break_rauf",
-  "default_installments",
   "rebate",
   "default_fee",
+  "default_installments",
+  "total_deposit_amount",
   "column_break_bdpo",
-  "pending_installments",
   "last_deposit_date",
+  "next_installment_date",
   "total_months_paid",
-  "total_deposit_amount"
+  "pending_installments"
  ],
  "fields": [
   {
    "fieldname": "po_rd_investment",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "PO RD Investment",
-   "options": "KNAPS PO Investment"
+   "link_filters": "[[\"KNAPS PO Investment\",\"scheme_code\",\"=\",\"RD\"]]",
+   "options": "KNAPS PO Investment",
+   "reqd": 1,
+   "unique": 1
   },
   {
    "fetch_from": "po_rd_investment.client_name",
@@ -74,8 +83,9 @@
   {
    "fetch_from": "po_rd_investment.status",
    "fieldname": "status",
-   "fieldtype": "Data",
+   "fieldtype": "Select",
    "label": "Status",
+   "options": "Entry Done\nSubmitted\nActive\nRenewed\nMatured\nPre-Matured\nTransmitted\nRejected",
    "read_only": 1
   },
   {
@@ -93,20 +103,27 @@
   {
    "fieldname": "holder_name",
    "fieldtype": "Data",
-   "label": "Holder Name"
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Holder Name",
+   "read_only": 1
   },
   {
    "fieldname": "account_opening_date",
    "fieldtype": "Date",
-   "label": "Account Opening Date"
+   "label": "Account Opening Date",
+   "read_only": 1
   },
   {
    "fieldname": "denomination",
    "fieldtype": "Currency",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Denomination",
    "non_negative": 1,
    "options": "currency",
-   "precision": "2"
+   "precision": "2",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_rauf",
@@ -118,7 +135,8 @@
    "label": "Rebate",
    "non_negative": 1,
    "options": "currency",
-   "precision": "2"
+   "precision": "2",
+   "read_only": 1
   },
   {
    "fieldname": "default_fee",
@@ -126,41 +144,51 @@
    "label": "Default Fee",
    "non_negative": 1,
    "options": "currency",
-   "precision": "2"
+   "precision": "2",
+   "read_only": 1
   },
   {
    "fieldname": "default_installments",
    "fieldtype": "Int",
    "label": "Default Installments",
-   "non_negative": 1
+   "non_negative": 1,
+   "read_only": 1
   },
   {
    "fieldname": "total_deposit_amount",
    "fieldtype": "Currency",
    "label": "Total Deposit Amount",
-   "options": "currency"
+   "options": "currency",
+   "read_only": 1
   },
   {
    "default": "INR",
    "fieldname": "currency",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Currency",
-   "options": "Currency"
+   "options": "Currency",
+   "read_only": 1
   },
   {
    "fieldname": "last_deposit_date",
    "fieldtype": "Date",
-   "label": "Last Deposit Date"
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Last Deposit Date",
+   "read_only": 1
   },
   {
    "fieldname": "total_months_paid",
    "fieldtype": "Int",
-   "label": "Total Months Paid"
+   "label": "Total Months Paid",
+   "read_only": 1
   },
   {
    "fieldname": "pending_installments",
    "fieldtype": "Int",
-   "label": " Pending Installments "
+   "label": "Pending Installments",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_bdpo",
@@ -194,22 +222,54 @@
   {
    "fieldname": "effective_card_number",
    "fieldtype": "Data",
-   "label": "Effective Card Number"
+   "label": "Effective Card Number",
+   "read_only": 1
   },
   {
    "fieldname": "bank",
    "fieldtype": "Link",
    "label": "Bank",
    "options": "KNAPS Bank"
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Title",
+   "read_only": 1
+  },
+  {
+   "fieldname": "next_installment_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Next Installment Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_updated",
+   "fieldtype": "Datetime",
+   "label": "Last Updated",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rd_account_number",
+   "fieldtype": "Data",
+   "label": "RD Account Number",
+   "read_only": 1,
+   "reqd": 1,
+   "unique": 1
   }
  ],
  "grid_page_length": 50,
+ "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-23 17:41:08.200626",
+ "modified": "2026-05-25 14:11:27.585837",
  "modified_by": "Administrator",
  "module": "KNAPS PO",
  "name": "KNAPS RD Account",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {
@@ -229,5 +289,7 @@
  "rows_threshold_for_grid_search": 20,
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "title",
+ "track_changes": 1
 }

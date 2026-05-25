@@ -15,7 +15,6 @@ class KNAPSPOInvestment(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-
 		from knaps.knaps.doctype.knaps_payment.knaps_payment import KNAPSPayment
 		from knaps.knaps_client_management.doctype.knaps_holder.knaps_holder import KNAPSHolder
 		from knaps.knaps_client_management.doctype.knaps_nominee.knaps_nominee import KNAPSNominee

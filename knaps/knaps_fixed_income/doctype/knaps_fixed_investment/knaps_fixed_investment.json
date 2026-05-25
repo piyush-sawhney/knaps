@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_copy": 1,
  "allow_import": 1,
  "creation": "2026-05-24 16:30:44.255407",
  "doctype": "DocType",
@@ -320,7 +321,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-25 17:36:53.093745",
+ "modified": "2026-05-25 17:47:00.203309",
  "modified_by": "Administrator",
  "module": "KNAPS Fixed Income",
  "name": "KNAPS Fixed Investment",

@@ -17,6 +17,7 @@ class KNAPSRDAccount(Document):
 		account_opening_date: DF.Date | None
 		amount: DF.Currency
 		bank: DF.Link | None
+		bank_account_number: DF.Data | None
 		card_number: DF.Data | None
 		client_name: DF.Data | None
 		currency: DF.Link | None

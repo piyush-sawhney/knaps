@@ -32,7 +32,7 @@ class KNAPSRDAccount(Document):
 		last_updated: DF.Datetime | None
 		next_installment_date: DF.Date | None
 		pending_installments: DF.Int
-		po_rd_investment: DF.Link
+		po_rd_investment: DF.Link | None
 		rd_account_number: DF.Data
 		rebate: DF.Currency
 		start_date: DF.Date | None

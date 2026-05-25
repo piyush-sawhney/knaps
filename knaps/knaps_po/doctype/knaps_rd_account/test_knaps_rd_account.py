@@ -313,3 +313,51 @@ class TestKNAPSRDAccount(IntegrationTestCase):
 		self.assertEqual(rd.amount, 7500)
 		self.assertEqual(str(rd.start_date), "2026-04-01")
 		self.assertEqual(rd.client_name, client_name)
+
+	def test_create_without_po_investment(self) -> None:
+		rd = self._make_rd_account(
+			rd_account_number="NOLINK01",
+			denomination=10000,
+			account_opening_date=today(),
+			holder_name="Test Holder",
+			card_number="CARD001",
+		)
+		rd.insert()
+		self.assertIsNone(rd.po_rd_investment)
+		self.assertIsNotNone(rd.name)
+
+	def test_scheduler_links_matching_po_investment(self) -> None:
+		from knaps.tasks.daily import update_po_investment_in_rd_account
+
+		po_inv = self._create_po_investment(account_number="SCHED01")
+		rd = self._make_rd_account(
+			rd_account_number="SCHED01",
+			denomination=10000,
+			account_opening_date=today(),
+			holder_name="Test Holder",
+		)
+		rd.insert()
+		self.assertIsNone(rd.po_rd_investment)
+
+		update_po_investment_in_rd_account()
+
+		rd.reload()
+		self.assertEqual(rd.po_rd_investment, po_inv)
+
+	def test_scheduler_skips_when_no_match(self) -> None:
+		from knaps.tasks.daily import update_po_investment_in_rd_account
+
+		self._create_po_investment(account_number="SCHED02")
+		rd = self._make_rd_account(
+			rd_account_number="NO_MATCH",
+			denomination=10000,
+			account_opening_date=today(),
+			holder_name="Test Holder",
+		)
+		rd.insert()
+		self.assertIsNone(rd.po_rd_investment)
+
+		update_po_investment_in_rd_account()
+
+		rd.reload()
+		self.assertIsNone(rd.po_rd_investment)

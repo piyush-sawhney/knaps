@@ -47,10 +47,9 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "PO RD Investment",
-   "link_filters": "[[\"KNAPS PO Investment\",\"scheme_code\",\"=\",\"RD\"]]",
-   "options": "KNAPS PO Investment",
-   "reqd": 1,
-   "unique": 1
+    "link_filters": "[[\"KNAPS PO Investment\",\"scheme_code\",\"=\",\"RD\"]]",
+    "options": "KNAPS PO Investment",
+    "unique": 1
   },
   {
    "fetch_from": "po_rd_investment.client_name",

@@ -149,23 +149,11 @@ app_include_js = "/assets/knaps/js/child_table_helpers.js"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"knaps.tasks.all"
-# 	],
-# 	"daily": [
-# 		"knaps.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"knaps.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"knaps.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"knaps.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	"daily": [
+		"knaps.tasks.daily.update_po_investment_in_rd_account"
+	],
+}
 
 # Testing
 # -------

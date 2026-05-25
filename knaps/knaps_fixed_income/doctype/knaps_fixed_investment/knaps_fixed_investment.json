@@ -41,9 +41,6 @@
   "column_break_vrnn",
   "start_date",
   "maturity_date",
-  "extend_investment",
-  "section_break_cbjw",
-  "extensions",
   "nominee_details_tab",
   "nominees",
   "payment_details_tab",
@@ -251,27 +248,6 @@
    "read_only": 1
   },
   {
-   "default": "0",
-   "depends_on": "eval: doc.start_date;",
-   "description": "Check if investment is in extension period.",
-   "fieldname": "extend_investment",
-   "fieldtype": "Check",
-   "label": "Extend Investment?"
-  },
-  {
-   "depends_on": "eval: doc.extend_investment;",
-   "fieldname": "section_break_cbjw",
-   "fieldtype": "Section Break",
-   "label": "Extension Details"
-  },
-  {
-   "fieldname": "extensions",
-   "fieldtype": "Table",
-   "label": "Extensions",
-   "mandatory_depends_on": "eval: doc.extend_investment;",
-   "options": "KNAPS PO Extension"
-  },
-  {
    "fieldname": "nominee_details_tab",
    "fieldtype": "Tab Break",
    "label": "Nominee Details"
@@ -338,7 +314,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-24 16:40:52.578732",
+ "modified": "2026-05-25 16:47:02.671832",
  "modified_by": "Administrator",
  "module": "KNAPS Fixed Income",
  "name": "KNAPS Fixed Investment",

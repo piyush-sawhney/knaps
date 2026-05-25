@@ -15,6 +15,7 @@ class KNAPSPOInvestment(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from knaps.knaps.doctype.knaps_payment.knaps_payment import KNAPSPayment
 		from knaps.knaps_client_management.doctype.knaps_holder.knaps_holder import KNAPSHolder
 		from knaps.knaps_client_management.doctype.knaps_nominee.knaps_nominee import KNAPSNominee
@@ -42,7 +43,16 @@ class KNAPSPOInvestment(Document):
 		scheme_code: DF.Data | None
 		scheme_name: DF.Link
 		start_date: DF.Date | None
-		status: DF.Literal["Entry Done", "Submitted", "Active", "Renewed", "Matured", "Pre-Matured", "Transmitted", "Rejected"]
+		status: DF.Literal[
+			"Entry Done",
+			"Submitted",
+			"Active",
+			"Renewed",
+			"Matured",
+			"Pre-Matured",
+			"Transmitted",
+			"Rejected",
+		]
 		through_partner: DF.Check
 		through_us: DF.Check
 		title: DF.Data | None
@@ -113,9 +123,7 @@ class KNAPSPOInvestment(Document):
 		first_holder = next((h for h in holders if h.order == "First"), None)
 		if first_holder:
 			self.primary_client = first_holder.holder
-			client_name = frappe.db.get_value(
-				"KNAPS Client", first_holder.holder, "client_name"
-			)
+			client_name = frappe.db.get_value("KNAPS Client", first_holder.holder, "client_name")
 			if client_name:
 				self.client_name = client_name
 
@@ -128,7 +136,7 @@ class KNAPSPOInvestment(Document):
 					getdate(last_ext.extension_date),
 					last_ext.extension_period,
 				)
-		elif self.start_date and self.period_in_months:
+		elif self.start_date:
 			self.maturity_date = add_months(
 				getdate(self.start_date),
 				self.period_in_months,
@@ -156,25 +164,13 @@ class KNAPSPOInvestment(Document):
 				)
 
 	def _validate_minor_guardian(self) -> None:
-		has_minor_first = any(
-			h for h in self.get("holders") if h.is_minor and h.order == "First"
-		)
-		has_guardian = any(
-			h for h in self.get("holders") if h.order == "Guardian"
-		)
+		has_minor_first = any(h for h in self.get("holders") if h.is_minor and h.order == "First")
+		has_guardian = any(h for h in self.get("holders") if h.order == "Guardian")
 		if has_minor_first and not has_guardian:
 			frappe.throw(
 				_("A Guardian holder is required when the first holder is a minor."),
 				title=_("Guardian Required"),
 			)
-
-	def _validate_guardian_not_minor(self) -> None:
-		for holder in self.get("holders"):
-			if holder.order == "Guardian" and holder.is_minor:
-				frappe.throw(
-					_("Guardian holder {} cannot be a minor.").format(holder.holder),
-					title=_("Invalid Guardian"),
-				)
 
 	def _validate_holders_by_holding_type(self) -> None:
 		holders = self.get("holders")
@@ -203,14 +199,14 @@ class KNAPSPOInvestment(Document):
 				title=_("Invalid Holders"),
 			)
 
-		has_minor_first = any(
-			h for h in holders if h.is_minor and h.order == "First"
-		)
+		has_minor_first = any(h for h in holders if h.is_minor and h.order == "First")
 
 		if has_minor_first:
 			if guardian_count != 1:
 				frappe.throw(
-					_("A Guardian holder is required when the first holder in a Single holding type is a minor."),
+					_(
+						"A Guardian holder is required when the first holder in a Single holding type is a minor."
+					),
 					title=_("Guardian Required"),
 				)
 		elif guardian_count > 0:
@@ -218,6 +214,13 @@ class KNAPSPOInvestment(Document):
 				_("Guardian holder is only allowed when the first holder is a minor."),
 				title=_("Invalid Guardian"),
 			)
+
+		for h in holders:
+			if h.order == "Guardian" and h.is_minor:
+				frappe.throw(
+					_("Guardian holder {} cannot be a minor.").format(h.holder),
+					title=_("Invalid Guardian"),
+				)
 
 	def _validate_nonsingle_holding_type(self, holders: list) -> None:
 		guardian_count = sum(1 for h in holders if h.order == "Guardian")
@@ -271,9 +274,7 @@ class KNAPSPOInvestment(Document):
 			filters={"name": ["in", holder_names]},
 			fields=["name", "individual"],
 		)
-		holder_individuals: set[str] = {
-			c["individual"] for c in client_data if c["individual"]
-		}
+		holder_individuals: set[str] = {c["individual"] for c in client_data if c["individual"]}
 
 		for nominee in nominees:
 			if nominee.nominee_name in holder_individuals:
@@ -394,10 +395,20 @@ class KNAPSPOInvestment(Document):
 				title=_("Invalid Extension"),
 			)
 
+		if not self.start_date:
+			return
+
 		original_maturity = add_months(getdate(self.start_date), self.period_in_months)
 
 		for i, ext in enumerate(extensions):
 			ext_num = ext.idx
+
+			if ext.extension_period <= 0:
+				frappe.throw(
+					_("Extension #{}: Extension period must be positive.").format(ext_num),
+					title=_("Invalid Extension Period"),
+				)
+
 			if i == 0:
 				if getdate(ext.extension_date) < getdate(original_maturity):
 					frappe.throw(

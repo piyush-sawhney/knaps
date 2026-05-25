@@ -30,9 +30,9 @@ class KNAPSRDSchedule(Document):
 		if self.is_new():
 			self.schedule_number = None
 			self.schedule_date = None
-			self.total_rebate = None
-			self.total_surcharge = None
-			self.deposit_amount = None
+			self.total_rebate = 0.0
+			self.total_surcharge = 0.0
+			self.deposit_amount = 0.0
 			self.schedule_document = None
 
 	def validate(self) -> None:
@@ -47,9 +47,7 @@ class KNAPSRDSchedule(Document):
 				for row in self.rd_accounts:
 					if not row.bank_account_number or len(row.bank_account_number) < 5:
 						frappe.throw(
-							_("Invalid bank account number for account {}.").format(
-								row.rd_account_number
-							),
+							_("Invalid bank account number for account {}.").format(row.rd_account_number),
 							title=_("Bank Account Error"),
 						)
 

@@ -17,7 +17,7 @@ add_to_apps_screen = [
 		"logo": "/assets/knaps/images/logo.png",
 		"title": app_title,
 		"route": f"/{app_name}",
-		"has_permission": "knaps.check_app_permission"
+		"has_permission": "knaps.check_app_permission",
 	}
 ]
 
@@ -150,27 +150,19 @@ app_include_js = "/assets/knaps/js/child_table_helpers.js"
 # ---------------
 
 scheduler_events = {
-	"daily": [
-		"knaps.tasks.daily.update_po_investment_in_rd_account"
-	],
+	"daily_long": ["knaps.tasks.daily.update_po_investment_in_rd_account"],
 }
 
 # Testing
 # -------
 
 fixtures = [
-    "KNAPS Non Individual Type",
-    "KNAPS Product",
-    "KNAPS Product Category",
-    "KNAPS Lead Source",
-    {"dt": "Kanban Board", "filters": [
-        [
-            "name", "in", [
-                "KNAPS Lead",
-                "KNAPS Opportunity"
-            ]
-        ]
-    ]}]
+	"KNAPS Non Individual Type",
+	"KNAPS Product",
+	"KNAPS Product Category",
+	"KNAPS Lead Source",
+	{"dt": "Kanban Board", "filters": [["name", "in", ["KNAPS Lead", "KNAPS Opportunity"]]]},
+]
 
 # Extend DocType Class
 # ------------------------------
@@ -255,4 +247,3 @@ export_python_type_annotations = True
 # ------------
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
-

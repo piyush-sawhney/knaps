@@ -1,10 +1,15 @@
+from datetime import date
+
+import frappe
 from frappe.model.document import Document
+from frappe.utils import getdate
 
 from knaps.utils.investment import (
 	build_nominee_name_cache,
 	set_maturity_date,
 	set_nominee_minor_status,
 	set_primary_client,
+	validate_account_number_for_active,
 	validate_amount,
 	validate_entry_date_not_future,
 	validate_holders_by_holding_type,
@@ -42,7 +47,6 @@ class KNAPSFixedInvestment(Document):
 		client_name: DF.Data | None
 		currency: DF.Link | None
 		entry_date: DF.Date
-		extend_investment: DF.Check
 		holders: DF.Table[KNAPSHolder]
 		holding_mode: DF.Literal["Physical", "Demat"]
 		holding_type: DF.Link
@@ -76,6 +80,32 @@ class KNAPSFixedInvestment(Document):
 		title: DF.Data | None
 	# end: auto-generated types
 
+	def autoname(self) -> None:
+		entry_date = self.entry_date or date.today()
+		if isinstance(entry_date, str):
+			entry_date = getdate(entry_date)
+
+		if entry_date.month >= 4:
+			ty_start = entry_date.year
+			ty_end = entry_date.year + 1
+		else:
+			ty_start = entry_date.year - 1
+			ty_end = entry_date.year
+
+		prefix = f"KNAPS-FI-{ty_start % 100:02d}-{ty_end % 100:02d}-"
+
+		last_serial = 0
+		last = frappe.db.get_value(
+			"KNAPS Fixed Investment",
+			{"name": ["like", f"{prefix}%"]},
+			"name",
+			order_by="name desc",
+		)
+		if last:
+			last_serial = int(last.split("-")[-1])
+
+		self.name = f"{prefix}{last_serial + 1:08d}"
+
 	def before_validate(self) -> None:
 		set_nominee_minor_status(self)
 
@@ -97,6 +127,7 @@ class KNAPSFixedInvestment(Document):
 		validate_payments(self)
 		validate_entry_date_not_future(self)
 		validate_no_dates_for_entry_status(self)
+		validate_account_number_for_active(self)
 		validate_start_date_with_account(self)
 		validate_amount(self)
 		validate_rate_of_interest(self)

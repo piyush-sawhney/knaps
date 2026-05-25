@@ -289,6 +289,17 @@ def validate_no_dates_for_entry_status(doc) -> None:
 		)
 
 
+def validate_account_number_for_active(doc) -> None:
+	if doc.status in ("Entry Done", "Submitted", "Rejected"):
+		return
+	account_number = getattr(doc, "account_number", None)
+	if not account_number:
+		frappe.throw(
+			_("Account Number is required when status is {}.").format(doc.status),
+			title=_("Missing Account Number"),
+		)
+
+
 def validate_start_date_with_account(doc) -> None:
 	if doc.status in ("Entry Done", "Submitted"):
 		return

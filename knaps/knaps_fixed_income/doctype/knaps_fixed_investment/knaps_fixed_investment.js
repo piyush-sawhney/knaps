@@ -1,8 +1,13 @@
-// Copyright (c) 2026, KNAPS and Contributors and contributors
-// For license information, please see license.txt
+frappe.ui.form.on("KNAPS Fixed Investment", {
+	refresh(frm) {
+		frm.trigger("add_open_client_button");
+	},
 
-// frappe.ui.form.on("KNAPS Fixed Investment", {
-// 	refresh(frm) {
-
-// 	},
-// });
+	add_open_client_button(frm) {
+		if (frm.doc.primary_client) {
+			frm.add_custom_button(__("Open Client"), function () {
+				frappe.set_route("Form", "KNAPS Client", frm.doc.primary_client);
+			});
+		}
+	},
+});

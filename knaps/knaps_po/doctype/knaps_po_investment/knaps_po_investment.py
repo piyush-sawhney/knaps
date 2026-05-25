@@ -9,6 +9,7 @@ from knaps.utils.investment import (
 	build_nominee_name_cache,
 	set_nominee_minor_status,
 	set_primary_client,
+	validate_account_number_for_active,
 	validate_amount,
 	validate_entry_date_not_future,
 	validate_holders_by_holding_type,
@@ -128,6 +129,7 @@ class KNAPSPOInvestment(Document):
 		validate_payments(self)
 		validate_entry_date_not_future(self)
 		validate_no_dates_for_entry_status(self)
+		validate_account_number_for_active(self)
 		validate_start_date_with_account(self)
 		validate_amount(self)
 		validate_rate_of_interest(self)

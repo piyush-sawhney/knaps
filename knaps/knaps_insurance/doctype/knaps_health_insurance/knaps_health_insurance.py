@@ -13,9 +13,12 @@ class KNAPSHealthInsurance(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
+
 		from knaps.knaps.doctype.knaps_payment.knaps_payment import KNAPSPayment
 		from knaps.knaps_client_management.doctype.knaps_nominee.knaps_nominee import KNAPSNominee
-		from knaps.knaps_insurance.doctype.knaps_insurance_member.knaps_insurance_member import KNAPSInsuranceMember
+		from knaps.knaps_insurance.doctype.knaps_insurance_member.knaps_insurance_member import (
+			KNAPSInsuranceMember,
+		)
 
 		broker_details: DF.Link | None
 		client_name: DF.Data | None

@@ -53,7 +53,9 @@ class IntegrationTestKNAPSIndividual(IntegrationTestCase):
 
 	def test_full_name_all_three(self):
 		"""Test full name calculation with first, middle, and last name."""
-		individual = create_knaps_individual(first_name="John", middle_name="Michael", last_name="Doe", save=False)
+		individual = create_knaps_individual(
+			first_name="John", middle_name="Michael", last_name="Doe", save=False
+		)
 		individual.insert()
 
 		self.assertEqual(individual.full_name, "Mr John Michael Doe")
@@ -77,8 +79,6 @@ class IntegrationTestKNAPSIndividual(IntegrationTestCase):
 	# =====================================================
 	# PRIMARY PHONE SYNC TESTS
 	# =====================================================
-
-
 
 	# =====================================================
 	# VALIDATION TESTS - SINGLE PRIMARY
@@ -1372,7 +1372,7 @@ class IntegrationTestKNAPSIndividual(IntegrationTestCase):
 		self.assertEqual(individual.age_formatted, "18 Years")
 
 	def test_age_formatted_years_and_months_only(self):
-		from frappe.utils import add_years, add_days, today
+		from frappe.utils import add_days, add_years, today
 
 		individual = create_knaps_individual(first_name="YM", last_name="Case", save=False)
 		individual.date_of_birth = add_years(add_days(today(), -90), -18)

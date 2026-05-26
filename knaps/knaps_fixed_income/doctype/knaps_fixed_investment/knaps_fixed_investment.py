@@ -1,11 +1,9 @@
-from datetime import date
-
 import frappe
 from frappe.model.document import Document
-from frappe.utils import getdate
 
 from knaps.utils.investment import (
 	build_nominee_name_cache,
+	generate_investment_name,
 	set_maturity_date,
 	set_nominee_minor_status,
 	set_primary_client,
@@ -81,30 +79,7 @@ class KNAPSFixedInvestment(Document):
 	# end: auto-generated types
 
 	def autoname(self) -> None:
-		entry_date = self.entry_date or date.today()
-		if isinstance(entry_date, str):
-			entry_date = getdate(entry_date)
-
-		if entry_date.month >= 4:
-			ty_start = entry_date.year
-			ty_end = entry_date.year + 1
-		else:
-			ty_start = entry_date.year - 1
-			ty_end = entry_date.year
-
-		prefix = f"KNAPS-FI-{ty_start % 100:02d}-{ty_end % 100:02d}-"
-
-		last_serial = 0
-		last = frappe.db.get_value(
-			"KNAPS Fixed Investment",
-			{"name": ["like", f"{prefix}%"]},
-			"name",
-			order_by="name desc",
-		)
-		if last:
-			last_serial = int(last.split("-")[-1])
-
-		self.name = f"{prefix}{last_serial + 1:08d}"
+		self.name = generate_investment_name("KNAPS Fixed Investment", "KNAPS-FI-", self.entry_date)
 
 	def before_validate(self) -> None:
 		set_nominee_minor_status(self)

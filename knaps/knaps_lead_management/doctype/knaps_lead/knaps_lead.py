@@ -5,6 +5,8 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
+from knaps.utils.constants import DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL
+
 
 class KNAPSLead(Document):
 	# begin: auto-generated types
@@ -45,8 +47,8 @@ class KNAPSLead(Document):
 		if not self.lead or not self.lead_type:
 			return
 
-		if self.lead_type == "KNAPS Individual":
-			individual = frappe.get_cached_doc("KNAPS Individual", self.lead)
+		if self.lead_type == DOCTYPE_INDIVIDUAL:
+			individual = frappe.get_cached_doc(DOCTYPE_INDIVIDUAL, self.lead)
 			self.lead_name = individual.full_name
 			self.preferred_contact_mode = individual.preferred_contact_mode
 			self.phone = individual.primary_phone
@@ -54,8 +56,8 @@ class KNAPSLead(Document):
 			self.email = individual.primary_email
 			self.primary_contact = None
 
-		elif self.lead_type == "KNAPS Non Individual":
-			entity = frappe.get_cached_doc("KNAPS Non Individual", self.lead)
+		elif self.lead_type == DOCTYPE_NON_INDIVIDUAL:
+			entity = frappe.get_cached_doc(DOCTYPE_NON_INDIVIDUAL, self.lead)
 			self.lead_name = entity.legal_name
 			self.primary_contact = entity.primary_contact
 			self.preferred_contact_mode = entity.preferred_contact_mode

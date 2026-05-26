@@ -20,6 +20,7 @@ from knaps.knaps.utils.party_validation import (
 	validate_unique_pan,
 	validate_unique_phone_numbers,
 )
+from knaps.utils.constants import DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL
 
 PAN_REGEX = re.compile(r"^[A-Z]{3}(.)[A-Z][0-9]{4}[A-Z]$")
 
@@ -78,7 +79,7 @@ class KNAPSNonIndividual(Document):
 		self._normalize_legal_name()
 		normalize_pan(self)
 		self._validate_pan_format()
-		validate_unique_pan(self, "KNAPS Non Individual", "entity")
+		validate_unique_pan(self, DOCTYPE_NON_INDIVIDUAL, "entity")
 		self._sync_primary_contact()
 		validate_phone_primary(self)
 		validate_email_primary(self, "email_addresses")
@@ -86,44 +87,56 @@ class KNAPSNonIndividual(Document):
 		validate_unique_phone_numbers(self)
 		validate_unique_emails(self, "email_addresses")
 
-	def _sync_primary_contact(self):
-		primary_individual = None
+	def _sync_primary_contact(self) -> None:
+		primary = self._find_primary_contact()
+		if not primary:
+			primary = self._auto_promote_sole_contact()
+		if primary:
+			self._populate_from_individual(primary)
+		else:
+			self._clear_primary_fields()
 
+	def _find_primary_contact(self) -> str | None:
+		primary = None
 		for row in self.contacts or []:
 			if row.is_primary_contact:
-				if primary_individual:
+				if primary:
 					frappe.throw(
 						_("Only one contact can be marked as primary."),
 						title=_("Duplicate Primary Contact"),
 					)
-				primary_individual = row.individual
+				primary = row.individual
+		return primary
 
-		if not primary_individual and len(self.contacts or []) == 1:
+	def _auto_promote_sole_contact(self) -> str | None:
+		if len(self.contacts or []) == 1:
 			self.contacts[0].is_primary_contact = 1
-			primary_individual = self.contacts[0].individual
+			return self.contacts[0].individual
+		return None
 
-		if primary_individual:
-			individual = frappe.get_cached_doc("KNAPS Individual", primary_individual)
+	def _populate_from_individual(self, individual_name: str) -> None:
+		individual = frappe.get_cached_doc(DOCTYPE_INDIVIDUAL, individual_name)
 
-			if individual.status == "Deceased":
-				frappe.throw(
-					_("Cannot set a deceased individual as primary contact."),
-					title=_("Invalid Contact"),
-				)
+		if individual.status == "Deceased":
+			frappe.throw(
+				_("Cannot set a deceased individual as primary contact."),
+				title=_("Invalid Contact"),
+			)
 
-			self.primary_contact = primary_individual
-			self.primary_contact_name = individual.full_name or primary_individual
-			self.primary_contact_phone = individual.primary_phone or None
-			self.primary_contact_whatsapp = individual.primary_whatsapp or None
-			self.primary_contact_email = individual.primary_email or None
-			self.preferred_contact_mode = individual.preferred_contact_mode or None
-		else:
-			self.primary_contact = None
-			self.primary_contact_name = None
-			self.primary_contact_phone = None
-			self.primary_contact_whatsapp = None
-			self.primary_contact_email = None
-			self.preferred_contact_mode = None
+		self.primary_contact = individual_name
+		self.primary_contact_name = individual.full_name or individual_name
+		self.primary_contact_phone = individual.primary_phone or None
+		self.primary_contact_whatsapp = individual.primary_whatsapp or None
+		self.primary_contact_email = individual.primary_email or None
+		self.preferred_contact_mode = individual.preferred_contact_mode or None
+
+	def _clear_primary_fields(self) -> None:
+		self.primary_contact = None
+		self.primary_contact_name = None
+		self.primary_contact_phone = None
+		self.primary_contact_whatsapp = None
+		self.primary_contact_email = None
+		self.preferred_contact_mode = None
 
 	def _normalize_legal_name(self):
 		if self.legal_name:

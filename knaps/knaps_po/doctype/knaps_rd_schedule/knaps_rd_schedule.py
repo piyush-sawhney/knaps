@@ -54,46 +54,59 @@ class KNAPSRDSchedule(Document):
 	def _validate_schedules(self) -> None:
 		if not self.rd_accounts:
 			return
-		account_list: list[str] = []
+		self._reset_financials()
+		self._validate_duplicate_accounts()
+		for row in self.rd_accounts:
+			self._validate_schedule_type_fields(row)
+			self._accumulate_row_financials(row)
+
+	def _reset_financials(self) -> None:
 		self.total_rebate = 0.0
 		self.total_surcharge = 0.0
 		self.schedule_amount = 0.0
 		self.deposit_amount = 0.0
-		for row in self.rd_accounts:
+
+	def _validate_duplicate_accounts(self) -> None:
+		account_list: list[str] = []
+		for row in self.rd_accounts or []:
 			if row.rd_account_number in account_list:
 				frappe.throw(
 					_("Duplicate Account Number: {}.").format(row.rd_account_number),
 					title=_("Duplicate Account"),
 				)
 			account_list.append(row.rd_account_number)
-			if self.schedule_type and self.schedule_type.lower() == "cash":
-				if row.cheque_number:
-					frappe.throw(
-						_("Cannot have cheque number for account {} in a cash schedule.").format(
-							row.rd_account_number
-						),
-						title=_("Cash Schedule Error"),
-					)
-				row.bank_account_number = None
-			elif self.schedule_type and self.schedule_type.lower() == "cheque":
-				if not row.cheque_number or len(row.cheque_number) != 6:
-					frappe.throw(
-						_("Invalid cheque number for account {}.").format(row.rd_account_number),
-						title=_("Cheque Number Error"),
-					)
-			else:
+
+	def _validate_schedule_type_fields(self, row) -> None:
+		if self.schedule_type and self.schedule_type.lower() == "cash":
+			if row.cheque_number:
 				frappe.throw(
-					_("Invalid schedule type."),
-					title=_("Schedule Type Error"),
+					_("Cannot have cheque number for account {} in a cash schedule.").format(
+						row.rd_account_number
+					),
+					title=_("Cash Schedule Error"),
 				)
-			if row.denomination and row.number_of_installments:
-				row.rd_amount = row.denomination * row.number_of_installments
-				self.schedule_amount += row.rd_amount
-				row.rd_deposit_amount = row.rd_amount
-				if row.rebate:
-					row.rd_deposit_amount -= row.rebate
-					self.total_rebate += row.rebate
-				if row.surcharge:
-					row.rd_deposit_amount += row.surcharge
-					self.total_surcharge += row.surcharge
-				self.deposit_amount += row.rd_deposit_amount
+			row.bank_account_number = None
+		elif self.schedule_type and self.schedule_type.lower() == "cheque":
+			if not row.cheque_number or len(row.cheque_number) != 6:
+				frappe.throw(
+					_("Invalid cheque number for account {}.").format(row.rd_account_number),
+					title=_("Cheque Number Error"),
+				)
+		else:
+			frappe.throw(
+				_("Invalid schedule type."),
+				title=_("Schedule Type Error"),
+			)
+
+	def _accumulate_row_financials(self, row) -> None:
+		if row.denomination and row.number_of_installments:
+			row.rd_amount = row.denomination * row.number_of_installments
+			self.schedule_amount += row.rd_amount
+			row.rd_deposit_amount = row.rd_amount
+			if row.rebate:
+				row.rd_deposit_amount -= row.rebate
+				self.total_rebate += row.rebate
+			if row.surcharge:
+				row.rd_deposit_amount += row.surcharge
+				self.total_surcharge += row.surcharge
+			self.deposit_amount += row.rd_deposit_amount

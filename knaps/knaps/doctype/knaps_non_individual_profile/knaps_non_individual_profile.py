@@ -4,6 +4,8 @@
 import frappe
 from frappe.model.document import Document
 
+from knaps.utils.constants import DOCTYPE_NON_INDIVIDUAL
+
 
 class KNAPSNonIndividualProfile(Document):
 	# begin: auto-generated types
@@ -32,15 +34,15 @@ class KNAPSNonIndividualProfile(Document):
 	def before_save(self):
 		if self.non_individual_entity:
 			entity_title = frappe.db.get_value(
-				"KNAPS Non Individual", self.non_individual_entity, "legal_name"
+				DOCTYPE_NON_INDIVIDUAL, self.non_individual_entity, "legal_name"
 			)
 			self.title = f"{entity_title} Profile"
 
 	def after_insert(self):
-		frappe.has_permission("KNAPS Non Individual", "write", self.non_individual_entity, throw=True)
-		frappe.db.set_value("KNAPS Non Individual", self.non_individual_entity, "entity_profile", self.name)
+		frappe.has_permission(DOCTYPE_NON_INDIVIDUAL, "write", self.non_individual_entity, throw=True)
+		frappe.db.set_value(DOCTYPE_NON_INDIVIDUAL, self.non_individual_entity, "entity_profile", self.name)
 
 	def on_trash(self):
 		if self.non_individual_entity:
-			frappe.has_permission("KNAPS Non Individual", "write", self.non_individual_entity, throw=True)
-			frappe.db.set_value("KNAPS Non Individual", self.non_individual_entity, "entity_profile", None)
+			frappe.has_permission(DOCTYPE_NON_INDIVIDUAL, "write", self.non_individual_entity, throw=True)
+			frappe.db.set_value(DOCTYPE_NON_INDIVIDUAL, self.non_individual_entity, "entity_profile", None)

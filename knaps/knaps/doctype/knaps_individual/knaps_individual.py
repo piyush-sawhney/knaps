@@ -24,6 +24,7 @@ from knaps.knaps.utils.party_validation import (
 	validate_unique_pan,
 	validate_unique_phone_numbers,
 )
+from knaps.utils.constants import DOCTYPE_INDIVIDUAL
 
 
 class KNAPSIndividual(Document):
@@ -70,7 +71,7 @@ class KNAPSIndividual(Document):
 		self.full_name = None
 		self._update_full_name()
 		normalize_pan(self)
-		validate_unique_pan(self, "KNAPS Individual", "individual")
+		validate_unique_pan(self, DOCTYPE_INDIVIDUAL, "individual")
 		self._validate_pan_format()
 		validate_phone_primary(self, check_whatsapp=True)
 		validate_email_primary(self, "email_address")
@@ -99,46 +100,32 @@ class KNAPSIndividual(Document):
 			parts.append(f"{diff.days} Days")
 		return " ".join(parts)
 
-	def _validate_preferred_contact_mode(self):
+	def _validate_preferred_contact_mode(self) -> None:
 		if not self.preferred_contact_mode:
 			return
 
-		if self.preferred_contact_mode == "Phone":
-			primary = next((p for p in (self.phone_numbers or []) if p.is_primary), None)
-			if not primary:
-				frappe.throw(
-					_("Primary phone number is required for Phone mode"), title=_("Invalid Contact Mode")
-				)
-			if not primary.is_active:
-				frappe.throw(
-					_("Primary phone number is inactive. Activate it or choose another."),
-					title=_("Invalid Contact Mode"),
-				)
+		mode_map = {
+			"Phone": (self.phone_numbers or [], "is_primary"),
+			"Whatsapp": (self.phone_numbers or [], "is_whatsapp"),
+			"Email": (self.email_address or [], "is_primary"),
+		}
+		if self.preferred_contact_mode not in mode_map:
+			return
+		items, flag_attr = mode_map[self.preferred_contact_mode]
+		self._assert_primary_exists(items, flag_attr)
 
-		elif self.preferred_contact_mode == "Whatsapp":
-			primary = next((p for p in (self.phone_numbers or []) if p.is_whatsapp), None)
-			if not primary:
-				frappe.throw(
-					_("Primary WhatsApp number is required for WhatsApp mode"),
-					title=_("Invalid Contact Mode"),
-				)
-			if not primary.is_active:
-				frappe.throw(
-					_("Primary WhatsApp number is inactive. Activate it or choose another."),
-					title=_("Invalid Contact Mode"),
-				)
-
-		elif self.preferred_contact_mode == "Email":
-			primary = next((e for e in (self.email_address or []) if e.is_primary), None)
-			if not primary:
-				frappe.throw(
-					_("Primary email address is required for Email mode"), title=_("Invalid Contact Mode")
-				)
-			if not primary.is_active:
-				frappe.throw(
-					_("Primary email address is inactive. Activate it or choose another."),
-					title=_("Invalid Contact Mode"),
-				)
+	def _assert_primary_exists(self, items: list, flag_attr: str) -> None:
+		primary = next((item for item in items if getattr(item, flag_attr)), None)
+		if not primary:
+			frappe.throw(
+				_("A primary {} is required for {} mode.").format(flag_attr, self.preferred_contact_mode),
+				title=_("Invalid Contact Mode"),
+			)
+		if not primary.is_active:
+			frappe.throw(
+				_("Primary {} is inactive. Activate it or choose another.").format(flag_attr),
+				title=_("Invalid Contact Mode"),
+			)
 
 	def _update_full_name(self):
 		"""Construct full name from first, middle, and last name"""

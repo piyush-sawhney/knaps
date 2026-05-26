@@ -1,10 +1,42 @@
+from datetime import date
+
 import frappe
 from dateutil.relativedelta import relativedelta
 from frappe import _
+from frappe.model.document import Document
 from frappe.utils import add_months, getdate, today
 
+from knaps.utils.constants import DOCTYPE_INDIVIDUAL
 
-def set_nominee_minor_status(doc) -> None:
+
+def generate_investment_name(doctype: str, prefix_key: str, entry_date: date | str | None = None) -> str:
+	entry_date = entry_date or date.today()
+	if isinstance(entry_date, str):
+		entry_date = getdate(entry_date)
+
+	if entry_date.month >= 4:
+		ty_start = entry_date.year
+		ty_end = entry_date.year + 1
+	else:
+		ty_start = entry_date.year - 1
+		ty_end = entry_date.year
+
+	prefix = f"{prefix_key}{ty_start % 100:02d}-{ty_end % 100:02d}-"
+
+	last_serial = 0
+	last = frappe.db.get_value(
+		doctype,
+		{"name": ["like", f"{prefix}%"]},
+		"name",
+		order_by="name desc",
+	)
+	if last:
+		last_serial = int(last.split("-")[-1])
+
+	return f"{prefix}{last_serial + 1:08d}"
+
+
+def set_nominee_minor_status(doc: Document) -> None:
 	reference_date = doc.entry_date or today()
 	for nominee in doc.get("nominees"):
 		if nominee.nominee_date_of_birth:
@@ -12,7 +44,7 @@ def set_nominee_minor_status(doc) -> None:
 			nominee.is_minor = 1 if age < 18 else 0
 
 
-def set_primary_client(doc) -> None:
+def set_primary_client(doc: Document) -> None:
 	holders = doc.get("holders")
 	if not holders:
 		return
@@ -25,7 +57,7 @@ def set_primary_client(doc) -> None:
 			doc.client_name = client_name
 
 
-def set_maturity_date(doc) -> None:
+def set_maturity_date(doc: Document) -> None:
 	if doc.get("extensions") and doc.extend_investment:
 		extensions = doc.get("extensions")
 		last_ext = extensions[-1]
@@ -43,7 +75,7 @@ def set_maturity_date(doc) -> None:
 		)
 
 
-def validate_unique_holders(doc) -> None:
+def validate_unique_holders(doc: Document) -> None:
 	seen: set[tuple[str, str]] = set()
 	for holder in doc.get("holders"):
 		key = (holder.holder, holder.order)
@@ -55,7 +87,7 @@ def validate_unique_holders(doc) -> None:
 		seen.add(key)
 
 
-def validate_minor_holder(doc) -> None:
+def validate_minor_holder(doc: Document) -> None:
 	for holder in doc.get("holders"):
 		if holder.is_minor and holder.order != "First":
 			frappe.throw(
@@ -64,7 +96,7 @@ def validate_minor_holder(doc) -> None:
 			)
 
 
-def validate_holders_by_holding_type(doc, enforce_single_for_non_individual: bool = False) -> None:
+def validate_holders_by_holding_type(doc: Document, enforce_single_for_non_individual: bool = False) -> None:
 	holders = doc.get("holders")
 	if not holders:
 		return
@@ -144,7 +176,7 @@ def _validate_nonsingle_holding_type(holders: list) -> None:
 		)
 
 
-def build_nominee_name_cache(doc) -> dict[str, str]:
+def build_nominee_name_cache(doc: Document) -> dict[str, str]:
 	nominees = doc.get("nominees")
 	if not nominees:
 		return {}
@@ -152,21 +184,21 @@ def build_nominee_name_cache(doc) -> dict[str, str]:
 	if not names:
 		return {}
 	records = frappe.db.get_all(
-		"KNAPS Individual",
+		DOCTYPE_INDIVIDUAL,
 		filters={"name": ["in", names]},
 		fields=["name", "full_name"],
 	)
 	return {r["name"]: r["full_name"] or r["name"] for r in records}
 
 
-def get_nominee_display(doc, nominee) -> str:
+def get_nominee_display(doc: Document, nominee) -> str:
 	if not nominee.nominee_name:
 		return ""
 	cache: dict = getattr(doc, "_nominee_name_cache", {})
 	return cache.get(nominee.nominee_name, nominee.nominee_name)
 
 
-def validate_nominee_not_holder(doc) -> None:
+def validate_nominee_not_holder(doc: Document) -> None:
 	holders = doc.get("holders")
 	nominees = doc.get("nominees")
 	if not holders or not nominees:
@@ -190,7 +222,7 @@ def validate_nominee_not_holder(doc) -> None:
 			)
 
 
-def validate_unique_nominees(doc) -> None:
+def validate_unique_nominees(doc: Document) -> None:
 	seen: set[str] = set()
 	for nominee in doc.get("nominees"):
 		if nominee.nominee_name in seen:
@@ -201,7 +233,7 @@ def validate_unique_nominees(doc) -> None:
 		seen.add(nominee.nominee_name)
 
 
-def validate_nominee_percent_total(doc) -> None:
+def validate_nominee_percent_total(doc: Document) -> None:
 	nominees = doc.get("nominees")
 	if not nominees:
 		return
@@ -222,7 +254,7 @@ def validate_nominee_percent_total(doc) -> None:
 		)
 
 
-def validate_nominee_minor_guardian(doc) -> None:
+def validate_nominee_minor_guardian(doc: Document) -> None:
 	for nominee in doc.get("nominees"):
 		if nominee.is_minor and not nominee.guardian:
 			frappe.throw(
@@ -231,7 +263,7 @@ def validate_nominee_minor_guardian(doc) -> None:
 			)
 
 
-def validate_nominees(doc, nominees_optional_for_non_individual: bool = False) -> None:
+def validate_nominees(doc: Document, nominees_optional_for_non_individual: bool = False) -> None:
 	if nominees_optional_for_non_individual:
 		holder_names = [h.holder for h in doc.get("holders") or []]
 		if holder_names:
@@ -256,7 +288,7 @@ def validate_nominees(doc, nominees_optional_for_non_individual: bool = False) -
 		)
 
 
-def validate_payments(doc) -> None:
+def validate_payments(doc: Document) -> None:
 	if not doc.is_existing_investment and not doc.get("payments"):
 		frappe.throw(
 			_("At least one payment is required."),
@@ -264,7 +296,7 @@ def validate_payments(doc) -> None:
 		)
 
 
-def validate_entry_date_not_future(doc) -> None:
+def validate_entry_date_not_future(doc: Document) -> None:
 	if getdate(doc.entry_date) > getdate(today()):
 		frappe.throw(
 			_("Entry Date cannot be in the future."),
@@ -272,7 +304,7 @@ def validate_entry_date_not_future(doc) -> None:
 		)
 
 
-def validate_no_dates_for_entry_status(doc) -> None:
+def validate_no_dates_for_entry_status(doc: Document) -> None:
 	if doc.status not in ("Entry Done", "Submitted"):
 		return
 
@@ -289,7 +321,7 @@ def validate_no_dates_for_entry_status(doc) -> None:
 		)
 
 
-def validate_account_number_for_active(doc) -> None:
+def validate_account_number_for_active(doc: Document) -> None:
 	if doc.status in ("Entry Done", "Submitted", "Rejected"):
 		return
 	account_number = getattr(doc, "account_number", None)
@@ -300,7 +332,7 @@ def validate_account_number_for_active(doc) -> None:
 		)
 
 
-def validate_start_date_with_account(doc) -> None:
+def validate_start_date_with_account(doc: Document) -> None:
 	if doc.status in ("Entry Done", "Submitted"):
 		return
 	account_number = getattr(doc, "account_number", None)
@@ -311,16 +343,16 @@ def validate_start_date_with_account(doc) -> None:
 		)
 
 
-def validate_amount(doc) -> None:
+def validate_amount(doc: Document) -> None:
 	if doc.amount <= 0:
 		frappe.throw(_("Amount must be positive."), title=_("Invalid Amount"))
 
 
-def validate_rate_of_interest(doc) -> None:
+def validate_rate_of_interest(doc: Document) -> None:
 	if doc.rate_of_interest <= 0:
 		frappe.throw(_("Rate of Interest must be positive."), title=_("Invalid Rate"))
 
 
-def validate_period_in_months(doc) -> None:
+def validate_period_in_months(doc: Document) -> None:
 	if doc.period_in_months <= 0:
 		frappe.throw(_("Period in months must be positive."), title=_("Invalid Period"))

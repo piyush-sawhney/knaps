@@ -1,5 +1,3 @@
-from datetime import date
-
 import frappe
 from frappe import _
 from frappe.model.document import Document
@@ -7,6 +5,7 @@ from frappe.utils import add_months, formatdate, getdate
 
 from knaps.utils.investment import (
 	build_nominee_name_cache,
+	generate_investment_name,
 	set_nominee_minor_status,
 	set_primary_client,
 	validate_account_number_for_active,
@@ -83,30 +82,7 @@ class KNAPSPOInvestment(Document):
 	# end: auto-generated types
 
 	def autoname(self) -> None:
-		entry_date = self.entry_date or date.today()
-		if isinstance(entry_date, str):
-			entry_date = getdate(entry_date)
-
-		if entry_date.month >= 4:
-			ty_start = entry_date.year
-			ty_end = entry_date.year + 1
-		else:
-			ty_start = entry_date.year - 1
-			ty_end = entry_date.year
-
-		prefix = f"KNAPS-PO-{ty_start % 100:02d}-{ty_end % 100:02d}-"
-
-		last_serial = 0
-		last = frappe.db.get_value(
-			"KNAPS PO Investment",
-			{"name": ["like", f"{prefix}%"]},
-			"name",
-			order_by="name desc",
-		)
-		if last:
-			last_serial = int(last.split("-")[-1])
-
-		self.name = f"{prefix}{last_serial + 1:08d}"
+		self.name = generate_investment_name("KNAPS PO Investment", "KNAPS-PO-", self.entry_date)
 
 	def before_validate(self) -> None:
 		set_nominee_minor_status(self)
@@ -169,29 +145,28 @@ class KNAPSPOInvestment(Document):
 		original_maturity = add_months(getdate(self.start_date), self.period_in_months)
 
 		for i, ext in enumerate(extensions):
-			ext_num = ext.idx
+			self._validate_single_extension(i, ext, extensions, original_maturity)
 
-			if ext.extension_period <= 0:
-				frappe.throw(
-					_("Extension #{}: Extension period must be positive.").format(ext_num),
-					title=_("Invalid Extension Period"),
-				)
+	def _validate_single_extension(self, i: int, ext, extensions: list, original_maturity) -> None:
+		ext_num = ext.idx
 
-			if i == 0:
-				if getdate(ext.extension_date) < getdate(original_maturity):
-					frappe.throw(
-						_("Extension #{}: Date must be on or after the maturity date {}.").format(
-							ext_num, formatdate(original_maturity, "dd-mm-yyyy")
-						),
-						title=_("Invalid Extension Date"),
-					)
-			else:
-				prev = extensions[i - 1]
-				prev_maturity = add_months(getdate(prev.extension_date), prev.extension_period)
-				if getdate(ext.extension_date) < getdate(prev_maturity):
-					frappe.throw(
-						_("Extension #{}: Date must be on or after the previous maturity date {}.").format(
-							ext_num, formatdate(prev_maturity, "dd-mm-yyyy")
-						),
-						title=_("Invalid Extension Date"),
-					)
+		if ext.extension_period <= 0:
+			frappe.throw(
+				_("Extension #{}: Extension period must be positive.").format(ext_num),
+				title=_("Invalid Extension Period"),
+			)
+
+		if i == 0:
+			reference = original_maturity
+			msg = _("Extension #{}: Date must be on or after the maturity date {}.").format(
+				ext_num, formatdate(original_maturity, "dd-mm-yyyy")
+			)
+		else:
+			prev = extensions[i - 1]
+			reference = add_months(getdate(prev.extension_date), prev.extension_period)
+			msg = _("Extension #{}: Date must be on or after the previous maturity date {}.").format(
+				ext_num, formatdate(reference, "dd-mm-yyyy")
+			)
+
+		if getdate(ext.extension_date) < getdate(reference):
+			frappe.throw(msg, title=_("Invalid Extension Date"))

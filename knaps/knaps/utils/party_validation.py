@@ -1,16 +1,14 @@
-# Copyright (c) 2026, KNAPS and Contributors and contributors
-# For license information, please see license.txt
-
 import frappe
 from frappe import _
+from frappe.model.document import Document
 
 
-def normalize_pan(doc):
+def normalize_pan(doc: Document) -> None:
 	if doc.pan:
 		doc.pan = doc.pan.upper().strip()
 
 
-def validate_unique_pan(doc, doctype, label):
+def validate_unique_pan(doc: Document, doctype: str, label: str) -> None:
 	if doc.pan:
 		existing = frappe.db.exists(doctype, {"pan": doc.pan, "name": ["!=", doc.name]})
 		if existing:
@@ -20,7 +18,7 @@ def validate_unique_pan(doc, doctype, label):
 			)
 
 
-def validate_phone_primary(doc, check_whatsapp=False):
+def validate_phone_primary(doc: Document, check_whatsapp: bool = False) -> None:
 	if doc.phone_numbers and len(doc.phone_numbers) > 0:
 		primary_phones = [p for p in doc.phone_numbers if p.is_primary]
 		if len(primary_phones) == 0:
@@ -33,7 +31,7 @@ def validate_phone_primary(doc, check_whatsapp=False):
 				frappe.throw(_("Only one phone can be marked as WhatsApp"), title=_("Validation Error"))
 
 
-def validate_email_primary(doc, field="email_address"):
+def validate_email_primary(doc: Document, field: str = "email_address") -> None:
 	emails = getattr(doc, field, [])
 	if emails and len(emails) > 0:
 		primary_emails = [e for e in emails if e.is_primary]
@@ -43,7 +41,9 @@ def validate_email_primary(doc, field="email_address"):
 			frappe.throw(_("Only one email can be marked as Primary"), title=_("Validation Error"))
 
 
-def validate_inactive_cannot_be_primary(doc, email_field="email_address", check_whatsapp=False):
+def validate_inactive_cannot_be_primary(
+	doc: Document, email_field: str = "email_address", check_whatsapp: bool = False
+) -> None:
 	for phone in doc.phone_numbers or []:
 		if not phone.is_active:
 			if phone.is_primary:
@@ -64,7 +64,7 @@ def validate_inactive_cannot_be_primary(doc, email_field="email_address", check_
 			)
 
 
-def validate_unique_phone_numbers(doc):
+def validate_unique_phone_numbers(doc: Document) -> None:
 	seen = set()
 	for phone in doc.phone_numbers or []:
 		num = (phone.number or "").strip()
@@ -73,7 +73,7 @@ def validate_unique_phone_numbers(doc):
 		seen.add(num)
 
 
-def validate_unique_emails(doc, field="email_address"):
+def validate_unique_emails(doc: Document, field: str = "email_address") -> None:
 	seen = set()
 	for email in getattr(doc, field, []) or []:
 		addr = (email.email_address or "").strip().lower()

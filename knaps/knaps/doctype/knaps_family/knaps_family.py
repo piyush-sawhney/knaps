@@ -5,6 +5,8 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
+from knaps.utils.constants import DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL
+
 
 class KNAPSFamily(Document):
 	# begin: auto-generated types
@@ -24,7 +26,7 @@ class KNAPSFamily(Document):
 
 	def on_trash(self):
 		self._prefetch_family_values()
-		self._clear_family_if_matching("KNAPS Individual", self.head_of_family)
+		self._clear_family_if_matching(DOCTYPE_INDIVIDUAL, self.head_of_family)
 		for row in self.members or []:
 			self._clear_family_if_matching(row.member_type, row.member_name)
 
@@ -57,18 +59,18 @@ class KNAPSFamily(Document):
 		if not self.head_of_family:
 			return
 		for row in self.members or []:
-			if row.member_type == "KNAPS Individual" and row.member_name == self.head_of_family:
-				title = self._get_party_display_name("KNAPS Individual", self.head_of_family)
+			if row.member_type == DOCTYPE_INDIVIDUAL and row.member_name == self.head_of_family:
+				title = self._get_party_display_name(DOCTYPE_INDIVIDUAL, self.head_of_family)
 				frappe.throw(_("{} is the Head of Family and cannot be added as a member.").format(title))
 
 	def _validate_relation_with_head(self):
 		for row in self.members or []:
-			if row.member_type == "KNAPS Individual" and not row.relation_with_head:
+			if row.member_type == DOCTYPE_INDIVIDUAL and not row.relation_with_head:
 				title = self._get_party_display_name(row.member_type, row.member_name)
 				frappe.throw(
 					_("Relation with Head is mandatory for {} (an Individual member).").format(title)
 				)
-			if row.member_type == "KNAPS Non Individual" and row.relation_with_head:
+			if row.member_type == DOCTYPE_NON_INDIVIDUAL and row.relation_with_head:
 				title = self._get_party_display_name(row.member_type, row.member_name)
 				frappe.throw(
 					_("Relation with Head is not applicable for {} (a Non Individual member).").format(title)
@@ -81,12 +83,12 @@ class KNAPSFamily(Document):
 	def _init_member_cache(self):
 		cache = {"name_to_status": {}, "display_names": {}}
 		individual_names = [
-			row.member_name for row in (self.members or []) if row.member_type == "KNAPS Individual"
+			row.member_name for row in (self.members or []) if row.member_type == DOCTYPE_INDIVIDUAL
 		]
 
 		if individual_names:
 			records = frappe.db.get_all(
-				"KNAPS Individual",
+				DOCTYPE_INDIVIDUAL,
 				filters={"name": ["in", individual_names]},
 				fields=["name", "status", "full_name"],
 			)
@@ -95,12 +97,12 @@ class KNAPSFamily(Document):
 				cache["display_names"][r["name"]] = r["full_name"] or r["name"]
 
 		non_individual_names = [
-			row.member_name for row in (self.members or []) if row.member_type == "KNAPS Non Individual"
+			row.member_name for row in (self.members or []) if row.member_type == DOCTYPE_NON_INDIVIDUAL
 		]
 
 		if non_individual_names:
 			records = frappe.db.get_all(
-				"KNAPS Non Individual",
+				DOCTYPE_NON_INDIVIDUAL,
 				filters={"name": ["in", non_individual_names]},
 				fields=["name", "legal_name"],
 			)
@@ -109,7 +111,7 @@ class KNAPSFamily(Document):
 
 		if self.head_of_family:
 			head_data = frappe.db.get_value(
-				"KNAPS Individual",
+				DOCTYPE_INDIVIDUAL,
 				self.head_of_family,
 				["status", "full_name"],
 				as_dict=True,
@@ -127,17 +129,17 @@ class KNAPSFamily(Document):
 		if self.head_of_family:
 			status = name_to_status.get(self.head_of_family)
 			if status == "Deceased":
-				title = self._get_party_display_name("KNAPS Individual", self.head_of_family)
+				title = self._get_party_display_name(DOCTYPE_INDIVIDUAL, self.head_of_family)
 				frappe.throw(
 					_("{} is deceased and cannot be the Head of Family.").format(title),
 					title=_("Deceased Individual"),
 				)
 
 		for row in self.members or []:
-			if row.member_type == "KNAPS Individual":
+			if row.member_type == DOCTYPE_INDIVIDUAL:
 				status = name_to_status.get(row.member_name)
 				if status == "Deceased":
-					title = self._get_party_display_name("KNAPS Individual", row.member_name)
+					title = self._get_party_display_name(DOCTYPE_INDIVIDUAL, row.member_name)
 					frappe.throw(_("{} is deceased and cannot be added as a member.").format(title))
 
 	def _assert_head_of_family_valid(self, before_save):
@@ -148,7 +150,7 @@ class KNAPSFamily(Document):
 		if self.head_of_family == previous_head:
 			return
 
-		self._raise_if_primary_elsewhere("KNAPS Individual", self.head_of_family)
+		self._raise_if_primary_elsewhere(DOCTYPE_INDIVIDUAL, self.head_of_family)
 
 	def _assert_member_validity(self, before_save):
 		old_primaries = set()
@@ -160,7 +162,7 @@ class KNAPSFamily(Document):
 		for row in self.members or []:
 			key = (row.member_type, row.member_name)
 			if row.membership_type == "Primary" and key not in old_primaries:
-				if row.member_type in ("KNAPS Individual", "KNAPS Non Individual"):
+				if row.member_type in (DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL):
 					self._raise_if_primary_elsewhere(row.member_type, row.member_name)
 
 	def _update_head_of_family(self, before_save):
@@ -172,14 +174,14 @@ class KNAPSFamily(Document):
 			return
 
 		if previous_head:
-			current = frappe.db.get_value("KNAPS Individual", previous_head, "family")
+			current = frappe.db.get_value(DOCTYPE_INDIVIDUAL, previous_head, "family")
 			if current == self.name:
-				frappe.has_permission("KNAPS Individual", "write", previous_head, throw=True)
-				frappe.db.set_value("KNAPS Individual", previous_head, "family", None)
+				frappe.has_permission(DOCTYPE_INDIVIDUAL, "write", previous_head, throw=True)
+				frappe.db.set_value(DOCTYPE_INDIVIDUAL, previous_head, "family", None)
 
-		frappe.has_permission("KNAPS Individual", "write", self.head_of_family, throw=True)
-		frappe.db.set_value("KNAPS Individual", self.head_of_family, "family", self.name)
-		frappe.db.set_value("KNAPS Individual", self.head_of_family, "family_name", self.family_name)
+		frappe.has_permission(DOCTYPE_INDIVIDUAL, "write", self.head_of_family, throw=True)
+		frappe.db.set_value(DOCTYPE_INDIVIDUAL, self.head_of_family, "family", self.name)
+		frappe.db.set_value(DOCTYPE_INDIVIDUAL, self.head_of_family, "family_name", self.family_name)
 
 	def _sync_primary_members(self, before_save):
 		old_primaries = {}
@@ -195,18 +197,18 @@ class KNAPSFamily(Document):
 				if key in old_primaries:
 					old_primaries.pop(key)
 					continue
-				if row.member_type in ("KNAPS Individual", "KNAPS Non Individual"):
+				if row.member_type in (DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL):
 					frappe.has_permission(row.member_type, "write", row.member_name, throw=True)
 					frappe.db.set_value(row.member_type, row.member_name, "family", self.name)
 					frappe.db.set_value(row.member_type, row.member_name, "family_name", self.family_name)
 
 			elif key in old_primaries:
-				if not (row.member_type == "KNAPS Individual" and row.member_name == self.head_of_family):
+				if not (row.member_type == DOCTYPE_INDIVIDUAL and row.member_name == self.head_of_family):
 					self._clear_family_if_matching(row.member_type, row.member_name)
 				old_primaries.pop(key)
 
 		for member_type, member_name in old_primaries:
-			if not (member_type == "KNAPS Individual" and member_name == self.head_of_family):
+			if not (member_type == DOCTYPE_INDIVIDUAL and member_name == self.head_of_family):
 				self._clear_family_if_matching(member_type, member_name)
 
 	def _raise_if_primary_elsewhere(self, doctype, name):
@@ -223,7 +225,7 @@ class KNAPSFamily(Document):
 		if self.head_of_family:
 			names.append(self.head_of_family)
 		for row in self.members or []:
-			if row.member_type == "KNAPS Individual" and row.member_name not in names:
+			if row.member_type == DOCTYPE_INDIVIDUAL and row.member_name not in names:
 				names.append(row.member_name)
 
 		if not names:
@@ -231,14 +233,14 @@ class KNAPSFamily(Document):
 			return
 
 		records = frappe.db.get_all(
-			"KNAPS Individual",
+			DOCTYPE_INDIVIDUAL,
 			filters={"name": ["in", names]},
 			fields=["name", "family"],
 		)
 		self._family_cache = {r["name"]: r["family"] for r in records}
 
 	def _clear_family_if_matching(self, doctype, name):
-		if doctype not in ("KNAPS Individual", "KNAPS Non Individual"):
+		if doctype not in (DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL):
 			return
 		family_cache = getattr(self, "_family_cache", {})
 		family = family_cache.get(name) if family_cache else None
@@ -256,8 +258,8 @@ class KNAPSFamily(Document):
 		display_names = cache.get("display_names", {})
 		if name in display_names:
 			return display_names[name]
-		if doctype == "KNAPS Individual":
+		if doctype == DOCTYPE_INDIVIDUAL:
 			return frappe.db.get_value(doctype, name, "full_name") or name
-		if doctype == "KNAPS Non Individual":
+		if doctype == DOCTYPE_NON_INDIVIDUAL:
 			return frappe.db.get_value(doctype, name, "legal_name") or name
 		return name

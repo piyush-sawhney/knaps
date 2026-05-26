@@ -7,6 +7,8 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import getdate, today
 
+from knaps.utils.constants import DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL
+
 
 class KNAPSClient(Document):
 	# begin: auto-generated types
@@ -105,7 +107,7 @@ class KNAPSClient(Document):
 			self._sync_from_non_individual()
 
 	def _sync_from_individual(self):
-		individual = frappe.get_cached_doc("KNAPS Individual", self.individual)
+		individual = frappe.get_cached_doc(DOCTYPE_INDIVIDUAL, self.individual)
 
 		if self.client_type == "Individual":
 			self.client_name = individual.full_name
@@ -125,7 +127,7 @@ class KNAPSClient(Document):
 			self.is_minor = 0
 
 	def _sync_from_non_individual(self):
-		entity = frappe.get_cached_doc("KNAPS Non Individual", self.non_individual)
+		entity = frappe.get_cached_doc(DOCTYPE_NON_INDIVIDUAL, self.non_individual)
 
 		self.client_name = entity.legal_name
 		self.pan = entity.pan

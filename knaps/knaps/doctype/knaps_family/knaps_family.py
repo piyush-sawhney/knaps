@@ -23,11 +23,13 @@ class KNAPSFamily(Document):
 	# end: auto-generated types
 
 	def on_trash(self):
+		self._prefetch_family_values()
 		self._clear_family_if_matching("KNAPS Individual", self.head_of_family)
 		for row in self.members or []:
 			self._clear_family_if_matching(row.member_type, row.member_name)
 
 	def validate(self):
+		self._init_member_cache()
 		self._validate_unique_members()
 		self._validate_head_not_listed_as_member()
 		self._validate_no_deceased_members()
@@ -76,9 +78,54 @@ class KNAPSFamily(Document):
 		if not self.members:
 			frappe.throw(_("A family must have at least one member."))
 
-	def _validate_no_deceased_members(self):
+	def _init_member_cache(self):
+		cache = {"name_to_status": {}, "display_names": {}}
+		individual_names = [
+			row.member_name for row in (self.members or []) if row.member_type == "KNAPS Individual"
+		]
+
+		if individual_names:
+			records = frappe.db.get_all(
+				"KNAPS Individual",
+				filters={"name": ["in", individual_names]},
+				fields=["name", "status", "full_name"],
+			)
+			for r in records:
+				cache["name_to_status"][r["name"]] = r["status"]
+				cache["display_names"][r["name"]] = r["full_name"] or r["name"]
+
+		non_individual_names = [
+			row.member_name for row in (self.members or []) if row.member_type == "KNAPS Non Individual"
+		]
+
+		if non_individual_names:
+			records = frappe.db.get_all(
+				"KNAPS Non Individual",
+				filters={"name": ["in", non_individual_names]},
+				fields=["name", "legal_name"],
+			)
+			for r in records:
+				cache["display_names"][r["name"]] = r["legal_name"] or r["name"]
+
 		if self.head_of_family:
-			status = frappe.db.get_value("KNAPS Individual", self.head_of_family, "status")
+			head_data = frappe.db.get_value(
+				"KNAPS Individual",
+				self.head_of_family,
+				["status", "full_name"],
+				as_dict=True,
+			)
+			if head_data:
+				cache["name_to_status"][self.head_of_family] = head_data.status
+				cache["display_names"][self.head_of_family] = head_data.full_name or self.head_of_family
+
+		self._member_cache = cache
+
+	def _validate_no_deceased_members(self):
+		cache = getattr(self, "_member_cache", {})
+		name_to_status = cache.get("name_to_status", {})
+
+		if self.head_of_family:
+			status = name_to_status.get(self.head_of_family)
 			if status == "Deceased":
 				title = self._get_party_display_name("KNAPS Individual", self.head_of_family)
 				frappe.throw(
@@ -88,7 +135,7 @@ class KNAPSFamily(Document):
 
 		for row in self.members or []:
 			if row.member_type == "KNAPS Individual":
-				status = frappe.db.get_value("KNAPS Individual", row.member_name, "status")
+				status = name_to_status.get(row.member_name)
 				if status == "Deceased":
 					title = self._get_party_display_name("KNAPS Individual", row.member_name)
 					frappe.throw(_("{} is deceased and cannot be added as a member.").format(title))
@@ -171,18 +218,46 @@ class KNAPSFamily(Document):
 			)
 			frappe.throw(_("{} is already a primary member in {}.").format(title, family_label))
 
+	def _prefetch_family_values(self):
+		names = []
+		if self.head_of_family:
+			names.append(self.head_of_family)
+		for row in self.members or []:
+			if row.member_type == "KNAPS Individual" and row.member_name not in names:
+				names.append(row.member_name)
+
+		if not names:
+			self._family_cache = {}
+			return
+
+		records = frappe.db.get_all(
+			"KNAPS Individual",
+			filters={"name": ["in", names]},
+			fields=["name", "family"],
+		)
+		self._family_cache = {r["name"]: r["family"] for r in records}
+
 	def _clear_family_if_matching(self, doctype, name):
 		if doctype not in ("KNAPS Individual", "KNAPS Non Individual"):
 			return
-		current = frappe.db.get_value(doctype, name, "family")
+		family_cache = getattr(self, "_family_cache", {})
+		family = family_cache.get(name) if family_cache else None
+		if family is None:
+			current = frappe.db.get_value(doctype, name, "family")
+		else:
+			current = family
 		if current == self.name:
 			frappe.has_permission(doctype, "write", name, throw=True)
 			frappe.db.set_value(doctype, name, "family", None)
 			frappe.db.set_value(doctype, name, "family_name", None)
 
 	def _get_party_display_name(self, doctype, name):
+		cache = getattr(self, "_member_cache", {})
+		display_names = cache.get("display_names", {})
+		if name in display_names:
+			return display_names[name]
 		if doctype == "KNAPS Individual":
 			return frappe.db.get_value(doctype, name, "full_name") or name
-		elif doctype == "KNAPS Non Individual":
+		if doctype == "KNAPS Non Individual":
 			return frappe.db.get_value(doctype, name, "legal_name") or name
 		return name

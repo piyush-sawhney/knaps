@@ -215,7 +215,7 @@ def validate_nominee_percent_total(doc) -> None:
 			)
 		total += nominee.nominee_percent
 
-	if total != 100:
+	if abs(total - 100) > 0.01:
 		frappe.throw(
 			_("Total nominee percentage must be 100. Currently it is {}.").format(total),
 			title=_("Invalid Nominee Percent"),

@@ -3,7 +3,7 @@ from datetime import date
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import add_months, getdate
+from frappe.utils import add_days, add_months, getdate
 
 from knaps.utils.constants import DOCTYPE_INDIVIDUAL
 
@@ -79,6 +79,18 @@ def _validate_not_minor(member) -> None:
 def set_maturity_date(doc: Document) -> None:
 	if doc.start_date:
 		doc.maturity_date = add_months(getdate(doc.start_date), doc.period_in_months)
+
+
+def set_maturity_date_general(doc: Document) -> None:
+	if not doc.start_date:
+		return
+	start = getdate(doc.start_date)
+	if doc.period_type == "Days":
+		doc.maturity_date = add_days(start, doc.period)
+	elif doc.period_type == "Months":
+		doc.maturity_date = add_months(start, doc.period)
+	elif doc.period_type == "Years":
+		doc.maturity_date = add_months(start, doc.period * 12)
 
 
 def set_title(doc: Document) -> None:

@@ -1,0 +1,375 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "creation": "2026-05-26 17:52:22.954746",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "policy_number",
+  "title",
+  "policy_document",
+  "column_break_lzeu",
+  "quote_number",
+  "column_break_pisv",
+  "status",
+  "entry_date",
+  "section_break_bbmm",
+  "column_break_poby",
+  "through_us",
+  "is_existing_policy",
+  "column_break_reio",
+  "through_partner",
+  "partner",
+  "through_broker",
+  "broker_details",
+  "column_break_uowo",
+  "has_multiple_members",
+  "primary_client",
+  "client_name",
+  "section_break_xhvx",
+  "policy_type",
+  "investment_company",
+  "insurance_plan_name",
+  "sum_assured",
+  "column_break_sbgx",
+  "period_type",
+  "period",
+  "premium",
+  "currency",
+  "column_break_vrnn",
+  "start_date",
+  "maturity_date",
+  "member_details_section",
+  "holders",
+  "section_break_owlw",
+  "links",
+  "nominee_details_tab",
+  "nominees",
+  "payment_details_tab",
+  "payments"
+ ],
+ "fields": [
+  {
+   "fieldname": "policy_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Policy Number",
+   "unique": 1
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Title",
+   "read_only": 1
+  },
+  {
+   "fieldname": "policy_document",
+   "fieldtype": "Attach",
+   "label": "Policy Document"
+  },
+  {
+   "fieldname": "column_break_lzeu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "quote_number",
+   "fieldtype": "Data",
+   "label": "Quote Number"
+  },
+  {
+   "fieldname": "column_break_pisv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 1,
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Proposal\nActive\nRenewed\nSurrendered\nRejected",
+   "read_only_depends_on": "eval: !doc.__islocal;",
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "entry_date",
+   "fieldtype": "Date",
+   "label": "Entry Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_bbmm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_poby",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "description": "Check if we are the agent.",
+   "fieldname": "through_us",
+   "fieldtype": "Check",
+   "label": "Through Us?"
+  },
+  {
+   "default": "0",
+   "description": "Check if at the date of entry, investment is already created",
+   "fieldname": "is_existing_policy",
+   "fieldtype": "Check",
+   "label": "Is Existing Policy?"
+  },
+  {
+   "fieldname": "column_break_reio",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Check if client servicing is done by the partner.",
+   "fieldname": "through_partner",
+   "fieldtype": "Check",
+   "label": "Through Partner?"
+  },
+  {
+   "depends_on": "eval: doc.through_partner;",
+   "fieldname": "partner",
+   "fieldtype": "Link",
+   "label": "Partner",
+   "mandatory_depends_on": "eval: doc.through_partner;",
+   "options": "KNAPS Channel Partner"
+  },
+  {
+   "default": "0",
+   "fieldname": "through_broker",
+   "fieldtype": "Check",
+   "label": "Through Broker?"
+  },
+  {
+   "fieldname": "broker_details",
+   "fieldtype": "Link",
+   "label": "Broker Details",
+   "options": "KNAPS Channel Partner"
+  },
+  {
+   "fieldname": "column_break_uowo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "primary_client",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Primary Client",
+   "options": "KNAPS Client",
+   "read_only_depends_on": "eval: doc.has_multiple_members;"
+  },
+   {
+    "fetch_from": "primary_client.client_name",
+    "fieldname": "client_name",
+    "fieldtype": "Data",
+    "label": "Client Name",
+    "read_only": 1
+   },
+  {
+   "fieldname": "member_details_section",
+   "fieldtype": "Section Break",
+   "label": "Member Details"
+  },
+  {
+   "depends_on": "eval: doc.has_multiple_members;",
+   "fieldname": "holders",
+   "fieldtype": "Table",
+   "label": "Members",
+   "mandatory_depends_on": "eval: doc.has_multiple_members;",
+   "options": "KNAPS Health Insurance Member"
+  },
+  {
+   "fieldname": "section_break_xhvx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "investment_company",
+   "fieldtype": "Link",
+   "label": "Insurance Company",
+   "options": "KNAPS Product Provider",
+   "reqd": 1
+  },
+  {
+   "fieldname": "insurance_plan_name",
+   "fieldtype": "Data",
+   "label": "Insurance Plan Name"
+  },
+  {
+   "fieldname": "column_break_sbgx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 1,
+   "fieldname": "premium",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Premium",
+   "non_negative": 1,
+   "options": "currency",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "column_break_vrnn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "columns": 1,
+   "depends_on": "eval: !doc.__islocal;",
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "maturity_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Maturity Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "nominee_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Nominee Details"
+  },
+  {
+   "fieldname": "nominees",
+   "fieldtype": "Table",
+   "label": "Nominees",
+   "options": "KNAPS Nominee"
+  },
+  {
+   "fieldname": "payment_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Payment Details"
+  },
+  {
+   "fieldname": "payments",
+   "fieldtype": "Table",
+   "label": "Payments",
+   "options": "KNAPS Payment"
+  },
+  {
+   "fieldname": "policy_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Policy Type",
+   "options": "KNAPS Insurance Type",
+   "reqd": 1
+  },
+   {
+    "fieldname": "period_type",
+    "fieldtype": "Select",
+    "in_standard_filter": 1,
+    "label": "Period Type",
+    "options": "\nDays\nMonths\nYears",
+    "reqd": 1
+   },
+  {
+   "fieldname": "period",
+   "fieldtype": "Int",
+   "in_standard_filter": 1,
+   "label": "Period",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "description": "If Policy is for more than 2 individuals",
+   "fieldname": "has_multiple_members",
+   "fieldtype": "Check",
+   "label": "Has Multiple Members?"
+  },
+  {
+   "fieldname": "section_break_owlw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "links",
+   "fieldtype": "Table",
+   "label": "Links",
+   "options": "Dynamic Link"
+  },
+  {
+   "fieldname": "sum_assured",
+   "fieldtype": "Currency",
+   "label": "Sum Assured",
+   "non_negative": 1,
+   "options": "currency",
+   "precision": "2",
+   "read_only_depends_on": "eval: doc.has_multiple_members;"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-26 18:04:50.915019",
+ "modified_by": "Administrator",
+ "module": "KNAPS Insurance",
+ "name": "KNAPS General Insurance",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "search_fields": "client_name, start_date",
+ "show_title_field_in_link": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [
+  {
+   "color": "Purple",
+   "title": "Proposal"
+  },
+  {
+   "color": "Green",
+   "title": "Active"
+  },
+  {
+   "color": "Blue",
+   "title": "Renewed"
+  },
+  {
+   "color": "Orange",
+   "title": "Surrendered"
+  },
+  {
+   "color": "Red",
+   "title": "Rejected"
+  }
+ ],
+ "title_field": "title",
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
+}

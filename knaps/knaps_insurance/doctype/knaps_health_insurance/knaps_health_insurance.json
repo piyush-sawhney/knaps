@@ -28,7 +28,7 @@
   "member_details_section",
   "holders",
   "section_break_xhvx",
-  "holding_type",
+  "policy_type",
   "investment_company",
   "insurance_plan_name",
   "column_break_sbgx",
@@ -85,15 +85,6 @@
   {
    "fieldname": "column_break_poby",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "holding_type",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Policy Type",
-   "options": "Multi-Individual\nFloater",
-   "reqd": 1
   },
   {
    "default": "1",
@@ -280,22 +271,31 @@
   },
   {
    "columns": 1,
-    "depends_on": "eval: doc.holding_type === \"Floater\"",
+"depends_on": "eval: doc.policy_type === \"Floater\"",
     "fieldname": "floater_sum_insured",
     "fieldtype": "Currency",
     "in_list_view": 1,
     "in_standard_filter": 1,
     "label": "Floater Sum Insured",
-    "mandatory_depends_on": "eval: doc.holding_type === \"Floater\"",
+    "mandatory_depends_on": "eval: doc.policy_type === \"Floater\"",
    "non_negative": 1,
    "options": "currency",
    "precision": "2"
+  },
+  {
+   "fieldname": "policy_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Policy Type",
+   "options": "Multi-Individual\nFloater",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-26 14:21:17.014880",
+ "modified": "2026-05-26 17:54:20.418991",
  "modified_by": "Administrator",
  "module": "KNAPS Insurance",
  "name": "KNAPS Health Insurance",
@@ -321,27 +321,27 @@
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [
-   {
-    "color": "Purple",
-    "title": "Proposal"
-   },
-   {
-    "color": "Green",
-    "title": "Active"
-   },
-   {
-    "color": "Blue",
-    "title": "Renewed"
-   },
-   {
-    "color": "Orange",
-    "title": "Surrendered"
-   },
-   {
-    "color": "Red",
-    "title": "Rejected"
-   }
-  ],
+  {
+   "color": "Purple",
+   "title": "Proposal"
+  },
+  {
+   "color": "Green",
+   "title": "Active"
+  },
+  {
+   "color": "Blue",
+   "title": "Renewed"
+  },
+  {
+   "color": "Orange",
+   "title": "Surrendered"
+  },
+  {
+   "color": "Red",
+   "title": "Rejected"
+  }
+ ],
  "title_field": "title",
  "track_changes": 1,
  "track_seen": 1,

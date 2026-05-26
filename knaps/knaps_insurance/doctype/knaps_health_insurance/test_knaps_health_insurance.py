@@ -116,7 +116,7 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 			"doctype": "KNAPS Health Insurance",
 			"entry_date": today(),
 			"status": "Proposal",
-			"holding_type": "Multi-Individual",
+			"policy_type": "Multi-Individual",
 			"investment_company": self.product_provider,
 			"insurance_plan_name": "Gold Plan",
 			"period_in_months": 12,
@@ -291,10 +291,10 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 		self._add_payment(doc)
 		doc.insert()
 
-		self.assertEqual(doc.holding_type, "Multi-Individual")
+		self.assertEqual(doc.policy_type, "Multi-Individual")
 
 	def test_floater_requires_two_insured(self):
-		doc = self._make_policy(holding_type="Floater")
+		doc = self._make_policy(policy_type="Floater")
 		self._add_member(doc, self.adult_client, "Insured", is_primary=True)
 		self._add_nominee(doc, self.nominee_individual)
 		self._add_payment(doc)
@@ -303,14 +303,14 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 			doc.insert()
 
 	def test_floater_with_two_insured_succeeds(self):
-		doc = self._make_policy(holding_type="Floater", floater_sum_insured=1000000)
+		doc = self._make_policy(policy_type="Floater", floater_sum_insured=1000000)
 		self._add_member(doc, self.adult_client, "Insured", is_primary=True)
 		self._add_member(doc, self.other_client, "Insured")
 		self._add_nominee(doc, self.nominee_individual)
 		self._add_payment(doc)
 		doc.insert()
 
-		self.assertEqual(doc.holding_type, "Floater")
+		self.assertEqual(doc.policy_type, "Floater")
 
 	def test_duplicate_holder_throws(self):
 		doc = self._make_policy()
@@ -321,7 +321,7 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 			doc.insert()
 
 	def test_floater_member_sum_insured_must_be_empty(self):
-		doc = self._make_policy(holding_type="Floater", floater_sum_insured=1000000)
+		doc = self._make_policy(policy_type="Floater", floater_sum_insured=1000000)
 		self._add_member(doc, self.adult_client, "Insured", is_primary=True, sum_insured=500000)
 		self._add_member(doc, self.nominee_client, "Insured")
 
@@ -345,7 +345,7 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 		self.assertEqual(doc.holders[0].sum_insured, 500000)
 
 	def test_floater_sum_insured_required(self):
-		doc = self._make_policy(holding_type="Floater")
+		doc = self._make_policy(policy_type="Floater")
 		self._add_member(doc, self.adult_client, "Insured", is_primary=True)
 		self._add_member(doc, self.nominee_client, "Insured")
 
@@ -353,7 +353,7 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 			doc.insert()
 
 	def test_floater_sum_insured_positive(self):
-		doc = self._make_policy(holding_type="Floater", floater_sum_insured=0)
+		doc = self._make_policy(policy_type="Floater", floater_sum_insured=0)
 		self._add_member(doc, self.adult_client, "Insured", is_primary=True)
 		self._add_member(doc, self.nominee_client, "Insured")
 

@@ -7,18 +7,18 @@ frappe.ui.form.on("KNAPS Health Insurance Member", {
 
 frappe.ui.form.on("KNAPS Health Insurance", {
 	refresh(frm) {
-		frm.trigger("toggle_holding_type_fields");
+		frm.trigger("toggle_policy_type_fields");
 		frm.trigger("toggle_status_fields");
 		frm.trigger("add_open_client_button");
 	},
-	holding_type(frm) {
-		frm.trigger("toggle_holding_type_fields");
+	policy_type(frm) {
+		frm.trigger("toggle_policy_type_fields");
 	},
 	status(frm) {
 		frm.trigger("toggle_status_fields");
 	},
-	toggle_holding_type_fields(frm) {
-		const is_floater = frm.doc.holding_type === "Floater";
+	toggle_policy_type_fields(frm) {
+		const is_floater = frm.doc.policy_type === "Floater";
 		frm.set_df_property("floater_sum_insured", "hidden", !is_floater);
 		frm.set_df_property("floater_sum_insured", "reqd", is_floater);
 

@@ -108,13 +108,13 @@ def validate_holders(doc: Document) -> None:
 
 	insured_count = sum(1 for h in holders if h.order == "Insured")
 
-	if doc.holding_type == "Floater":
+	if doc.policy_type == "Floater":
 		if insured_count < 2:
 			frappe.throw(
 				_("Floater policy requires at least 2 members with role 'Insured'."),
 				title=_("Insufficient Insured Members"),
 			)
-	elif doc.holding_type == "Multi-Individual":
+	elif doc.policy_type == "Multi-Individual":
 		if insured_count < 1:
 			frappe.throw(
 				_("Multi-Individual policy requires at least 1 member with role 'Insured'."),
@@ -124,7 +124,7 @@ def validate_holders(doc: Document) -> None:
 
 def validate_holder_sum_insured(doc: Document) -> None:
 	holders = doc.get("holders") or []
-	if doc.holding_type == "Floater":
+	if doc.policy_type == "Floater":
 		for h in holders:
 			if h.sum_insured and h.sum_insured > 0:
 				display = frappe.db.get_value("KNAPS Client", h.holder, "client_name") or h.holder
@@ -134,7 +134,7 @@ def validate_holder_sum_insured(doc: Document) -> None:
 					).format(display),
 					title=_("Invalid Member Sum Insured"),
 				)
-	elif doc.holding_type == "Multi-Individual":
+	elif doc.policy_type == "Multi-Individual":
 		for h in holders:
 			if h.order != "Insured":
 				continue
@@ -149,13 +149,13 @@ def validate_holder_sum_insured(doc: Document) -> None:
 
 
 def validate_floater_sum_insured(doc: Document) -> None:
-	if doc.holding_type == "Floater":
+	if doc.policy_type == "Floater":
 		if not doc.floater_sum_insured or doc.floater_sum_insured <= 0:
 			frappe.throw(
 				_("Floater Sum Insured is required and must be positive for Floater policies."),
 				title=_("Invalid Floater Sum Insured"),
 			)
-	elif doc.holding_type == "Multi-Individual":
+	elif doc.policy_type == "Multi-Individual":
 		if doc.floater_sum_insured and doc.floater_sum_insured > 0:
 			frappe.throw(
 				_("Floater Sum Insured should not be set for Multi-Individual policies."),

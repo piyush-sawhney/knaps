@@ -52,7 +52,6 @@ class KNAPSHealthInsurance(Document):
 		entry_date: DF.Date
 		floater_sum_insured: DF.Currency
 		holders: DF.Table[KNAPSHealthInsuranceMember]
-		holding_type: DF.Literal["Multi-Individual", "Floater"]
 		insurance_plan_name: DF.Data | None
 		investment_company: DF.Link
 		is_existing_policy: DF.Check
@@ -63,6 +62,7 @@ class KNAPSHealthInsurance(Document):
 		period_in_months: DF.Int
 		policy_document: DF.Attach | None
 		policy_number: DF.Data | None
+		policy_type: DF.Literal["Multi-Individual", "Floater"]
 		premium: DF.Currency
 		primary_client: DF.Link | None
 		quote_number: DF.Data | None

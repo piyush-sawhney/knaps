@@ -58,9 +58,16 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 		return client.name
 
 	def _create_product_provider(self) -> str:
-		self._ensure_doctype_exists("KNAPS Product Category", "Insurance")
-		self._ensure_doctype_exists("KNAPS Product", "Health Insurance")
-		self._ensure_doctype_exists("KNAPS Non Individual Type", "Company")
+		if not frappe.db.exists("KNAPS Product Category", "Insurance"):
+			frappe.get_doc({"doctype": "KNAPS Product Category", "category_name": "Insurance"}).insert()
+		if not frappe.db.exists("KNAPS Product", "Health Insurance"):
+			frappe.get_doc(
+				{"doctype": "KNAPS Product", "product_name": "Health Insurance", "category": "Insurance"}
+			).insert()
+		if not frappe.db.exists("KNAPS Non Individual Type", "Company"):
+			frappe.get_doc(
+				{"doctype": "KNAPS Non Individual Type", "non_individual_type": "Company"}
+			).insert()
 		provider = frappe.get_doc(
 			{
 				"doctype": "KNAPS Non Individual",

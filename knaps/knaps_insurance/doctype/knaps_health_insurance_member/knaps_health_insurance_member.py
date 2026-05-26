@@ -5,7 +5,7 @@
 from frappe.model.document import Document
 
 
-class KNAPSInsuranceMember(Document):
+class KNAPSHealthInsuranceMember(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -15,8 +15,10 @@ class KNAPSInsuranceMember(Document):
 		from frappe.types import DF
 
 		currency: DF.Link | None
+		date_of_birth: DF.Date | None
 		holder: DF.Link
-		order: DF.Literal["", "Proposer", "Life Assured/Insured"]
+		is_primary: DF.Check
+		order: DF.Literal["", "Proposer", "Insured"]
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data

@@ -5,7 +5,6 @@ from frappe.utils import today
 
 
 class TestKNAPSRDAccount(IntegrationTestCase):
-
 	def setUp(self) -> None:
 		super().setUp()
 		frappe.db.savepoint("knaps_rd_account_sp")
@@ -32,11 +31,13 @@ class TestKNAPSRDAccount(IntegrationTestCase):
 	def _create_scheme(self, name: str, code: str) -> str:
 		if frappe.db.exists("KNAPS PO Scheme", code):
 			return code
-		doc = frappe.get_doc({
-			"doctype": "KNAPS PO Scheme",
-			"scheme_name": name,
-			"scheme_code": code,
-		})
+		doc = frappe.get_doc(
+			{
+				"doctype": "KNAPS PO Scheme",
+				"scheme_name": name,
+				"scheme_code": code,
+			}
+		)
 		doc.insert()
 		return code
 
@@ -44,14 +45,16 @@ class TestKNAPSRDAccount(IntegrationTestCase):
 		self._ensure_doctype_exists("Gender", gender)
 		self._ensure_doctype_exists("Salutation", salutation)
 
-		ind = frappe.get_doc({
-			"doctype": "KNAPS Individual",
-			"first_name": first_name,
-			"gender": gender,
-			"salutation": salutation,
-			"date_of_birth": dob,
-			"status": "Active",
-		})
+		ind = frappe.get_doc(
+			{
+				"doctype": "KNAPS Individual",
+				"first_name": first_name,
+				"gender": gender,
+				"salutation": salutation,
+				"date_of_birth": dob,
+				"status": "Active",
+			}
+		)
 		ind.insert()
 		return ind.name
 
@@ -60,31 +63,37 @@ class TestKNAPSRDAccount(IntegrationTestCase):
 			frappe.get_doc({"doctype": doctype, "name": name}).insert()
 
 	def _create_client(self, client_type: str, individual: str) -> str:
-		client = frappe.get_doc({
-			"doctype": "KNAPS Client",
-			"client_type": client_type,
-			"individual": individual,
-		})
+		client = frappe.get_doc(
+			{
+				"doctype": "KNAPS Client",
+				"client_type": client_type,
+				"individual": individual,
+			}
+		)
 		client.insert()
 		return client.name
 
 	def _create_relationship(self, name: str) -> str:
 		if frappe.db.exists("KNAPS Relationship", name):
 			return name
-		frappe.get_doc({
-			"doctype": "KNAPS Relationship",
-			"relationship_name": name,
-		}).insert()
+		frappe.get_doc(
+			{
+				"doctype": "KNAPS Relationship",
+				"relationship_name": name,
+			}
+		).insert()
 		return name
 
 	def _create_payment_type(self, name: str) -> str:
 		existing = frappe.db.get_value("KNAPS Payment Type", {"payment_type": name}, "name")
 		if existing:
 			return existing
-		doc = frappe.get_doc({
-			"doctype": "KNAPS Payment Type",
-			"payment_type": name,
-		})
+		doc = frappe.get_doc(
+			{
+				"doctype": "KNAPS Payment Type",
+				"payment_type": name,
+			}
+		)
 		doc.insert()
 		return doc.name
 
@@ -105,22 +114,31 @@ class TestKNAPSRDAccount(IntegrationTestCase):
 		}
 		defaults.update(kwargs)
 		doc = frappe.get_doc(defaults)
-		doc.append("holders", {
-			"holder": self.client,
-			"order": "First",
-			"is_minor": 0,
-		})
-		doc.append("nominees", {
-			"nominee_name": self.nominee_individual,
-			"nominee_percent": 100,
-			"nominee_relation": self.relationship,
-		})
-		doc.append("payments", {
-			"payment_date": today(),
-			"payment_amount": 10000,
-			"payment_type": self.payment_type,
-			"status": "Pending",
-		})
+		doc.append(
+			"holders",
+			{
+				"holder": self.client,
+				"order": "First",
+				"is_minor": 0,
+			},
+		)
+		doc.append(
+			"nominees",
+			{
+				"nominee_name": self.nominee_individual,
+				"nominee_percent": 100,
+				"nominee_relation": self.relationship,
+			},
+		)
+		doc.append(
+			"payments",
+			{
+				"payment_date": today(),
+				"payment_amount": 10000,
+				"payment_type": self.payment_type,
+				"status": "Pending",
+			},
+		)
 		doc.insert()
 		return doc.name
 

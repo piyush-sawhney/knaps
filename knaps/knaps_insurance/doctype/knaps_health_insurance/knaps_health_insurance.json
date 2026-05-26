@@ -7,10 +7,12 @@
  "field_order": [
   "policy_number",
   "title",
+  "policy_document",
   "column_break_lzeu",
-  "entry_date",
+  "quote_number",
   "column_break_pisv",
   "status",
+  "entry_date",
   "section_break_bbmm",
   "column_break_poby",
   "through_us",
@@ -32,7 +34,7 @@
   "column_break_sbgx",
   "period_in_months",
   "premium",
-  "sum_insured",
+  "floater_sum_insured",
   "currency",
   "column_break_vrnn",
   "start_date",
@@ -73,7 +75,7 @@
    "in_standard_filter": 1,
    "label": "Status",
    "options": "Proposal\nActive\nRenewed\nSurrendered\nRejected",
-   "read_only_depends_on": "eval: doc.__islocal;",
+   "read_only_depends_on": "eval: !doc.__islocal;",
    "reqd": 1
   },
   {
@@ -153,7 +155,7 @@
    "fieldname": "holders",
    "fieldtype": "Table",
    "label": "Members",
-   "options": "KNAPS Insurance Member",
+   "options": "KNAPS Health Insurance Member",
    "reqd": 1
   },
   {
@@ -267,14 +269,24 @@
    "reqd": 1
   },
   {
+   "fieldname": "policy_document",
+   "fieldtype": "Attach",
+   "label": "Policy Document"
+  },
+  {
+   "fieldname": "quote_number",
+   "fieldtype": "Data",
+   "label": "Quote Number"
+  },
+  {
    "columns": 1,
-   "depends_on": "eval: doc.policy_type === \"Floater\"",
-   "fieldname": "sum_insured",
-   "fieldtype": "Currency",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Sum Insured",
-   "mandatory_depends_on": "eval: doc.policy_type === \"Floater\"",
+    "depends_on": "eval: doc.holding_type === \"Floater\"",
+    "fieldname": "floater_sum_insured",
+    "fieldtype": "Currency",
+    "in_list_view": 1,
+    "in_standard_filter": 1,
+    "label": "Floater Sum Insured",
+    "mandatory_depends_on": "eval: doc.holding_type === \"Floater\"",
    "non_negative": 1,
    "options": "currency",
    "precision": "2"
@@ -283,7 +295,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-24 17:06:21.856009",
+ "modified": "2026-05-26 14:21:17.014880",
  "modified_by": "Administrator",
  "module": "KNAPS Insurance",
  "name": "KNAPS Health Insurance",
@@ -309,39 +321,27 @@
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [
-  {
-   "color": "Purple",
-   "title": "Entry Done"
-  },
-  {
-   "color": "Yellow",
-   "title": "Submitted"
-  },
-  {
-   "color": "Green",
-   "title": "Active"
-  },
-  {
-   "color": "Blue",
-   "title": "Renewed"
-  },
-  {
-   "color": "Gray",
-   "title": "Matured"
-  },
-  {
-   "color": "Pink",
-   "title": "Pre-Matured"
-  },
-  {
-   "color": "Orange",
-   "title": "Transmitted"
-  },
-  {
-   "color": "Red",
-   "title": "Rejected"
-  }
- ],
+   {
+    "color": "Purple",
+    "title": "Proposal"
+   },
+   {
+    "color": "Green",
+    "title": "Active"
+   },
+   {
+    "color": "Blue",
+    "title": "Renewed"
+   },
+   {
+    "color": "Orange",
+    "title": "Surrendered"
+   },
+   {
+    "color": "Red",
+    "title": "Rejected"
+   }
+  ],
  "title_field": "title",
  "track_changes": 1,
  "track_seen": 1,

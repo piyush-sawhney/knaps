@@ -11,16 +11,16 @@ frappe.listview_settings["KNAPS PO Investment"] = {
 		"maturity_date",
 		"holding_type",
 	],
-	get_indicator: function(doc) {
+	get_indicator: function (doc) {
 		const status_colors = {
 			"Entry Done": "purple",
-			"Submitted": "yellow",
-			"Active": "green",
-			"Renewed": "blue",
-			"Matured": "gray",
+			Submitted: "yellow",
+			Active: "green",
+			Renewed: "blue",
+			Matured: "gray",
 			"Pre-Matured": "pink",
-			"Transmitted": "orange",
-			"Rejected": "red",
+			Transmitted: "orange",
+			Rejected: "red",
 		};
 		return [__(doc.status), status_colors[doc.status] || "gray", "status,=," + doc.status];
 	},
@@ -29,22 +29,22 @@ frappe.listview_settings["KNAPS PO Investment"] = {
 		buttons: [
 			{
 				get_label: __("View Details"),
-				get_description: function() {
+				get_description: function () {
 					return __("Open investment record");
 				},
-				action: function(doc) {
+				action: function (doc) {
 					frappe.set_route("Form", "KNAPS PO Investment", doc.name);
 				},
 			},
 			{
-				show: function(doc) {
+				show: function (doc) {
 					return doc.primary_client ? true : false;
 				},
 				get_label: __("Open Client"),
-				get_description: function(doc) {
+				get_description: function (doc) {
 					return __("Open {0}", [doc.client_name || doc.primary_client]);
 				},
-				action: function(doc) {
+				action: function (doc) {
 					frappe.set_route("Form", "KNAPS Client", doc.primary_client);
 				},
 			},

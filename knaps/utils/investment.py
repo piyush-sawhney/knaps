@@ -1,47 +1,9 @@
-from datetime import date
-
 import frappe
-from dateutil.relativedelta import relativedelta
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import add_months, getdate, today
+from frappe.utils import add_months, getdate
 
-from knaps.utils.constants import DOCTYPE_INDIVIDUAL
-
-
-def generate_investment_name(doctype: str, prefix_key: str, entry_date: date | str | None = None) -> str:
-	entry_date = entry_date or date.today()
-	if isinstance(entry_date, str):
-		entry_date = getdate(entry_date)
-
-	if entry_date.month >= 4:
-		ty_start = entry_date.year
-		ty_end = entry_date.year + 1
-	else:
-		ty_start = entry_date.year - 1
-		ty_end = entry_date.year
-
-	prefix = f"{prefix_key}{ty_start % 100:02d}-{ty_end % 100:02d}-"
-
-	last_serial = 0
-	last = frappe.db.get_value(
-		doctype,
-		{"name": ["like", f"{prefix}%"]},
-		"name",
-		order_by="name desc",
-	)
-	if last:
-		last_serial = int(last.split("-")[-1])
-
-	return f"{prefix}{last_serial + 1:08d}"
-
-
-def set_nominee_minor_status(doc: Document) -> None:
-	reference_date = doc.entry_date or today()
-	for nominee in doc.get("nominees"):
-		if nominee.nominee_date_of_birth:
-			age = relativedelta(getdate(reference_date), getdate(nominee.nominee_date_of_birth)).years
-			nominee.is_minor = 1 if age < 18 else 0
+from knaps.utils.shared import get_nominee_display
 
 
 def set_primary_client(doc: Document) -> None:
@@ -176,93 +138,6 @@ def _validate_nonsingle_holding_type(holders: list) -> None:
 		)
 
 
-def build_nominee_name_cache(doc: Document) -> dict[str, str]:
-	nominees = doc.get("nominees")
-	if not nominees:
-		return {}
-	names = [n.nominee_name for n in nominees if n.nominee_name]
-	if not names:
-		return {}
-	records = frappe.db.get_all(
-		DOCTYPE_INDIVIDUAL,
-		filters={"name": ["in", names]},
-		fields=["name", "full_name"],
-	)
-	return {r["name"]: r["full_name"] or r["name"] for r in records}
-
-
-def get_nominee_display(doc: Document, nominee) -> str:
-	if not nominee.nominee_name:
-		return ""
-	cache: dict = getattr(doc, "_nominee_name_cache", {})
-	return cache.get(nominee.nominee_name, nominee.nominee_name)
-
-
-def validate_nominee_not_holder(doc: Document) -> None:
-	holders = doc.get("holders")
-	nominees = doc.get("nominees")
-	if not holders or not nominees:
-		return
-
-	holder_names = [h.holder for h in holders]
-	client_data = frappe.db.get_all(
-		"KNAPS Client",
-		filters={"name": ["in", holder_names]},
-		fields=["name", "individual"],
-	)
-	holder_individuals: set[str] = {c["individual"] for c in client_data if c["individual"]}
-
-	for nominee in nominees:
-		if nominee.nominee_name in holder_individuals:
-			frappe.throw(
-				_("Nominee {} cannot be a holder of this investment.").format(
-					get_nominee_display(doc, nominee)
-				),
-				title=_("Invalid Nominee"),
-			)
-
-
-def validate_unique_nominees(doc: Document) -> None:
-	seen: set[str] = set()
-	for nominee in doc.get("nominees"):
-		if nominee.nominee_name in seen:
-			frappe.throw(
-				_("Nominee {} appears more than once.").format(get_nominee_display(doc, nominee)),
-				title=_("Duplicate Nominee"),
-			)
-		seen.add(nominee.nominee_name)
-
-
-def validate_nominee_percent_total(doc: Document) -> None:
-	nominees = doc.get("nominees")
-	if not nominees:
-		return
-
-	total = 0
-	for nominee in nominees:
-		if not nominee.nominee_percent or nominee.nominee_percent <= 0:
-			frappe.throw(
-				_("Nominee {} must have a positive percentage.").format(get_nominee_display(doc, nominee)),
-				title=_("Invalid Nominee Percent"),
-			)
-		total += nominee.nominee_percent
-
-	if abs(total - 100) > 0.01:
-		frappe.throw(
-			_("Total nominee percentage must be 100. Currently it is {}.").format(total),
-			title=_("Invalid Nominee Percent"),
-		)
-
-
-def validate_nominee_minor_guardian(doc: Document) -> None:
-	for nominee in doc.get("nominees"):
-		if nominee.is_minor and not nominee.guardian:
-			frappe.throw(
-				_("Guardian is required for minor nominee {}.").format(get_nominee_display(doc, nominee)),
-				title=_("Guardian Required"),
-			)
-
-
 def validate_nominees(doc: Document, nominees_optional_for_non_individual: bool = False) -> None:
 	if nominees_optional_for_non_individual:
 		holder_names = [h.holder for h in doc.get("holders") or []]
@@ -285,22 +160,6 @@ def validate_nominees(doc: Document, nominees_optional_for_non_individual: bool 
 		frappe.throw(
 			_("At least one nominee is required."),
 			title=_("Nominees Required"),
-		)
-
-
-def validate_payments(doc: Document) -> None:
-	if not doc.is_existing_investment and not doc.get("payments"):
-		frappe.throw(
-			_("At least one payment is required."),
-			title=_("Payments Required"),
-		)
-
-
-def validate_entry_date_not_future(doc: Document) -> None:
-	if getdate(doc.entry_date) > getdate(today()):
-		frappe.throw(
-			_("Entry Date cannot be in the future."),
-			title=_("Invalid Entry Date"),
 		)
 
 
@@ -351,8 +210,3 @@ def validate_amount(doc: Document) -> None:
 def validate_rate_of_interest(doc: Document) -> None:
 	if doc.rate_of_interest <= 0:
 		frappe.throw(_("Rate of Interest must be positive."), title=_("Invalid Rate"))
-
-
-def validate_period_in_months(doc: Document) -> None:
-	if doc.period_in_months <= 0:
-		frappe.throw(_("Period in months must be positive."), title=_("Invalid Period"))

@@ -130,7 +130,9 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# =====================================================
 
 	def test_duplicate_individual_rejected(self):
-		individual = create_knaps_individual(first_name="John", phone_numbers=self.phone, email_address=self.email)
+		individual = create_knaps_individual(
+			first_name="John", phone_numbers=self.phone, email_address=self.email
+		)
 		with self.assertRaises(frappe.ValidationError) as cm:
 			create_knaps_family(
 				head_of_family=create_knaps_individual(
@@ -259,7 +261,9 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 
 	def test_head_not_in_members_passes(self):
 		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_individual(first_name="Member", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
+			first_name="Member", phone_numbers=self.phone, email_address=self.email
+		)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
@@ -275,7 +279,9 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 
 	def test_family_with_only_head_passes(self):
 		head = create_knaps_individual(first_name="Solo", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_individual(first_name="Member", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
+			first_name="Member", phone_numbers=self.phone, email_address=self.email
+		)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
@@ -358,11 +364,15 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		self.assertIn("already a primary member", str(cm.exception).lower())
 
 	def test_primary_member_promoted_to_head_keeps_primary_family(self):
-		head = create_knaps_individual(first_name="OldHead", phone_numbers=self.phone, email_address=self.email)
+		head = create_knaps_individual(
+			first_name="OldHead", phone_numbers=self.phone, email_address=self.email
+		)
 		member = create_knaps_individual(
 			first_name="Promoted", phone_numbers=self.phone, email_address=self.email
 		)
-		other = create_knaps_individual(first_name="Other", phone_numbers=self.phone, email_address=self.email)
+		other = create_knaps_individual(
+			first_name="Other", phone_numbers=self.phone, email_address=self.email
+		)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
@@ -402,7 +412,9 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 
 	def test_add_primary_individual_sets_primary_family(self):
 		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_individual(first_name="Member", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
+			first_name="Member", phone_numbers=self.phone, email_address=self.email
+		)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
@@ -477,8 +489,12 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 
 	def test_multiple_primary_members_all_set(self):
 		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		p1 = create_knaps_individual(first_name="Primary1", phone_numbers=self.phone, email_address=self.email)
-		p2 = create_knaps_individual(first_name="Primary2", phone_numbers=self.phone, email_address=self.email)
+		p1 = create_knaps_individual(
+			first_name="Primary1", phone_numbers=self.phone, email_address=self.email
+		)
+		p2 = create_knaps_individual(
+			first_name="Primary2", phone_numbers=self.phone, email_address=self.email
+		)
 		e1 = create_knaps_non_individual(
 			legal_name="Primary Entity", phone_numbers=self.phone, email_addresses=self.email
 		)
@@ -559,7 +575,9 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		member = create_knaps_individual(
 			first_name="RemoveMe", phone_numbers=self.phone, email_address=self.email
 		)
-		other = create_knaps_individual(first_name="Other", phone_numbers=self.phone, email_address=self.email)
+		other = create_knaps_individual(
+			first_name="Other", phone_numbers=self.phone, email_address=self.email
+		)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
@@ -584,8 +602,12 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 
 	def test_delete_secondary_member_does_not_affect_primary_family(self):
 		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_individual(first_name="KeepMe", phone_numbers=self.phone, email_address=self.email)
-		other = create_knaps_individual(first_name="Other", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
+			first_name="KeepMe", phone_numbers=self.phone, email_address=self.email
+		)
+		other = create_knaps_individual(
+			first_name="Other", phone_numbers=self.phone, email_address=self.email
+		)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[
@@ -609,11 +631,17 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 
 	def test_clear_only_if_matching_family(self):
 		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_individual(first_name="Shared", phone_numbers=self.phone, email_address=self.email)
-		other = create_knaps_individual(first_name="Other", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
+			first_name="Shared", phone_numbers=self.phone, email_address=self.email
+		)
+		other = create_knaps_individual(
+			first_name="Other", phone_numbers=self.phone, email_address=self.email
+		)
 		family_a = create_knaps_family(head_of_family=head, family_name="Family A")
 		frappe.db.set_value("KNAPS Individual", member.name, "family", family_a.name)
-		head2 = create_knaps_individual(first_name="Head2", phone_numbers=self.phone, email_address=self.email)
+		head2 = create_knaps_individual(
+			first_name="Head2", phone_numbers=self.phone, email_address=self.email
+		)
 		family_b = create_knaps_family(
 			head_of_family=head2,
 			family_name="Family B",
@@ -644,7 +672,9 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 	# =====================================================
 
 	def test_add_primary_member_who_is_already_primary_elsewhere_rejected(self):
-		head_a = create_knaps_individual(first_name="HeadA", phone_numbers=self.phone, email_address=self.email)
+		head_a = create_knaps_individual(
+			first_name="HeadA", phone_numbers=self.phone, email_address=self.email
+		)
 		member = create_knaps_individual(
 			first_name="Conflict", phone_numbers=self.phone, email_address=self.email
 		)
@@ -660,7 +690,9 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 				},
 			],
 		)
-		head_b = create_knaps_individual(first_name="HeadB", phone_numbers=self.phone, email_address=self.email)
+		head_b = create_knaps_individual(
+			first_name="HeadB", phone_numbers=self.phone, email_address=self.email
+		)
 		with self.assertRaises(frappe.ValidationError) as cm:
 			create_knaps_family(
 				head_of_family=head_b,
@@ -703,7 +735,9 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 		primary_individual = create_knaps_individual(
 			first_name="Primary Elsewhere", phone_numbers=self.phone, email_address=self.email
 		)
-		head_a = create_knaps_individual(first_name="HeadA", phone_numbers=self.phone, email_address=self.email)
+		head_a = create_knaps_individual(
+			first_name="HeadA", phone_numbers=self.phone, email_address=self.email
+		)
 		create_knaps_family(
 			head_of_family=head_a,
 			family_name="First Family",
@@ -716,7 +750,9 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 				},
 			],
 		)
-		head_b = create_knaps_individual(first_name="HeadB", phone_numbers=self.phone, email_address=self.email)
+		head_b = create_knaps_individual(
+			first_name="HeadB", phone_numbers=self.phone, email_address=self.email
+		)
 		family_b = create_knaps_family(
 			head_of_family=head_b,
 			family_name="Second Family",
@@ -955,7 +991,9 @@ class IntegrationTestKNAPSFamily(IntegrationTestCase):
 
 	def test_delete_family_clears_primary_member_primary_family(self):
 		head = create_knaps_individual(first_name="Head", phone_numbers=self.phone, email_address=self.email)
-		member = create_knaps_individual(first_name="Primary", phone_numbers=self.phone, email_address=self.email)
+		member = create_knaps_individual(
+			first_name="Primary", phone_numbers=self.phone, email_address=self.email
+		)
 		family = create_knaps_family(
 			head_of_family=head,
 			members=[

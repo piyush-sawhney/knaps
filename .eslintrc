@@ -120,6 +120,8 @@
 		"after": true,
 		"qz": true,
 		"localforage": true,
-		"extend_cscript": true
+		"extend_cscript": true,
+		"enforce_single_primary": true,
+		"auto_mark_first_as_primary": true
 	}
 }

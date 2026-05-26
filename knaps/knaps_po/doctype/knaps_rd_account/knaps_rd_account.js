@@ -19,7 +19,7 @@ frappe.ui.form.on("KNAPS RD Account", {
 
 	add_open_po_investment_button(frm) {
 		if (frm.doc.po_rd_investment) {
-			frm.add_custom_button(__("Open PO Investment"), function() {
+			frm.add_custom_button(__("Open PO Investment"), function () {
 				frappe.set_route("Form", "KNAPS PO Investment", frm.doc.po_rd_investment);
 			});
 		}

@@ -761,9 +761,9 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 		self.assertEqual(entity.legal_name, "HDFC Mutual Fund")
 
-# =====================================================
-# PRIMARY CONTACT SYNC TESTS (from Entity Contacts child table)
-# =====================================================
+	# =====================================================
+	# PRIMARY CONTACT SYNC TESTS (from Entity Contacts child table)
+	# =====================================================
 
 	def _create_contact_individual(self, first_name: str = "Contact") -> str:
 		individual = frappe.get_doc(
@@ -1291,13 +1291,9 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		self.assertIsNone(entity.primary_contact_email)
 		self.assertIsNone(entity.preferred_contact_mode)
 
-
-
-# =====================================================
-# PRIMARY CONTACT VALIDATION TESTS (legacy direct set)
-# =====================================================
-
-
+	# =====================================================
+	# PRIMARY CONTACT VALIDATION TESTS (legacy direct set)
+	# =====================================================
 
 	def test_primary_contact_active_accepted(self):
 		"""Test that an active individual can be set as primary contact via contacts table"""

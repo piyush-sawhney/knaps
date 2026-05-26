@@ -120,11 +120,14 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 			}
 		).insert()
 
-		non_individual.append("contacts", {
-			"individual": primary.name,
-			"designation": "Director",
-			"is_primary_contact": 1,
-		})
+		non_individual.append(
+			"contacts",
+			{
+				"individual": primary.name,
+				"designation": "Director",
+				"is_primary_contact": 1,
+			},
+		)
 		non_individual.save()
 
 		client = self._make_client(
@@ -164,11 +167,14 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 			}
 		).insert()
 
-		non_individual.append("contacts", {
-			"individual": primary.name,
-			"designation": "Director",
-			"is_primary_contact": 1,
-		})
+		non_individual.append(
+			"contacts",
+			{
+				"individual": primary.name,
+				"designation": "Director",
+				"is_primary_contact": 1,
+			},
+		)
 		non_individual.save()
 
 		client = self._make_client(non_individual=non_individual.name)

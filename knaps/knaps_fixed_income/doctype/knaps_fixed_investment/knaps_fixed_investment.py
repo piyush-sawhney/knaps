@@ -2,26 +2,28 @@ import frappe
 from frappe.model.document import Document
 
 from knaps.utils.investment import (
-	build_nominee_name_cache,
-	generate_investment_name,
 	set_maturity_date,
-	set_nominee_minor_status,
 	set_primary_client,
 	validate_account_number_for_active,
 	validate_amount,
-	validate_entry_date_not_future,
 	validate_holders_by_holding_type,
 	validate_minor_holder,
 	validate_no_dates_for_entry_status,
-	validate_nominee_minor_guardian,
-	validate_nominee_not_holder,
-	validate_nominee_percent_total,
 	validate_nominees,
-	validate_payments,
-	validate_period_in_months,
 	validate_rate_of_interest,
 	validate_start_date_with_account,
 	validate_unique_holders,
+)
+from knaps.utils.shared import (
+	build_nominee_name_cache,
+	generate_investment_name,
+	set_nominee_minor_status,
+	validate_entry_date_not_future,
+	validate_nominee_minor_guardian,
+	validate_nominee_not_holder,
+	validate_nominee_percent_total,
+	validate_payments_required,
+	validate_period_in_months,
 	validate_unique_nominees,
 )
 
@@ -99,7 +101,8 @@ class KNAPSFixedInvestment(Document):
 		validate_nominee_percent_total(self)
 		validate_nominee_minor_guardian(self)
 		validate_nominees(self, nominees_optional_for_non_individual=True)
-		validate_payments(self)
+		if not self.is_existing_investment:
+			validate_payments_required(self)
 		validate_entry_date_not_future(self)
 		validate_no_dates_for_entry_status(self)
 		validate_account_number_for_active(self)

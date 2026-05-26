@@ -13,7 +13,10 @@ frappe.ui.form.on("KNAPS PO Investment", {
 
 	calculate_maturity_date(frm) {
 		if (frm.doc.start_date && frm.doc.period_in_months && !frm.doc.extend_investment) {
-			let maturity = frappe.datetime.add_months(frm.doc.start_date, frm.doc.period_in_months);
+			let maturity = frappe.datetime.add_months(
+				frm.doc.start_date,
+				frm.doc.period_in_months
+			);
 			frm.set_value("maturity_date", maturity);
 		}
 	},
@@ -26,7 +29,7 @@ frappe.ui.form.on("KNAPS PO Investment", {
 
 	add_open_client_button(frm) {
 		if (frm.doc.primary_client) {
-			frm.add_custom_button(__("Open Client"), function() {
+			frm.add_custom_button(__("Open Client"), function () {
 				frappe.set_route("Form", "KNAPS Client", frm.doc.primary_client);
 			});
 		}

@@ -7,11 +7,13 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "order",
-  "holder",
-  "sum_insured",
-  "currency"
- ],
+   "order",
+   "holder",
+   "is_primary",
+   "date_of_birth",
+   "sum_insured",
+   "currency"
+  ],
  "fields": [
   {
    "columns": 1,
@@ -20,7 +22,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Role",
-   "options": "\nProposer\nLife Assured/Insured",
+   "options": "\nProposer\nInsured",
    "reqd": 1
   },
   {
@@ -29,7 +31,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Member",
-   "link_filters": "[]",
+   "link_filters": "[[\"KNAPS Client\",\"client_type\",\"=\",\"Individual\"]]",
    "options": "KNAPS Client",
    "reqd": 1
   },
@@ -48,16 +50,28 @@
    "fieldtype": "Link",
    "label": "Currency",
    "options": "Currency"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_primary",
+   "fieldtype": "Check",
+   "label": "Is Primary?"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-05-24 16:52:41.470843",
+ "modified": "2026-05-26 14:36:53.239268",
  "modified_by": "Administrator",
  "module": "KNAPS Insurance",
- "name": "KNAPS Insurance Member",
+ "name": "KNAPS Health Insurance Member",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",

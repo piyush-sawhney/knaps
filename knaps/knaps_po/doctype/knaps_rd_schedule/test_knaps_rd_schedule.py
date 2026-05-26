@@ -5,7 +5,6 @@ from frappe.utils import today
 
 
 class TestKNAPSRDSchedule(IntegrationTestCase):
-
 	def setUp(self) -> None:
 		super().setUp()
 		frappe.db.savepoint("knaps_rd_schedule_sp")
@@ -32,25 +31,29 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 	def _create_scheme(self, name: str, code: str) -> str:
 		if frappe.db.exists("KNAPS PO Scheme", code):
 			return code
-		doc = frappe.get_doc({
-			"doctype": "KNAPS PO Scheme",
-			"scheme_name": name,
-			"scheme_code": code,
-		})
+		doc = frappe.get_doc(
+			{
+				"doctype": "KNAPS PO Scheme",
+				"scheme_name": name,
+				"scheme_code": code,
+			}
+		)
 		doc.insert()
 		return code
 
 	def _create_individual(self, first_name: str, gender: str, salutation: str, dob: str) -> str:
 		self._ensure_doctype_exists("Gender", gender)
 		self._ensure_doctype_exists("Salutation", salutation)
-		ind = frappe.get_doc({
-			"doctype": "KNAPS Individual",
-			"first_name": first_name,
-			"gender": gender,
-			"salutation": salutation,
-			"date_of_birth": dob,
-			"status": "Active",
-		})
+		ind = frappe.get_doc(
+			{
+				"doctype": "KNAPS Individual",
+				"first_name": first_name,
+				"gender": gender,
+				"salutation": salutation,
+				"date_of_birth": dob,
+				"status": "Active",
+			}
+		)
 		ind.insert()
 		return ind.name
 
@@ -59,31 +62,37 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 			frappe.get_doc({"doctype": doctype, "name": name}).insert()
 
 	def _create_client(self, client_type: str, individual: str) -> str:
-		client = frappe.get_doc({
-			"doctype": "KNAPS Client",
-			"client_type": client_type,
-			"individual": individual,
-		})
+		client = frappe.get_doc(
+			{
+				"doctype": "KNAPS Client",
+				"client_type": client_type,
+				"individual": individual,
+			}
+		)
 		client.insert()
 		return client.name
 
 	def _create_relationship(self, name: str) -> str:
 		if frappe.db.exists("KNAPS Relationship", name):
 			return name
-		frappe.get_doc({
-			"doctype": "KNAPS Relationship",
-			"relationship_name": name,
-		}).insert()
+		frappe.get_doc(
+			{
+				"doctype": "KNAPS Relationship",
+				"relationship_name": name,
+			}
+		).insert()
 		return name
 
 	def _create_payment_type(self, name: str) -> str:
 		existing = frappe.db.get_value("KNAPS Payment Type", {"payment_type": name}, "name")
 		if existing:
 			return existing
-		doc = frappe.get_doc({
-			"doctype": "KNAPS Payment Type",
-			"payment_type": name,
-		})
+		doc = frappe.get_doc(
+			{
+				"doctype": "KNAPS Payment Type",
+				"payment_type": name,
+			}
+		)
 		doc.insert()
 		return doc.name
 
@@ -104,22 +113,31 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		}
 		defaults.update(kwargs)
 		doc = frappe.get_doc(defaults)
-		doc.append("holders", {
-			"holder": self.client,
-			"order": "First",
-			"is_minor": 0,
-		})
-		doc.append("nominees", {
-			"nominee_name": self.nominee_individual,
-			"nominee_percent": 100,
-			"nominee_relation": self.relationship,
-		})
-		doc.append("payments", {
-			"payment_date": today(),
-			"payment_amount": 10000,
-			"payment_type": self.payment_type,
-			"status": "Pending",
-		})
+		doc.append(
+			"holders",
+			{
+				"holder": self.client,
+				"order": "First",
+				"is_minor": 0,
+			},
+		)
+		doc.append(
+			"nominees",
+			{
+				"nominee_name": self.nominee_individual,
+				"nominee_percent": 100,
+				"nominee_relation": self.relationship,
+			},
+		)
+		doc.append(
+			"payments",
+			{
+				"payment_date": today(),
+				"payment_amount": 10000,
+				"payment_type": self.payment_type,
+				"status": "Pending",
+			},
+		)
 		doc.insert()
 		return doc.name
 
@@ -128,15 +146,17 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 			account_number=account_number,
 			amount=denomination,
 		)
-		doc = frappe.get_doc({
-			"doctype": "KNAPS RD Account",
-			"po_rd_investment": po_inv,
-			"rd_account_number": account_number,
-			"denomination": denomination,
-			"account_opening_date": today(),
-			"card_number": "CARD001",
-			**kwargs,
-		})
+		doc = frappe.get_doc(
+			{
+				"doctype": "KNAPS RD Account",
+				"po_rd_investment": po_inv,
+				"rd_account_number": account_number,
+				"denomination": denomination,
+				"account_opening_date": today(),
+				"card_number": "CARD001",
+				**kwargs,
+			}
+		)
 		doc.insert()
 		return doc.name
 
@@ -152,15 +172,17 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		existing = frappe.db.get_value("KNAPS Bank", {"bank_name": bank_name}, "name")
 		if existing:
 			return existing
-		doc = frappe.get_doc({
-			"doctype": "KNAPS Bank",
-			"bank_name": bank_name,
-			"bank_account_number": bank_name.replace(" ", "").upper(),
-			"ifsc": f"{bank_name[:4].upper()}0001234",
-			"holding_type": self.holding_type_single,
-			"holder_type": "KNAPS Individual",
-			"first_holder": self.individual,
-		})
+		doc = frappe.get_doc(
+			{
+				"doctype": "KNAPS Bank",
+				"bank_name": bank_name,
+				"bank_account_number": bank_name.replace(" ", "").upper(),
+				"ifsc": f"{bank_name[:4].upper()}0001234",
+				"holding_type": self.holding_type_single,
+				"holder_type": "KNAPS Individual",
+				"first_holder": self.individual,
+			}
+		)
 		doc.insert()
 		return doc.name
 
@@ -169,11 +191,14 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		schedule = self._make_rd_schedule(
 			schedule_type="Cash",
 		)
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc,
-			"number_of_installments": 6,
-			"cheque_number": "123456",
-		})
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc,
+				"number_of_installments": 6,
+				"cheque_number": "123456",
+			},
+		)
 		with self.assertRaises(ValidationError):
 			schedule.insert()
 
@@ -182,11 +207,14 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		schedule = self._make_rd_schedule(
 			schedule_type="Cash",
 		)
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc,
-			"number_of_installments": 6,
-			"bank_account_number": "SOME BANK",
-		})
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc,
+				"number_of_installments": 6,
+				"bank_account_number": "SOME BANK",
+			},
+		)
 		schedule.insert()
 		self.assertIsNone(schedule.rd_accounts[0].bank_account_number)
 
@@ -195,10 +223,13 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		schedule = self._make_rd_schedule(
 			schedule_type="Cash",
 		)
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc,
-			"number_of_installments": 6,
-		})
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc,
+				"number_of_installments": 6,
+			},
+		)
 		schedule.insert()
 		self.assertEqual(schedule.schedule_type, "Cash")
 		self.assertEqual(len(schedule.rd_accounts), 1)
@@ -208,11 +239,14 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		schedule = self._make_rd_schedule(
 			schedule_type="Cheque",
 		)
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc,
-			"number_of_installments": 6,
-			"cheque_number": "12345",
-		})
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc,
+				"number_of_installments": 6,
+				"cheque_number": "12345",
+			},
+		)
 		with self.assertRaises(ValidationError):
 			schedule.insert()
 
@@ -222,11 +256,14 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		schedule = self._make_rd_schedule(
 			schedule_type="Cheque",
 		)
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc,
-			"number_of_installments": 6,
-			"cheque_number": "123456",
-		})
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc,
+				"number_of_installments": 6,
+				"cheque_number": "123456",
+			},
+		)
 		schedule.insert()
 		self.assertEqual(schedule.rd_accounts[0].cheque_number, "123456")
 		self.assertIsNotNone(schedule.rd_accounts[0].bank_account_number)
@@ -236,11 +273,14 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		schedule = self._make_rd_schedule(
 			schedule_type="Cheque",
 		)
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc,
-			"number_of_installments": 6,
-			"cheque_number": "123456",
-		})
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc,
+				"number_of_installments": 6,
+				"cheque_number": "123456",
+			},
+		)
 		with self.assertRaises(ValidationError):
 			schedule.insert()
 
@@ -249,14 +289,20 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		schedule = self._make_rd_schedule(
 			schedule_type="Cash",
 		)
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc1,
-			"number_of_installments": 6,
-		})
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc1,
-			"number_of_installments": 3,
-		})
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc1,
+				"number_of_installments": 6,
+			},
+		)
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc1,
+				"number_of_installments": 3,
+			},
+		)
 		with self.assertRaises(ValidationError):
 			schedule.insert()
 
@@ -266,14 +312,20 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		schedule = self._make_rd_schedule(
 			schedule_type="Cash",
 		)
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc1,
-			"number_of_installments": 6,
-		})
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc2,
-			"number_of_installments": 3,
-		})
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc1,
+				"number_of_installments": 6,
+			},
+		)
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc2,
+				"number_of_installments": 3,
+			},
+		)
 		schedule.insert()
 
 		self.assertEqual(schedule.rd_accounts[0].rd_amount, 30000.0)
@@ -288,12 +340,15 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		schedule = self._make_rd_schedule(
 			schedule_type="Cash",
 		)
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc,
-			"number_of_installments": 12,
-			"rebate": 500,
-			"surcharge": 200,
-		})
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc,
+				"number_of_installments": 12,
+				"rebate": 500,
+				"surcharge": 200,
+			},
+		)
 		schedule.insert()
 
 		self.assertEqual(schedule.rd_accounts[0].rd_amount, 120000.0)
@@ -313,10 +368,13 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 			deposit_amount=99999,
 			schedule_document="/assets/some/file.pdf",
 		)
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc,
-			"number_of_installments": 6,
-		})
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc,
+				"number_of_installments": 6,
+			},
+		)
 		schedule.insert()
 
 		self.assertIsNone(schedule.schedule_number)
@@ -330,10 +388,13 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		schedule = self._make_rd_schedule(
 			schedule_type="Invalid",
 		)
-		schedule.append("rd_accounts", {
-			"rd_account_number": rd_acc,
-			"number_of_installments": 6,
-		})
+		schedule.append(
+			"rd_accounts",
+			{
+				"rd_account_number": rd_acc,
+				"number_of_installments": 6,
+			},
+		)
 		with self.assertRaises(ValidationError):
 			schedule.insert()
 

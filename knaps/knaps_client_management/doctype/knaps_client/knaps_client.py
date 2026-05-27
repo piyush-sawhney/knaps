@@ -97,8 +97,6 @@ class KNAPSClient(Document):
 		if self.client_type in ("Individual", "Sole Proprietor"):
 			if self.non_individual:
 				self.non_individual = None
-		elif self.client_type == "Non Individual":
-			pass  # individual is used for primary contact person
 
 	def _sync_from_linked_entity(self):
 		if self.client_type in ("Individual", "Sole Proprietor") and self.individual:
@@ -110,7 +108,9 @@ class KNAPSClient(Document):
 		individual = frappe.get_cached_doc(DOCTYPE_INDIVIDUAL, self.individual)
 
 		if self.client_type == "Individual":
-			self.client_name = individual.full_name
+			self.client_name = (
+				individual.full_name or f"{individual.first_name} {individual.last_name or ''}".strip()
+			)
 		# Sole Proprietor: client_name is manually entered, never overwritten
 
 		self.pan = individual.pan

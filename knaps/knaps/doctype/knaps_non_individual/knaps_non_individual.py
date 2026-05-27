@@ -22,7 +22,7 @@ from knaps.knaps.utils.party_validation import (
 )
 from knaps.utils.constants import DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL
 
-PAN_REGEX = re.compile(r"^[A-Z]{3}(.)[A-Z][0-9]{4}[A-Z]$")
+PAN_REGEX = re.compile(r"^[A-Z]{3}([A-Z])[A-Z][0-9]{4}[A-Z]$")
 
 TYPE_4TH_CHAR = {
 	"Body of Individuals": "B",
@@ -75,6 +75,9 @@ class KNAPSNonIndividual(Document):
 	def on_trash(self):
 		delete_contact_and_address(self.doctype, self.name)
 
+	def before_save(self) -> None:
+		self._auto_mark_sole_as_primary()
+
 	def validate(self):
 		self._normalize_legal_name()
 		normalize_pan(self)
@@ -89,8 +92,8 @@ class KNAPSNonIndividual(Document):
 
 	def _sync_primary_contact(self) -> None:
 		primary = self._find_primary_contact()
-		if not primary:
-			primary = self._auto_promote_sole_contact()
+		if not primary and len(self.contacts or []) == 1:
+			primary = self.contacts[0].individual
 		if primary:
 			self._populate_from_individual(primary)
 		else:
@@ -108,11 +111,9 @@ class KNAPSNonIndividual(Document):
 				primary = row.individual
 		return primary
 
-	def _auto_promote_sole_contact(self) -> str | None:
-		if len(self.contacts or []) == 1:
+	def _auto_mark_sole_as_primary(self) -> None:
+		if len(self.contacts or []) == 1 and not self.contacts[0].is_primary_contact:
 			self.contacts[0].is_primary_contact = 1
-			return self.contacts[0].individual
-		return None
 
 	def _populate_from_individual(self, individual_name: str) -> None:
 		individual = frappe.get_cached_doc(DOCTYPE_INDIVIDUAL, individual_name)

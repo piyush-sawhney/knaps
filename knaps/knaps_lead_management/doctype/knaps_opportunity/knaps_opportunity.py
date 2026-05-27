@@ -67,6 +67,6 @@ class KNAPSOpportunity(Document):
 
 			if exists:
 				frappe.throw(
-					_("An opportunity with the name '{}' already exists.").format(self.client_name),
-					title=_("Duplicate Opportunity Name"),
+					_("An opportunity already exists for client '{}'.").format(self.client_name),
+					title=_("Duplicate Opportunity"),
 				)

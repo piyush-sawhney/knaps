@@ -3,8 +3,6 @@
 
 import re
 
-PAN_REGEX = re.compile(r"^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$")
-
 import frappe
 from dateutil.relativedelta import relativedelta
 from frappe import _
@@ -26,6 +24,8 @@ from knaps.knaps.utils.party_validation import (
 )
 from knaps.utils.constants import DOCTYPE_INDIVIDUAL
 from knaps.utils.shared import calculate_age
+
+PAN_REGEX = re.compile(r"^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$")
 
 
 class KNAPSIndividual(Document):
@@ -147,8 +147,11 @@ class KNAPSIndividual(Document):
 
 		# Log when full name changes (for debugging/auditing)
 		if old_full_name != self.full_name:
-			frappe.logger().debug(
-				f"Full name updated for {self.name or 'new record'}: '{old_full_name}' -> '{self.full_name}'"
+			frappe.logger(__name__).debug(
+				"Full name updated for %s: '%s' -> '%s'",
+				self.name or "new record",
+				old_full_name,
+				self.full_name,
 			)
 
 	def _sync_primary_fields_from_child_tables(self):

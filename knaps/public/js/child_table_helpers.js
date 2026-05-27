@@ -20,3 +20,23 @@ function auto_mark_first_as_primary(rows, cdt, cdn, field) {
 		}
 	}
 }
+
+function maskPhone(val) {
+	if (!val) return "";
+	if (val.length <= 7) return `<span>${val}</span>`;
+	return `<span>${val.slice(0, 5)}${"X".repeat(val.length - 7)}${val.slice(-2)}</span>`;
+}
+
+function maskEmail(val) {
+	if (!val) return "";
+	const parts = val.split("@");
+	if (parts.length !== 2) return `<span>${val}</span>`;
+	const local = parts[0];
+	if (local.length <= 4) return `<span>${val}</span>`;
+	return `<span>${local.slice(0, 2)}XXXXX${local.slice(-2)}@${parts[1]}</span>`;
+}
+
+function maskPAN(val) {
+	if (!val) return "";
+	return "XXXXXX" + val.slice(-4);
+}

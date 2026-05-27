@@ -96,7 +96,6 @@ class KNAPSHealthInsurance(Document):
 		validate_nominee_percent_total(self)
 		validate_nominee_minor_guardian(self)
 		validate_unique_nominees(self)
-		validate_nominee_not_holder(self)
 		if not self.is_existing_policy:
 			validate_payments_required(self)
 		validate_status_requirements(self)

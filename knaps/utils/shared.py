@@ -29,6 +29,7 @@ def generate_investment_name(doctype: str, prefix_key: str, entry_date: date | s
 		{"name": ["like", f"{prefix}%"]},
 		"name",
 		order_by="name desc",
+		for_update=True,
 	)
 	if last:
 		last_serial = int(last.split("-")[-1])

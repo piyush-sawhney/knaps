@@ -58,9 +58,17 @@ class KNAPSRDAccount(Document):
 		self._set_effective_card_number()
 
 	def validate(self) -> None:
-		self._validate_account_number_match()
-		self._validate_denomination_match()
-		self._validate_start_date_match()
+		po_data = None
+		if self.po_rd_investment:
+			po_data = frappe.db.get_value(
+				DOCTYPE_PO_INVESTMENT,
+				self.po_rd_investment,
+				["account_number", "amount", "start_date"],
+				as_dict=True,
+			)
+		self._validate_account_number_match(po_data)
+		self._validate_denomination_match(po_data)
+		self._validate_start_date_match(po_data)
 
 	def _set_title(self) -> None:
 		if self.client_name and self.rd_account_number:
@@ -75,10 +83,10 @@ class KNAPSRDAccount(Document):
 		self.effective_card_number = self.extension_card_number or self.card_number
 		self.is_updated = 1 if self.effective_card_number else 0
 
-	def _validate_account_number_match(self) -> None:
+	def _validate_account_number_match(self, po_data: dict | None) -> None:
 		if not self.po_rd_investment or not self.rd_account_number:
 			return
-		po_account = frappe.db.get_value(DOCTYPE_PO_INVESTMENT, self.po_rd_investment, "account_number")
+		po_account = po_data.get("account_number") if po_data else None
 		if po_account and self.rd_account_number != po_account:
 			frappe.throw(
 				_("RD Account Number {} does not match PO Investment account number {}.").format(
@@ -87,10 +95,10 @@ class KNAPSRDAccount(Document):
 				title=_("Account Mismatch"),
 			)
 
-	def _validate_denomination_match(self) -> None:
+	def _validate_denomination_match(self, po_data: dict | None) -> None:
 		if not self.po_rd_investment or not self.denomination:
 			return
-		po_amount = frappe.db.get_value(DOCTYPE_PO_INVESTMENT, self.po_rd_investment, "amount")
+		po_amount = po_data.get("amount") if po_data else None
 		if po_amount and self.denomination != po_amount:
 			frappe.throw(
 				_("Denomination {} does not match PO Investment amount {}.").format(
@@ -99,10 +107,10 @@ class KNAPSRDAccount(Document):
 				title=_("Denomination Mismatch"),
 			)
 
-	def _validate_start_date_match(self) -> None:
+	def _validate_start_date_match(self, po_data: dict | None) -> None:
 		if not self.po_rd_investment or not self.account_opening_date:
 			return
-		po_start = frappe.db.get_value(DOCTYPE_PO_INVESTMENT, self.po_rd_investment, "start_date")
+		po_start = po_data.get("start_date") if po_data else None
 		if po_start and getdate(self.account_opening_date) != getdate(po_start):
 			frappe.throw(
 				_("Account Opening Date {} does not match PO Investment start date {}.").format(

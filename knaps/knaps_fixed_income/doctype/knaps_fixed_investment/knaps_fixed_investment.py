@@ -112,5 +112,5 @@ class KNAPSFixedInvestment(Document):
 
 	def _set_title(self) -> None:
 		if self.client_name and self.investment_type:
-			code = self.investment_type.split(" -")[0].split("- ")[0].strip()
+			code = self.investment_type.split("-")[0].strip()
 			self.title = f"{self.client_name} - {code}"

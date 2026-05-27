@@ -36,10 +36,17 @@ class KNAPSRDSchedule(Document):
 			self.schedule_document = None
 
 	def validate(self) -> None:
-		self._validate_schedules()
+		self._validate_bank_account_number()
+		if self.rd_accounts:
+			self._validate_duplicate_accounts()
+			for row in self.rd_accounts:
+				self._validate_schedule_type_fields(row)
 
 	def before_save(self) -> None:
-		self._validate_bank_account_number()
+		self._reset_financials()
+		if self.rd_accounts:
+			for row in self.rd_accounts:
+				self._accumulate_row_financials(row)
 
 	def _validate_bank_account_number(self) -> None:
 		if self.schedule_type and self.schedule_type.lower() == "cheque":
@@ -50,15 +57,6 @@ class KNAPSRDSchedule(Document):
 							_("Invalid bank account number for account {}.").format(row.rd_account_number),
 							title=_("Bank Account Error"),
 						)
-
-	def _validate_schedules(self) -> None:
-		if not self.rd_accounts:
-			return
-		self._reset_financials()
-		self._validate_duplicate_accounts()
-		for row in self.rd_accounts:
-			self._validate_schedule_type_fields(row)
-			self._accumulate_row_financials(row)
 
 	def _reset_financials(self) -> None:
 		self.total_rebate = 0.0

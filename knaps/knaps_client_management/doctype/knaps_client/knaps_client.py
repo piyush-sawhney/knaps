@@ -2,10 +2,8 @@
 # For license information, please see license.txt
 
 import frappe
-from dateutil.relativedelta import relativedelta
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import getdate, today
 
 from knaps.utils.constants import DOCTYPE_CLIENT, DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL
 
@@ -119,12 +117,7 @@ class KNAPSClient(Document):
 		self.primary_whatsapp = individual.primary_whatsapp
 		self.primary_email = individual.primary_email
 		self.preferred_contact_mode = individual.preferred_contact_mode
-
-		if individual.date_of_birth:
-			age = relativedelta(getdate(today()), getdate(individual.date_of_birth)).years
-			self.is_minor = 1 if age < 18 else 0
-		else:
-			self.is_minor = 0
+		self.date_of_birth = individual.date_of_birth
 
 	def _sync_from_non_individual(self):
 		entity = frappe.get_cached_doc(DOCTYPE_NON_INDIVIDUAL, self.non_individual)
@@ -132,7 +125,7 @@ class KNAPSClient(Document):
 		self.client_name = entity.legal_name
 		self.pan = entity.pan
 		self.status = entity.status
-		self.is_minor = 0
+		self.date_of_birth = None
 
 		self.individual = entity.primary_contact
 		self.primary_phone = entity.primary_contact_phone

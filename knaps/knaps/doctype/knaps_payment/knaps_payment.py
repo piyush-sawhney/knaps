@@ -14,6 +14,7 @@ class KNAPSPayment(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
+		bank_account_number: DF.Link | None
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data

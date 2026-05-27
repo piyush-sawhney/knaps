@@ -5,7 +5,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
-from knaps.utils.constants import DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL
+from knaps.utils.constants import DOCTYPE_FAMILY, DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL
 
 
 class KNAPSFamily(Document):
@@ -216,7 +216,7 @@ class KNAPSFamily(Document):
 		if current_family and current_family != self.name:
 			title = self._get_party_display_name(doctype, name)
 			family_label = (
-				frappe.db.get_value("KNAPS Family", current_family, "family_name") or current_family
+				frappe.db.get_value(DOCTYPE_FAMILY, current_family, "family_name") or current_family
 			)
 			frappe.throw(_("{} is already a primary member in {}.").format(title, family_label))
 

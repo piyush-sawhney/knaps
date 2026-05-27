@@ -1,3 +1,12 @@
+from knaps.utils.constants import (
+	DOCTYPE_LEAD,
+	DOCTYPE_LEAD_SOURCE,
+	DOCTYPE_NON_INDIVIDUAL_TYPE,
+	DOCTYPE_OPPORTUNITY,
+	DOCTYPE_PRODUCT,
+	DOCTYPE_PRODUCT_CATEGORY,
+)
+
 app_name = "knaps"
 app_title = "KNAPS Financial Services"
 app_publisher = "KNAPS and Contributors"
@@ -157,11 +166,11 @@ scheduler_events = {
 # -------
 
 fixtures = [
-	"KNAPS Non Individual Type",
-	"KNAPS Product",
-	"KNAPS Product Category",
-	"KNAPS Lead Source",
-	{"dt": "Kanban Board", "filters": [["name", "in", ["KNAPS Lead", "KNAPS Opportunity"]]]},
+	DOCTYPE_NON_INDIVIDUAL_TYPE,
+	DOCTYPE_PRODUCT,
+	DOCTYPE_PRODUCT_CATEGORY,
+	DOCTYPE_LEAD_SOURCE,
+	{"dt": "Kanban Board", "filters": [["name", "in", [DOCTYPE_LEAD, DOCTYPE_OPPORTUNITY]]]},
 ]
 
 # Extend DocType Class

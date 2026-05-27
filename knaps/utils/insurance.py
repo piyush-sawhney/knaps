@@ -5,7 +5,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import add_months, getdate
 
-from knaps.utils.constants import DOCTYPE_INDIVIDUAL
+from knaps.utils.constants import DOCTYPE_CLIENT, DOCTYPE_INDIVIDUAL
 
 
 def _init_holder_cache(doc: Document) -> None:
@@ -16,7 +16,7 @@ def _init_holder_cache(doc: Document) -> None:
 		return
 
 	clients = frappe.db.get_all(
-		"KNAPS Client",
+		DOCTYPE_CLIENT,
 		filters={"name": ["in", holder_names]},
 		fields=["name", "individual"],
 	)
@@ -61,15 +61,15 @@ def set_primary_client(doc: Document) -> None:
 	primary = primary_holders[0]
 	_validate_not_minor(primary)
 	doc.primary_client = primary.holder
-	client_name = frappe.db.get_value("KNAPS Client", primary.holder, "client_name")
+	client_name = frappe.db.get_value(DOCTYPE_CLIENT, primary.holder, "client_name")
 	if client_name:
 		doc.client_name = client_name
 
 
 def _validate_not_minor(member) -> None:
-	client = frappe.get_cached_doc("KNAPS Client", member.holder)
+	client = frappe.get_cached_doc(DOCTYPE_CLIENT, member.holder)
 	if client.is_minor:
-		display = frappe.db.get_value("KNAPS Client", member.holder, "client_name") or member.holder
+		display = frappe.db.get_value(DOCTYPE_CLIENT, member.holder, "client_name") or member.holder
 		frappe.throw(
 			_("{} is a minor and cannot be the primary member.").format(display),
 			title=_("Minor Primary Member"),

@@ -1,17 +1,23 @@
 # Copyright (c) 2026, KNAPS and Contributors and Contributors
 # See license.txt
-
 import frappe
 from frappe.tests import IntegrationTestCase
 
-EXTRA_TEST_RECORD_DEPENDENCIES = ["Salutation", "Gender", "KNAPS Non Individual Type"]
+from knaps.utils.constants import (
+	DOCTYPE_INDIVIDUAL,
+	DOCTYPE_LEAD,
+	DOCTYPE_NON_INDIVIDUAL,
+	DOCTYPE_NON_INDIVIDUAL_TYPE,
+)
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Salutation", "Gender", DOCTYPE_NON_INDIVIDUAL_TYPE]
 IGNORE_TEST_RECORD_DEPENDENCIES = []
 
 
 def create_test_individual(**kwargs):
 	doc = frappe.get_doc(
 		{
-			"doctype": "KNAPS Individual",
+			"doctype": DOCTYPE_INDIVIDUAL,
 			"first_name": kwargs.get("first_name", "Test"),
 			"last_name": kwargs.get("last_name", "Individual"),
 			"salutation": kwargs.get("salutation", "Mr"),
@@ -50,7 +56,7 @@ def create_test_non_individual(**kwargs):
 	)
 	entity = frappe.get_doc(
 		{
-			"doctype": "KNAPS Non Individual",
+			"doctype": DOCTYPE_NON_INDIVIDUAL,
 			"legal_name": kwargs.get("legal_name", "Test Entity Pvt Ltd"),
 			"non_individual_type": kwargs.get("non_individual_type", "Company"),
 			"status": kwargs.get("status", "Active"),
@@ -97,7 +103,7 @@ class IntegrationTestKNAPSLead(IntegrationTestCase):
 
 	def _make_lead(self, **kwargs):
 		defaults = {
-			"doctype": "KNAPS Lead",
+			"doctype": DOCTYPE_LEAD,
 			"status": "New",
 			"source": "Walk-In",
 		}
@@ -116,7 +122,7 @@ class IntegrationTestKNAPSLead(IntegrationTestCase):
 		)
 
 		lead = self._make_lead(
-			lead_type="KNAPS Individual",
+			lead_type=DOCTYPE_INDIVIDUAL,
 			lead=individual.name,
 			lead_interested_in=[{"product": "Mutual Funds"}],
 		)
@@ -142,7 +148,7 @@ class IntegrationTestKNAPSLead(IntegrationTestCase):
 		)
 
 		lead = self._make_lead(
-			lead_type="KNAPS Non Individual",
+			lead_type=DOCTYPE_NON_INDIVIDUAL,
 			lead=entity.name,
 			lead_interested_in=[{"product": "Life Insurance"}],
 		)

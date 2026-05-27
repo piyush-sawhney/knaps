@@ -3,6 +3,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import add_months, getdate
 
+from knaps.utils.constants import DOCTYPE_CLIENT
 from knaps.utils.shared import get_nominee_display
 
 
@@ -14,7 +15,7 @@ def set_primary_client(doc: Document) -> None:
 	first_holder = next((h for h in holders if h.order == "First"), None)
 	if first_holder:
 		doc.primary_client = first_holder.holder
-		client_name = frappe.db.get_value("KNAPS Client", first_holder.holder, "client_name")
+		client_name = frappe.db.get_value(DOCTYPE_CLIENT, first_holder.holder, "client_name")
 		if client_name:
 			doc.client_name = client_name
 
@@ -67,7 +68,7 @@ def validate_holders_by_holding_type(doc: Document, enforce_single_for_non_indiv
 		holder_names = [h.holder for h in holders]
 		if holder_names:
 			client_types = frappe.db.get_all(
-				"KNAPS Client",
+				DOCTYPE_CLIENT,
 				filters={"name": ["in", holder_names]},
 				fields=["name", "client_type"],
 			)
@@ -143,7 +144,7 @@ def validate_nominees(doc: Document, nominees_optional_for_non_individual: bool 
 		holder_names = [h.holder for h in doc.get("holders") or []]
 		if holder_names:
 			client_types = frappe.db.get_all(
-				"KNAPS Client",
+				DOCTYPE_CLIENT,
 				filters={"name": ["in", holder_names]},
 				fields=["name", "client_type"],
 			)

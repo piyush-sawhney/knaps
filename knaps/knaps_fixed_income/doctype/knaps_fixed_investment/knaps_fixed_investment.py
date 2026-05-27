@@ -1,6 +1,7 @@
 import frappe
 from frappe.model.document import Document
 
+from knaps.utils.constants import DOCTYPE_FIXED_INVESTMENT
 from knaps.utils.investment import (
 	set_maturity_date,
 	set_primary_client,
@@ -81,7 +82,7 @@ class KNAPSFixedInvestment(Document):
 	# end: auto-generated types
 
 	def autoname(self) -> None:
-		self.name = generate_investment_name("KNAPS Fixed Investment", "KNAPS-FI-", self.entry_date)
+		self.name = generate_investment_name(DOCTYPE_FIXED_INVESTMENT, "KNAPS-FI-", self.entry_date)
 
 	def before_validate(self) -> None:
 		set_nominee_minor_status(self)

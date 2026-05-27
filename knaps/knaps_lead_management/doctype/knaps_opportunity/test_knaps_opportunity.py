@@ -1,14 +1,21 @@
 import frappe
 from frappe.tests import IntegrationTestCase
 
-EXTRA_TEST_RECORD_DEPENDENCIES = ["Salutation", "Gender", "KNAPS Non Individual Type"]
+from knaps.utils.constants import (
+	DOCTYPE_CLIENT,
+	DOCTYPE_INDIVIDUAL,
+	DOCTYPE_NON_INDIVIDUAL_TYPE,
+	DOCTYPE_OPPORTUNITY,
+)
+
+EXTRA_TEST_RECORD_DEPENDENCIES = ["Salutation", "Gender", DOCTYPE_NON_INDIVIDUAL_TYPE]
 IGNORE_TEST_RECORD_DEPENDENCIES = []
 
 
 def create_test_individual(**kwargs):
 	doc = frappe.get_doc(
 		{
-			"doctype": "KNAPS Individual",
+			"doctype": DOCTYPE_INDIVIDUAL,
 			"first_name": kwargs.get("first_name", "Test"),
 			"last_name": kwargs.get("last_name", "Individual"),
 			"salutation": kwargs.get("salutation", "Mr"),
@@ -46,7 +53,7 @@ def create_test_client(**kwargs):
 	)
 	doc = frappe.get_doc(
 		{
-			"doctype": "KNAPS Client",
+			"doctype": DOCTYPE_CLIENT,
 			"client_type": kwargs.get("client_type", "Individual"),
 			"individual": individual.name,
 			"client_name": kwargs.get("client_name", "Test Client"),
@@ -71,7 +78,7 @@ class IntegrationTestKNAPSOpportunity(IntegrationTestCase):
 
 	def _make_opportunity(self, **kwargs):
 		defaults = {
-			"doctype": "KNAPS Opportunity",
+			"doctype": DOCTYPE_OPPORTUNITY,
 			"status": "New",
 			"source": "Walk-In",
 		}

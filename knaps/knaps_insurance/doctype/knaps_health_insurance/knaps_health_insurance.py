@@ -5,6 +5,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
+from knaps.utils.constants import DOCTYPE_CLIENT, DOCTYPE_HEALTH_INSURANCE
 from knaps.utils.insurance import (
 	set_insurance_member_date_of_birth,
 	set_maturity_date,
@@ -72,7 +73,7 @@ class KNAPSHealthInsurance(Document):
 	# end: auto-generated types
 
 	def autoname(self) -> None:
-		self.name = generate_investment_name("KNAPS Health Insurance", "KNAPS-HI-", self.entry_date)
+		self.name = generate_investment_name(DOCTYPE_HEALTH_INSURANCE, "KNAPS-HI-", self.entry_date)
 
 	def before_validate(self) -> None:
 		set_nominee_minor_status(self)
@@ -118,7 +119,7 @@ class KNAPSHealthInsurance(Document):
 		seen_holders: set[str] = set()
 		for h in holders:
 			if h.holder in seen_holders:
-				display = frappe.db.get_value("KNAPS Client", h.holder, "client_name") or h.holder
+				display = frappe.db.get_value(DOCTYPE_CLIENT, h.holder, "client_name") or h.holder
 				frappe.throw(
 					_("{} appears more than once in the members table.").format(display),
 					title=_("Duplicate Member"),
@@ -145,7 +146,7 @@ class KNAPSHealthInsurance(Document):
 		if self.policy_type == "Floater":
 			for h in holders:
 				if h.sum_insured and h.sum_insured > 0:
-					display = frappe.db.get_value("KNAPS Client", h.holder, "client_name") or h.holder
+					display = frappe.db.get_value(DOCTYPE_CLIENT, h.holder, "client_name") or h.holder
 					frappe.throw(
 						_(
 							"Member {} should not have a sum insured in a Floater policy. Use the policy-level Floater Sum Insured instead."
@@ -157,7 +158,7 @@ class KNAPSHealthInsurance(Document):
 				if h.order != "Insured":
 					continue
 				if not h.sum_insured or h.sum_insured <= 0:
-					display = frappe.db.get_value("KNAPS Client", h.holder, "client_name") or h.holder
+					display = frappe.db.get_value(DOCTYPE_CLIENT, h.holder, "client_name") or h.holder
 					frappe.throw(
 						_("Insured member {} requires a sum insured in a Multi-Individual policy.").format(
 							display

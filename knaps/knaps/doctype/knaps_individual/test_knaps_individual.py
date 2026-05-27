@@ -1,8 +1,11 @@
 # Copyright (c) 2026, KNAPS and Contributors and Contributors
 # See license.txt
-
 import frappe
 from frappe.tests import IntegrationTestCase
+
+from knaps.utils.constants import (
+	DOCTYPE_INDIVIDUAL,
+)
 
 EXTRA_TEST_RECORD_DEPENDENCIES = ["Salutation", "Gender"]
 
@@ -11,7 +14,7 @@ def create_knaps_individual(**kwargs):
 	"""Helper function to create a KNAPS Individual for testing."""
 	doc = frappe.get_doc(
 		{
-			"doctype": "KNAPS Individual",
+			"doctype": DOCTYPE_INDIVIDUAL,
 			"first_name": kwargs.get("first_name", "Test"),
 			"middle_name": kwargs.get("middle_name", ""),
 			"last_name": kwargs.get("last_name", ""),

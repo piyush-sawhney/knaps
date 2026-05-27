@@ -7,7 +7,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import getdate, today
 
-from knaps.utils.constants import DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL
+from knaps.utils.constants import DOCTYPE_CLIENT, DOCTYPE_INDIVIDUAL, DOCTYPE_NON_INDIVIDUAL
 
 
 class KNAPSClient(Document):
@@ -66,7 +66,7 @@ class KNAPSClient(Document):
 
 		if self.client_type == "Non Individual":
 			existing = frappe.db.exists(
-				"KNAPS Client",
+				DOCTYPE_CLIENT,
 				{"pan": self.pan, "client_type": "Non Individual", "name": ["!=", self.name]},
 			)
 			if existing:
@@ -77,7 +77,7 @@ class KNAPSClient(Document):
 
 		elif self.client_type in ("Individual", "Sole Proprietor") and self.client_name:
 			existing = frappe.db.exists(
-				"KNAPS Client",
+				DOCTYPE_CLIENT,
 				{
 					"client_name": self.client_name,
 					"pan": self.pan,

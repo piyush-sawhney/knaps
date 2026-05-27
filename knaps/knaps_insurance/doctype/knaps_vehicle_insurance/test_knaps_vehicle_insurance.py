@@ -3,6 +3,19 @@ from frappe.exceptions import ValidationError
 from frappe.tests import IntegrationTestCase
 from frappe.utils import add_months, getdate, today
 
+from knaps.utils.constants import (
+	DOCTYPE_CLIENT,
+	DOCTYPE_INDIVIDUAL,
+	DOCTYPE_NON_INDIVIDUAL,
+	DOCTYPE_NON_INDIVIDUAL_TYPE,
+	DOCTYPE_PAYMENT_TYPE,
+	DOCTYPE_PRODUCT,
+	DOCTYPE_PRODUCT_CATEGORY,
+	DOCTYPE_PRODUCT_PROVIDER,
+	DOCTYPE_RELATIONSHIP,
+	DOCTYPE_VEHICLE_INSURANCE,
+)
+
 
 class TestKNAPSVehicleInsurance(IntegrationTestCase):
 	def setUp(self):
@@ -26,7 +39,7 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 		self._ensure_doctype_exists("Salutation", salutation)
 		ind = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": first_name,
 				"gender": gender,
 				"salutation": salutation,
@@ -44,7 +57,7 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 	def _create_client(self, client_type: str, individual: str) -> str:
 		client = frappe.get_doc(
 			{
-				"doctype": "KNAPS Client",
+				"doctype": DOCTYPE_CLIENT,
 				"client_type": client_type,
 				"individual": individual,
 			}
@@ -53,19 +66,19 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 		return client.name
 
 	def _create_product_provider(self) -> str:
-		if not frappe.db.exists("KNAPS Product Category", "Insurance"):
-			frappe.get_doc({"doctype": "KNAPS Product Category", "category_name": "Insurance"}).insert()
-		if not frappe.db.exists("KNAPS Product", "Vehicle Insurance"):
+		if not frappe.db.exists(DOCTYPE_PRODUCT_CATEGORY, "Insurance"):
+			frappe.get_doc({"doctype": DOCTYPE_PRODUCT_CATEGORY, "category_name": "Insurance"}).insert()
+		if not frappe.db.exists(DOCTYPE_PRODUCT, "Vehicle Insurance"):
 			frappe.get_doc(
-				{"doctype": "KNAPS Product", "product_name": "Vehicle Insurance", "category": "Insurance"}
+				{"doctype": DOCTYPE_PRODUCT, "product_name": "Vehicle Insurance", "category": "Insurance"}
 			).insert()
-		if not frappe.db.exists("KNAPS Non Individual Type", "Company"):
+		if not frappe.db.exists(DOCTYPE_NON_INDIVIDUAL_TYPE, "Company"):
 			frappe.get_doc(
-				{"doctype": "KNAPS Non Individual Type", "non_individual_type": "Company"}
+				{"doctype": DOCTYPE_NON_INDIVIDUAL_TYPE, "non_individual_type": "Company"}
 			).insert()
 		provider = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Test Insurance Co",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -74,7 +87,7 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 		provider.insert()
 		pp = frappe.get_doc(
 			{
-				"doctype": "KNAPS Product Provider",
+				"doctype": DOCTYPE_PRODUCT_PROVIDER,
 				"product": "Vehicle Insurance",
 				"provider": provider.name,
 			}
@@ -83,12 +96,12 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 		return pp.name
 
 	def _create_payment_type(self, name: str) -> str:
-		existing = frappe.db.get_value("KNAPS Payment Type", {"payment_type": name}, "name")
+		existing = frappe.db.get_value(DOCTYPE_PAYMENT_TYPE, {"payment_type": name}, "name")
 		if existing:
 			return existing
 		doc = frappe.get_doc(
 			{
-				"doctype": "KNAPS Payment Type",
+				"doctype": DOCTYPE_PAYMENT_TYPE,
 				"payment_type": name,
 			}
 		)
@@ -96,11 +109,11 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 		return doc.name
 
 	def _create_relationship(self, name: str) -> str:
-		if frappe.db.exists("KNAPS Relationship", name):
+		if frappe.db.exists(DOCTYPE_RELATIONSHIP, name):
 			return name
 		frappe.get_doc(
 			{
-				"doctype": "KNAPS Relationship",
+				"doctype": DOCTYPE_RELATIONSHIP,
 				"relationship_name": name,
 			}
 		).insert()
@@ -108,7 +121,7 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 
 	def _make_policy(self, **kwargs):
 		defaults = {
-			"doctype": "KNAPS Vehicle Insurance",
+			"doctype": DOCTYPE_VEHICLE_INSURANCE,
 			"entry_date": today(),
 			"status": "Proposal",
 			"holding_type": "Private Car",
@@ -186,7 +199,7 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 		self._add_payment(doc)
 		doc.insert()
 
-		client_name = frappe.db.get_value("KNAPS Client", self.adult_client, "client_name")
+		client_name = frappe.db.get_value(DOCTYPE_CLIENT, self.adult_client, "client_name")
 		self.assertEqual(doc.title, f"{client_name} - MH-01-AB-1234")
 
 	def test_title_without_client_name(self):

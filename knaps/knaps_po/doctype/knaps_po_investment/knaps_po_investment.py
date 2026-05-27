@@ -3,6 +3,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import add_months, formatdate, getdate
 
+from knaps.utils.constants import DOCTYPE_PO_INVESTMENT
 from knaps.utils.investment import (
 	set_maturity_date as set_base_maturity_date,
 )
@@ -84,7 +85,7 @@ class KNAPSPOInvestment(Document):
 	# end: auto-generated types
 
 	def autoname(self) -> None:
-		self.name = generate_investment_name("KNAPS PO Investment", "KNAPS-PO-", self.entry_date)
+		self.name = generate_investment_name(DOCTYPE_PO_INVESTMENT, "KNAPS-PO-", self.entry_date)
 
 	def before_validate(self) -> None:
 		set_nominee_minor_status(self)

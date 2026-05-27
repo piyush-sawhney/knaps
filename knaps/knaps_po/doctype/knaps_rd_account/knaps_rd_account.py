@@ -3,6 +3,8 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import getdate
 
+from knaps.utils.constants import DOCTYPE_PO_INVESTMENT
+
 
 class KNAPSRDAccount(Document):
 	# begin: auto-generated types
@@ -76,7 +78,7 @@ class KNAPSRDAccount(Document):
 	def _validate_account_number_match(self) -> None:
 		if not self.po_rd_investment or not self.rd_account_number:
 			return
-		po_account = frappe.db.get_value("KNAPS PO Investment", self.po_rd_investment, "account_number")
+		po_account = frappe.db.get_value(DOCTYPE_PO_INVESTMENT, self.po_rd_investment, "account_number")
 		if po_account and self.rd_account_number != po_account:
 			frappe.throw(
 				_("RD Account Number {} does not match PO Investment account number {}.").format(
@@ -88,7 +90,7 @@ class KNAPSRDAccount(Document):
 	def _validate_denomination_match(self) -> None:
 		if not self.po_rd_investment or not self.denomination:
 			return
-		po_amount = frappe.db.get_value("KNAPS PO Investment", self.po_rd_investment, "amount")
+		po_amount = frappe.db.get_value(DOCTYPE_PO_INVESTMENT, self.po_rd_investment, "amount")
 		if po_amount and self.denomination != po_amount:
 			frappe.throw(
 				_("Denomination {} does not match PO Investment amount {}.").format(
@@ -100,7 +102,7 @@ class KNAPSRDAccount(Document):
 	def _validate_start_date_match(self) -> None:
 		if not self.po_rd_investment or not self.account_opening_date:
 			return
-		po_start = frappe.db.get_value("KNAPS PO Investment", self.po_rd_investment, "start_date")
+		po_start = frappe.db.get_value(DOCTYPE_PO_INVESTMENT, self.po_rd_investment, "start_date")
 		if po_start and getdate(self.account_opening_date) != getdate(po_start):
 			frappe.throw(
 				_("Account Opening Date {} does not match PO Investment start date {}.").format(

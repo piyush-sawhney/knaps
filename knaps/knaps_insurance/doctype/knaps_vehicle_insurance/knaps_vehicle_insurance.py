@@ -5,6 +5,7 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
+from knaps.utils.constants import DOCTYPE_VEHICLE_INSURANCE
 from knaps.utils.insurance import (
 	set_maturity_date,
 	validate_premium_positive,
@@ -73,7 +74,7 @@ class KNAPSVehicleInsurance(Document):
 	# end: auto-generated types
 
 	def autoname(self) -> None:
-		self.name = generate_investment_name("KNAPS Vehicle Insurance", "KNAPS-VIN-", self.entry_date)
+		self.name = generate_investment_name(DOCTYPE_VEHICLE_INSURANCE, "KNAPS-VIN-", self.entry_date)
 
 	def before_validate(self) -> None:
 		set_nominee_minor_status(self)

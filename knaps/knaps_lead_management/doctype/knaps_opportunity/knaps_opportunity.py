@@ -6,6 +6,8 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
+from knaps.utils.constants import DOCTYPE_CLIENT, DOCTYPE_OPPORTUNITY
+
 
 class KNAPSOpportunity(Document):
 	# begin: auto-generated types
@@ -43,7 +45,7 @@ class KNAPSOpportunity(Document):
 		if not self.client:
 			return
 
-		client = frappe.get_cached_doc("KNAPS Client", self.client)
+		client = frappe.get_cached_doc(DOCTYPE_CLIENT, self.client)
 		self.client_name = client.client_name
 		self.phone = client.primary_phone
 		self.whatsapp = client.primary_whatsapp
@@ -55,7 +57,7 @@ class KNAPSOpportunity(Document):
 	def _validate_unique_opportunity(self):
 		if self.client:
 			exists = frappe.db.exists(
-				"KNAPS Opportunity",
+				DOCTYPE_OPPORTUNITY,
 				{
 					"client": self.client,
 					"status": ["not in", ["Lost", "Won", "Junk"]],

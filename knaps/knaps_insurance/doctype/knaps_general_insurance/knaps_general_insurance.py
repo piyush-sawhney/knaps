@@ -6,6 +6,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import add_days, add_months, getdate
 
+from knaps.utils.constants import DOCTYPE_CLIENT, DOCTYPE_GENERAL_INSURANCE
 from knaps.utils.insurance import (
 	set_insurance_member_date_of_birth,
 	set_primary_client,
@@ -74,7 +75,7 @@ class KNAPSGeneralInsurance(Document):
 	# end: auto-generated types
 
 	def autoname(self) -> None:
-		self.name = generate_investment_name("KNAPS General Insurance", "KNAPS-GI-", self.entry_date)
+		self.name = generate_investment_name(DOCTYPE_GENERAL_INSURANCE, "KNAPS-GI-", self.entry_date)
 
 	def before_validate(self) -> None:
 		set_nominee_minor_status(self)
@@ -85,7 +86,7 @@ class KNAPSGeneralInsurance(Document):
 		if self.has_multiple_members:
 			set_primary_client(self)
 		elif self.primary_client:
-			self.client_name = frappe.db.get_value("KNAPS Client", self.primary_client, "client_name")
+			self.client_name = frappe.db.get_value(DOCTYPE_CLIENT, self.primary_client, "client_name")
 		self._set_maturity_date_general()
 		self._set_title()
 
@@ -148,7 +149,7 @@ class KNAPSGeneralInsurance(Document):
 			if not h.holder:
 				continue
 			if h.holder in seen_holders:
-				display = frappe.db.get_value("KNAPS Client", h.holder, "client_name") or h.holder
+				display = frappe.db.get_value(DOCTYPE_CLIENT, h.holder, "client_name") or h.holder
 				frappe.throw(
 					_("{} appears more than once in the members table.").format(display),
 					title=_("Duplicate Member"),

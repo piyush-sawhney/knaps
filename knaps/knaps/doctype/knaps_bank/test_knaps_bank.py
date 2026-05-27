@@ -1,20 +1,26 @@
 # Copyright (c) 2026, KNAPS and Contributors and Contributors
 # See license.txt
-
 import frappe
 from frappe.tests import IntegrationTestCase
 
+from knaps.utils.constants import (
+	DOCTYPE_BANK,
+	DOCTYPE_HOLDING_TYPE,
+	DOCTYPE_INDIVIDUAL,
+	DOCTYPE_NON_INDIVIDUAL,
+)
+
 
 def create_holding_type(name):
-	if not frappe.db.exists("KNAPS Holding Type", name):
-		frappe.get_doc({"doctype": "KNAPS Holding Type", "holding_type": name}).insert()
+	if not frappe.db.exists(DOCTYPE_HOLDING_TYPE, name):
+		frappe.get_doc({"doctype": DOCTYPE_HOLDING_TYPE, "holding_type": name}).insert()
 	return name
 
 
 def create_knaps_individual(**kwargs):
 	doc = frappe.get_doc(
 		{
-			"doctype": "KNAPS Individual",
+			"doctype": DOCTYPE_INDIVIDUAL,
 			"first_name": kwargs.get("first_name", "Test Person"),
 			"last_name": kwargs.get("last_name", ""),
 			"salutation": kwargs.get("salutation", "Mr"),
@@ -32,7 +38,7 @@ def create_knaps_individual(**kwargs):
 def create_knaps_non_individual(**kwargs):
 	doc = frappe.get_doc(
 		{
-			"doctype": "KNAPS Non Individual",
+			"doctype": DOCTYPE_NON_INDIVIDUAL,
 			"legal_name": kwargs.get("legal_name", "Test Entity"),
 			"non_individual_type": kwargs.get("non_individual_type", "Company"),
 			"status": kwargs.get("status", "Active"),
@@ -66,14 +72,14 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 			bank_name="Test Bank",
 			bank_account_number=frappe.generate_hash("acc", 10),
 			ifsc="HDFC0001234",
-			holder_type="KNAPS Individual",
+			holder_type=DOCTYPE_INDIVIDUAL,
 			holding_type="Single",
 		)
 		data = {**defaults, **kwargs}
 		if "first_holder" not in data:
 			person = create_knaps_individual(first_name="Default")
 			data["first_holder"] = person.name
-		doc = frappe.get_doc({"doctype": "KNAPS Bank", **data})
+		doc = frappe.get_doc({"doctype": DOCTYPE_BANK, **data})
 		doc.insert()
 		return doc
 
@@ -95,7 +101,7 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 		with self.assertRaises(frappe.ValidationError):
 			self._make_bank(
 				first_holder=entity.name,
-				holder_type="KNAPS Non Individual",
+				holder_type=DOCTYPE_NON_INDIVIDUAL,
 				second_holder=person.name,
 			)
 
@@ -125,7 +131,7 @@ class IntegrationTestKNAPSBank(IntegrationTestCase):
 		entity = create_knaps_non_individual(legal_name="Acme Corp")
 		bank = self._make_bank(
 			first_holder=entity.name,
-			holder_type="KNAPS Non Individual",
+			holder_type=DOCTYPE_NON_INDIVIDUAL,
 		)
 		self.assertEqual(bank.first_holder_name, "Acme Corp")
 

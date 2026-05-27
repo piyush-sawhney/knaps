@@ -1,10 +1,15 @@
 # Copyright (c) 2026, KNAPS and Contributors and Contributors
 # See license.txt
-
 import frappe
 from dateutil.relativedelta import relativedelta
 from frappe.tests import IntegrationTestCase
 from frappe.utils import getdate, today
+
+from knaps.utils.constants import (
+	DOCTYPE_CLIENT,
+	DOCTYPE_INDIVIDUAL,
+	DOCTYPE_NON_INDIVIDUAL,
+)
 
 
 class IntegrationTestKNAPSClient(IntegrationTestCase):
@@ -13,7 +18,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 	def setUp(self):
 		self.individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": "John",
 				"middle_name": "M",
 				"last_name": "Doe",
@@ -31,7 +36,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 	def _make_client(self, **kwargs):
 		defaults = {"client_type": "Individual", "individual": self.individual.name}
 		defaults.update(kwargs)
-		return frappe.get_doc({"doctype": "KNAPS Client", **defaults})
+		return frappe.get_doc({"doctype": DOCTYPE_CLIENT, **defaults})
 
 	def test_syncs_data_from_individual_on_save(self):
 		client = self._make_client()
@@ -50,7 +55,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 		minor_dob = getdate(today()) - relativedelta(years=16)
 		minor_individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": "Jane",
 				"salutation": "Ms",
 				"gender": "Female",
@@ -67,7 +72,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 	def test_syncs_data_from_non_individual_on_save(self):
 		non_individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Acme Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -94,7 +99,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 	def test_syncs_data_from_non_individual_with_primary_contact(self):
 		primary = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": "Alice",
 				"salutation": "Ms",
 				"gender": "Female",
@@ -112,7 +117,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 
 		non_individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Beta Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -148,7 +153,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 	def test_sets_primary_contact_as_individual_when_changing_to_non_individual(self):
 		primary = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": "Primary",
 				"salutation": "Mr",
 				"gender": "Male",
@@ -159,7 +164,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 
 		non_individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Beta LLC",
 				"non_individual_type": "Limited Liability Partnership",
 				"status": "Active",
@@ -187,7 +192,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 	def test_clears_incompatible_link_when_changing_to_individual(self):
 		non_individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Gamma Inc",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -260,7 +265,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 	def test_rejects_duplicate_pan_for_non_individual(self):
 		non_individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Shared Entity",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -309,7 +314,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 
 		non_individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Separate Entity",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -331,7 +336,7 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 		adult_dob = add_years(today(), -18)
 		adult_individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": "Exactly",
 				"middle_name": "18",
 				"last_name": "Adult",

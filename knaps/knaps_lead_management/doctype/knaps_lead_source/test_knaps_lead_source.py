@@ -1,6 +1,10 @@
 import frappe
 from frappe.tests import IntegrationTestCase
 
+from knaps.utils.constants import (
+	DOCTYPE_LEAD_SOURCE,
+)
+
 EXTRA_TEST_RECORD_DEPENDENCIES = []
 IGNORE_TEST_RECORD_DEPENDENCIES = []
 
@@ -17,7 +21,7 @@ class IntegrationTestKNAPSLeadSource(IntegrationTestCase):
 	def test_create_lead_source(self):
 		source = frappe.get_doc(
 			{
-				"doctype": "KNAPS Lead Source",
+				"doctype": DOCTYPE_LEAD_SOURCE,
 				"source_name": "Online Ad",
 			}
 		)

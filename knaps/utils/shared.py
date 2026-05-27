@@ -6,7 +6,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import getdate, today
 
-from knaps.utils.constants import DOCTYPE_INDIVIDUAL
+from knaps.utils.constants import DOCTYPE_CLIENT, DOCTYPE_INDIVIDUAL
 
 
 def generate_investment_name(doctype: str, prefix_key: str, entry_date: date | str | None = None) -> str:
@@ -74,7 +74,7 @@ def validate_nominee_not_holder(doc: Document) -> None:
 
 	holder_names = [h.holder for h in holders]
 	client_data = frappe.db.get_all(
-		"KNAPS Client",
+		DOCTYPE_CLIENT,
 		filters={"name": ["in", holder_names]},
 		fields=["name", "individual"],
 	)

@@ -1,6 +1,8 @@
 import frappe
 from frappe import _
 
+from knaps.utils.constants import DOCTYPE_PO_INVESTMENT, DOCTYPE_RD_ACCOUNT
+
 
 def notify_role(role: str, message: str) -> None:
 	users = frappe.get_all("Has Role", filters={"role": role}, fields=["parent"])
@@ -25,15 +27,15 @@ def notify_role(role: str, message: str) -> None:
 
 
 def update_po_investment_in_rd_account() -> None:
-	rd_accounts = frappe.get_all("KNAPS RD Account", filters={"po_rd_investment": None}, pluck="name")
+	rd_accounts = frappe.get_all(DOCTYPE_RD_ACCOUNT, filters={"po_rd_investment": None}, pluck="name")
 	for rd_account in rd_accounts:
 		po_investment = frappe.db.get_value(
-			"KNAPS PO Investment",
+			DOCTYPE_PO_INVESTMENT,
 			{"account_number": rd_account, "scheme_code": "RD"},
 			"name",
 		)
 		if po_investment:
-			rd_doc = frappe.get_doc("KNAPS RD Account", rd_account)
+			rd_doc = frappe.get_doc(DOCTYPE_RD_ACCOUNT, rd_account)
 			rd_doc.po_rd_investment = po_investment
 			try:
 				rd_doc.save()

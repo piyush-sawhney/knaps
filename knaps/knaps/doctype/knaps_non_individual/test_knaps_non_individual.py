@@ -1,8 +1,13 @@
 # Copyright (c) 2026, KNAPS and Contributors and Contributors
 # See license.txt
-
 import frappe
 from frappe.tests import IntegrationTestCase
+
+from knaps.utils.constants import (
+	DOCTYPE_INDIVIDUAL,
+	DOCTYPE_NON_INDIVIDUAL,
+	DOCTYPE_NON_INDIVIDUAL_TYPE,
+)
 
 EXTRA_TEST_RECORD_DEPENDENCIES = ["Salutation", "Gender"]
 
@@ -11,7 +16,7 @@ def create_knaps_non_individual(**kwargs):
 	"""Helper function to create a KNAPS Non Individual for testing."""
 	doc = frappe.get_doc(
 		{
-			"doctype": "KNAPS Non Individual",
+			"doctype": DOCTYPE_NON_INDIVIDUAL,
 			"legal_name": kwargs.get("legal_name", kwargs.get("non_individual_name", "Test Entity")),
 			"non_individual_type": kwargs.get("non_individual_type", "Company"),
 			"status": kwargs.get("status", "Active"),
@@ -44,14 +49,14 @@ NON_INDIVIDUAL_TYPES = [
 class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 	"""Integration tests for KNAPS Non Individual doctype."""
 
-	doctype = "KNAPS Non Individual"
+	doctype = DOCTYPE_NON_INDIVIDUAL
 
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()
 		for t in NON_INDIVIDUAL_TYPES:
-			if not frappe.db.exists("KNAPS Non Individual Type", t):
-				frappe.get_doc({"doctype": "KNAPS Non Individual Type", "non_individual_type": t}).insert()
+			if not frappe.db.exists(DOCTYPE_NON_INDIVIDUAL_TYPE, t):
+				frappe.get_doc({"doctype": DOCTYPE_NON_INDIVIDUAL_TYPE, "non_individual_type": t}).insert()
 
 	def setUp(self):
 		super().setUp()
@@ -733,7 +738,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that legal name is trimmed and internal spaces collapsed"""
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "  HDFC   Mutual  Fund  ",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -768,7 +773,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 	def _create_contact_individual(self, first_name: str = "Contact") -> str:
 		individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": first_name,
 				"salutation": "Mr",
 				"gender": "Male",
@@ -801,7 +806,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that primary contact sync populates name, phone, whatsapp, email, and preferred contact mode"""
 		individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": "Primary",
 				"salutation": "Mr",
 				"gender": "Male",
@@ -831,7 +836,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Test Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -878,7 +883,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Test Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -924,7 +929,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Auto Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -969,7 +974,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Reduce Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1022,7 +1027,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Test Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1071,7 +1076,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that empty contacts table clears all synced fields"""
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "No Contacts",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1109,7 +1114,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that a deceased individual marked as primary contact throws ValidationError"""
 		individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": "Deceased",
 				"salutation": "Mr",
 				"gender": "Male",
@@ -1119,7 +1124,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Test Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1159,7 +1164,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		individual_a = self._create_contact_individual("FirstContact")
 		individual_b = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": "SecondContact",
 				"salutation": "Mr",
 				"gender": "Male",
@@ -1189,7 +1194,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Switch Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1246,7 +1251,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Remove Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1299,7 +1304,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that an active individual can be set as primary contact via contacts table"""
 		individual = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": "Active Person",
 				"salutation": "Mr",
 				"gender": "Male",
@@ -1309,7 +1314,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Test Corp",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1348,7 +1353,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that entity without primary contact is valid"""
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "No Contact Entity",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1384,7 +1389,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that inactive phone marked as primary throws error"""
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Test Entity",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1416,7 +1421,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that inactive email marked as primary throws error"""
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Test Entity",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1452,7 +1457,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that duplicate phone numbers in child table throw error"""
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Test Entity",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1492,7 +1497,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that duplicate email addresses in child table throw error"""
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Test Entity",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1535,7 +1540,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that exclusively-linked Address is deleted when Non Individual is deleted"""
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Test Corp Address Delete",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1579,7 +1584,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that shared Address only loses the link row when one Non Individual is deleted"""
 		entity_a = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Company A",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1606,7 +1611,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		).insert()
 		entity_b = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Company B",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1656,7 +1661,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that deleting a Non Individual with no linked Address does not raise"""
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Minimal Entity",
 				"non_individual_type": "Company",
 				"status": "Active",
@@ -1687,7 +1692,7 @@ class IntegrationTestKNAPSNonIndividual(IntegrationTestCase):
 		"""Test that PAN can be updated on an existing non individual."""
 		entity = frappe.get_doc(
 			{
-				"doctype": "KNAPS Non Individual",
+				"doctype": DOCTYPE_NON_INDIVIDUAL,
 				"legal_name": "Update PAN Entity",
 				"non_individual_type": "Company",
 				"status": "Active",

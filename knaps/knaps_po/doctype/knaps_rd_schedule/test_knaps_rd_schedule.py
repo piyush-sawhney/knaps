@@ -3,6 +3,19 @@ from frappe.exceptions import MandatoryError, ValidationError
 from frappe.tests import IntegrationTestCase
 from frappe.utils import today
 
+from knaps.utils.constants import (
+	DOCTYPE_BANK,
+	DOCTYPE_CLIENT,
+	DOCTYPE_HOLDING_TYPE,
+	DOCTYPE_INDIVIDUAL,
+	DOCTYPE_PAYMENT_TYPE,
+	DOCTYPE_PO_INVESTMENT,
+	DOCTYPE_PO_SCHEME,
+	DOCTYPE_RD_ACCOUNT,
+	DOCTYPE_RD_SCHEDULE,
+	DOCTYPE_RELATIONSHIP,
+)
+
 
 class TestKNAPSRDSchedule(IntegrationTestCase):
 	def setUp(self) -> None:
@@ -22,18 +35,18 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		super().tearDown()
 
 	def _create_holding_type(self, name: str) -> str:
-		if frappe.db.exists("KNAPS Holding Type", name):
+		if frappe.db.exists(DOCTYPE_HOLDING_TYPE, name):
 			return name
-		doc = frappe.get_doc({"doctype": "KNAPS Holding Type", "holding_type": name})
+		doc = frappe.get_doc({"doctype": DOCTYPE_HOLDING_TYPE, "holding_type": name})
 		doc.insert()
 		return name
 
 	def _create_scheme(self, name: str, code: str) -> str:
-		if frappe.db.exists("KNAPS PO Scheme", code):
+		if frappe.db.exists(DOCTYPE_PO_SCHEME, code):
 			return code
 		doc = frappe.get_doc(
 			{
-				"doctype": "KNAPS PO Scheme",
+				"doctype": DOCTYPE_PO_SCHEME,
 				"scheme_name": name,
 				"scheme_code": code,
 			}
@@ -46,7 +59,7 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		self._ensure_doctype_exists("Salutation", salutation)
 		ind = frappe.get_doc(
 			{
-				"doctype": "KNAPS Individual",
+				"doctype": DOCTYPE_INDIVIDUAL,
 				"first_name": first_name,
 				"gender": gender,
 				"salutation": salutation,
@@ -64,7 +77,7 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 	def _create_client(self, client_type: str, individual: str) -> str:
 		client = frappe.get_doc(
 			{
-				"doctype": "KNAPS Client",
+				"doctype": DOCTYPE_CLIENT,
 				"client_type": client_type,
 				"individual": individual,
 			}
@@ -73,23 +86,23 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		return client.name
 
 	def _create_relationship(self, name: str) -> str:
-		if frappe.db.exists("KNAPS Relationship", name):
+		if frappe.db.exists(DOCTYPE_RELATIONSHIP, name):
 			return name
 		frappe.get_doc(
 			{
-				"doctype": "KNAPS Relationship",
+				"doctype": DOCTYPE_RELATIONSHIP,
 				"relationship_name": name,
 			}
 		).insert()
 		return name
 
 	def _create_payment_type(self, name: str) -> str:
-		existing = frappe.db.get_value("KNAPS Payment Type", {"payment_type": name}, "name")
+		existing = frappe.db.get_value(DOCTYPE_PAYMENT_TYPE, {"payment_type": name}, "name")
 		if existing:
 			return existing
 		doc = frappe.get_doc(
 			{
-				"doctype": "KNAPS Payment Type",
+				"doctype": DOCTYPE_PAYMENT_TYPE,
 				"payment_type": name,
 			}
 		)
@@ -98,7 +111,7 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 
 	def _create_po_investment(self, **kwargs) -> str:
 		defaults = {
-			"doctype": "KNAPS PO Investment",
+			"doctype": DOCTYPE_PO_INVESTMENT,
 			"entry_date": today(),
 			"status": "Active",
 			"holding_type": self.holding_type_single,
@@ -148,7 +161,7 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 		)
 		doc = frappe.get_doc(
 			{
-				"doctype": "KNAPS RD Account",
+				"doctype": DOCTYPE_RD_ACCOUNT,
 				"po_rd_investment": po_inv,
 				"rd_account_number": account_number,
 				"denomination": denomination,
@@ -162,24 +175,24 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 
 	def _make_rd_schedule(self, **kwargs):
 		defaults = {
-			"doctype": "KNAPS RD Schedule",
+			"doctype": DOCTYPE_RD_SCHEDULE,
 			"schedule_type": "Cash",
 		}
 		defaults.update(kwargs)
 		return frappe.get_doc(defaults)
 
 	def _create_bank(self, bank_name: str) -> str:
-		existing = frappe.db.get_value("KNAPS Bank", {"bank_name": bank_name}, "name")
+		existing = frappe.db.get_value(DOCTYPE_BANK, {"bank_name": bank_name}, "name")
 		if existing:
 			return existing
 		doc = frappe.get_doc(
 			{
-				"doctype": "KNAPS Bank",
+				"doctype": DOCTYPE_BANK,
 				"bank_name": bank_name,
 				"bank_account_number": bank_name.replace(" ", "").upper(),
 				"ifsc": f"{bank_name[:4].upper()}0001234",
 				"holding_type": self.holding_type_single,
-				"holder_type": "KNAPS Individual",
+				"holder_type": DOCTYPE_INDIVIDUAL,
 				"first_holder": self.individual,
 			}
 		)

@@ -15,9 +15,11 @@ class KNAPSNominee(Document):
 		from frappe.types import DF
 
 		guardian: DF.Link | None
+		guardian_name_capture: DF.Data | None
 		is_minor: DF.Check
 		nominee_date_of_birth: DF.Date | None
 		nominee_name: DF.Link
+		nominee_name_capture: DF.Data | None
 		nominee_percent: DF.Float
 		nominee_relation: DF.Link
 		parent: DF.Data

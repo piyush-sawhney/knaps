@@ -4,7 +4,6 @@ from frappe.model.document import Document
 from frappe.utils import add_months, getdate
 
 from knaps.utils.constants import DOCTYPE_CLIENT
-from knaps.utils.shared import get_nominee_display
 
 
 def set_primary_client(doc: Document) -> None:

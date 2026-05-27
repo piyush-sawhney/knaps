@@ -14,8 +14,8 @@ from knaps.utils.insurance import (
 	warn_missing_nominees,
 )
 from knaps.utils.shared import (
-	build_nominee_name_cache,
 	generate_investment_name,
+	get_nominee_display,
 	set_nominee_minor_status,
 	validate_entry_date_not_future,
 	validate_nominee_minor_guardian,
@@ -90,7 +90,6 @@ class KNAPSLifeInsurance(Document):
 		self._compute_total_premium()
 
 	def validate(self) -> None:
-		self._nominee_name_cache = build_nominee_name_cache(self)
 		self._validate_members()
 		self._validate_member_minor_restrictions()
 		validate_premium_positive(self)
@@ -325,7 +324,7 @@ class KNAPSLifeInsurance(Document):
 
 		for n in nominees:
 			if n.nominee_name in member_individuals:
-				display = self._nominee_name_cache.get(n.nominee_name, n.nominee_name)
+				display = get_nominee_display(n)
 				frappe.throw(
 					_("Nominee {} cannot be a member of this policy.").format(display),
 					title=_("Invalid Nominee"),

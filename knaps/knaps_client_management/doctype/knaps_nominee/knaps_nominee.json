@@ -11,7 +11,9 @@
   "nominee_percent",
   "nominee_date_of_birth",
   "is_minor",
-  "guardian"
+  "guardian",
+  "nominee_name_capture",
+  "guardian_name_capture"
  ],
  "fields": [
   {
@@ -70,13 +72,27 @@
    "in_standard_filter": 1,
    "label": "Is Minor?",
    "read_only": 1
+  },
+  {
+   "fetch_from": "nominee_name.full_name",
+   "fieldname": "nominee_name_capture",
+   "fieldtype": "Data",
+   "label": "Nominee Name Capture",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "guardian.full_name",
+   "fieldname": "guardian_name_capture",
+   "fieldtype": "Data",
+   "label": "Guardian Name Capture",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-05-27 16:47:55.993502",
+ "modified": "2026-05-27 17:32:11.848370",
  "modified_by": "Administrator",
  "module": "KNAPS Client Management",
  "name": "KNAPS Nominee",

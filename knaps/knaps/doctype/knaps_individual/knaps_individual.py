@@ -25,6 +25,7 @@ from knaps.knaps.utils.party_validation import (
 	validate_unique_phone_numbers,
 )
 from knaps.utils.constants import DOCTYPE_INDIVIDUAL
+from knaps.utils.shared import calculate_age
 
 
 class KNAPSIndividual(Document):
@@ -82,7 +83,7 @@ class KNAPSIndividual(Document):
 		self._validate_preferred_contact_mode()
 		self._validate_date_of_birth()
 		if self.date_of_birth:
-			self.age = relativedelta(getdate(today()), getdate(self.date_of_birth)).years
+			self.age = calculate_age(self.date_of_birth)
 
 	@property
 	def age_formatted(self):

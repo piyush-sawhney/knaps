@@ -20,7 +20,6 @@ from knaps.utils.investment import (
 	validate_unique_holders,
 )
 from knaps.utils.shared import (
-	build_nominee_name_cache,
 	generate_investment_name,
 	set_nominee_minor_status,
 	validate_entry_date_not_future,
@@ -96,7 +95,6 @@ class KNAPSPOInvestment(Document):
 		self._set_maturity_date()
 
 	def validate(self) -> None:
-		self._nominee_name_cache = build_nominee_name_cache(self)
 		validate_unique_holders(self)
 		validate_minor_holder(self)
 		validate_holders_by_holding_type(self)

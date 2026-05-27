@@ -14,7 +14,6 @@ from knaps.utils.insurance import (
 	warn_missing_nominees,
 )
 from knaps.utils.shared import (
-	build_nominee_name_cache,
 	generate_investment_name,
 	set_nominee_minor_status,
 	validate_entry_date_not_future,
@@ -84,7 +83,6 @@ class KNAPSVehicleInsurance(Document):
 		self._set_title()
 
 	def validate(self) -> None:
-		self._nominee_name_cache = build_nominee_name_cache(self)
 		validate_premium_positive(self)
 		validate_period_in_months(self)
 		validate_entry_date_not_future(self)

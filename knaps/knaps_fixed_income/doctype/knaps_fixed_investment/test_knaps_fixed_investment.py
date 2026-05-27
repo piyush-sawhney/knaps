@@ -31,6 +31,9 @@ class TestKNAPSFixedInvestment(IntegrationTestCase):
 		self.non_individual_type = self._create_non_individual_type("Company")
 		self.adult_individual = self._create_individual("Adult", "Male", "Mr", "1990-01-01")
 		self.minor_individual = self._create_individual("Minor", "Male", "Mr", "2015-01-01")
+		self.minor_guardian_individual = self._create_individual(
+			"Minor Guardian", "Female", "Ms", "2010-01-01"
+		)
 		self.guardian_individual = self._create_individual("Guardian", "Female", "Mrs", "1985-01-01")
 		self.nominee_individual = self._create_individual("Nominee", "Female", "Ms", "1988-01-01")
 		self.provider = self._create_non_individual("Test Provider", self.non_individual_type)
@@ -422,6 +425,23 @@ class TestKNAPSFixedInvestment(IntegrationTestCase):
 
 		self.assertEqual(len(doc.nominees), 1)
 		self.assertEqual(doc.nominees[0].is_minor, 1)
+
+	def test_guardian_is_minor_rejected(self):
+		doc = self._make_investment()
+		self._add_holder(doc, self.adult_client, "First")
+		doc.append(
+			"nominees",
+			{
+				"nominee_name": self.minor_individual,
+				"nominee_date_of_birth": "2015-01-01",
+				"nominee_percent": 100,
+				"nominee_relation": self.relationship,
+				"guardian": self.minor_guardian_individual,
+			},
+		)
+		self._add_payment(doc)
+		with self.assertRaises(ValidationError):
+			doc.insert()
 
 	def test_amount_must_be_positive(self):
 		doc = self._make_investment(amount=0)

@@ -26,6 +26,10 @@ class TestKNAPSLifeInsurance(IntegrationTestCase):
 		frappe.db.savepoint("knaps_life_insurance_sp")
 		self.adult_individual = self._create_individual("Adult", "Male", "Mr", "1990-01-01")
 		self.minor_individual = self._create_individual("Minor", "Male", "Mr", "2015-01-01")
+		self.minor_guardian_individual = self._create_individual(
+			"Minor Guardian", "Female", "Ms", "2010-01-01"
+		)
+		self.guardian_individual = self._create_individual("Guardian", "Female", "Mrs", "1985-01-01")
 		self.nominee_individual = self._create_individual("Nominee", "Female", "Ms", "1988-01-01")
 		self.other_individual = self._create_individual("Other", "Male", "Mr", "1992-06-15")
 		self.adult_client = self._create_client("Individual", self.adult_individual)
@@ -680,6 +684,39 @@ class TestKNAPSLifeInsurance(IntegrationTestCase):
 		)
 		self._add_payment(doc)
 
+		with self.assertRaises(ValidationError):
+			doc.insert()
+
+	def test_nominee_minor_guardian_succeeds(self):
+		doc = self._make_policy(primary_client=self.adult_client)
+		doc.append(
+			"nominees",
+			{
+				"nominee_name": self.minor_individual,
+				"nominee_date_of_birth": "2015-01-01",
+				"nominee_percent": 100,
+				"nominee_relation": self.relationship,
+				"guardian": self.guardian_individual,
+			},
+		)
+		self._add_payment(doc)
+		doc.insert()
+		self.assertEqual(len(doc.nominees), 1)
+		self.assertEqual(doc.nominees[0].is_minor, 1)
+
+	def test_guardian_is_minor_rejected(self):
+		doc = self._make_policy(primary_client=self.adult_client)
+		doc.append(
+			"nominees",
+			{
+				"nominee_name": self.minor_individual,
+				"nominee_date_of_birth": "2015-01-01",
+				"nominee_percent": 100,
+				"nominee_relation": self.relationship,
+				"guardian": self.minor_guardian_individual,
+			},
+		)
+		self._add_payment(doc)
 		with self.assertRaises(ValidationError):
 			doc.insert()
 

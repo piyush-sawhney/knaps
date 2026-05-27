@@ -17,7 +17,6 @@ from knaps.utils.insurance import (
 	warn_missing_nominees,
 )
 from knaps.utils.shared import (
-	build_nominee_name_cache,
 	generate_investment_name,
 	set_nominee_minor_status,
 	validate_entry_date_not_future,
@@ -86,7 +85,6 @@ class KNAPSHealthInsurance(Document):
 		self._set_title()
 
 	def validate(self) -> None:
-		self._nominee_name_cache = build_nominee_name_cache(self)
 		self._validate_holders()
 		validate_member_minor_restrictions(self)
 		self._validate_holder_sum_insured()

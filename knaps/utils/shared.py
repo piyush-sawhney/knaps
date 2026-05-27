@@ -36,34 +36,22 @@ def generate_investment_name(doctype: str, prefix_key: str, entry_date: date | s
 	return f"{prefix}{last_serial + 1:08d}"
 
 
+def calculate_age(date_of_birth: date | str, at_date: date | str | None = None) -> int:
+	reference = getdate(at_date or today())
+	return relativedelta(reference, getdate(date_of_birth)).years
+
+
 def set_nominee_minor_status(doc: Document) -> None:
 	reference_date = doc.entry_date or today()
 	for nominee in doc.get("nominees") or []:
 		if nominee.nominee_date_of_birth:
-			age = relativedelta(getdate(reference_date), getdate(nominee.nominee_date_of_birth)).years
-			nominee.is_minor = 1 if age < 18 else 0
+			nominee.is_minor = 1 if calculate_age(nominee.nominee_date_of_birth, reference_date) < 18 else 0
 
 
-def build_nominee_name_cache(doc: Document) -> dict[str, str]:
-	nominees = doc.get("nominees") or []
-	if not nominees:
-		return {}
-	names = [n.nominee_name for n in nominees if n.nominee_name]
-	if not names:
-		return {}
-	records = frappe.db.get_all(
-		DOCTYPE_INDIVIDUAL,
-		filters={"name": ["in", names]},
-		fields=["name", "full_name"],
-	)
-	return {r["name"]: r["full_name"] or r["name"] for r in records}
-
-
-def get_nominee_display(doc: Document, nominee) -> str:
+def get_nominee_display(nominee) -> str:
 	if not nominee.nominee_name:
 		return ""
-	cache: dict = getattr(doc, "_nominee_name_cache", {})
-	return cache.get(nominee.nominee_name, nominee.nominee_name)
+	return nominee.nominee_name_capture or nominee.nominee_name
 
 
 def validate_nominee_not_holder(doc: Document) -> None:
@@ -83,7 +71,7 @@ def validate_nominee_not_holder(doc: Document) -> None:
 	for n in nominees:
 		if n.nominee_name in holder_individuals:
 			frappe.throw(
-				_("Nominee {} cannot be a holder of this policy.").format(get_nominee_display(doc, n)),
+				_("Nominee {} cannot be a holder of this policy.").format(get_nominee_display(n)),
 				title=_("Invalid Nominee"),
 			)
 
@@ -93,7 +81,7 @@ def validate_unique_nominees(doc: Document) -> None:
 	for n in doc.get("nominees") or []:
 		if n.nominee_name in seen:
 			frappe.throw(
-				_("Nominee {} appears more than once.").format(get_nominee_display(doc, n)),
+				_("Nominee {} appears more than once.").format(get_nominee_display(n)),
 				title=_("Duplicate Nominee"),
 			)
 		seen.add(n.nominee_name)
@@ -107,7 +95,7 @@ def validate_nominee_percent_total(doc: Document) -> None:
 	for n in nominees:
 		if not n.nominee_percent or n.nominee_percent <= 0:
 			frappe.throw(
-				_("Nominee {} must have a positive percentage.").format(get_nominee_display(doc, n)),
+				_("Nominee {} must have a positive percentage.").format(get_nominee_display(n)),
 				title=_("Invalid Nominee Percent"),
 			)
 		total += n.nominee_percent
@@ -119,11 +107,40 @@ def validate_nominee_percent_total(doc: Document) -> None:
 
 
 def validate_nominee_minor_guardian(doc: Document) -> None:
+	reference_date = doc.entry_date or today()
+	guardian_names: set[str] = set()
+
 	for n in doc.get("nominees") or []:
 		if n.is_minor and not n.guardian:
 			frappe.throw(
-				_("Guardian is required for minor nominee {}.").format(get_nominee_display(doc, n)),
+				_("Guardian is required for minor nominee {}.").format(get_nominee_display(n)),
 				title=_("Guardian Required"),
+			)
+		if n.guardian:
+			guardian_names.add(n.guardian)
+
+	if not guardian_names:
+		return
+
+	guardians = frappe.db.get_all(
+		DOCTYPE_INDIVIDUAL,
+		filters={"name": ["in", list(guardian_names)]},
+		fields=["name", "full_name", "date_of_birth"],
+	)
+
+	minor_guardian_names: set[str] = set()
+	for g in guardians:
+		if g.get("date_of_birth") and calculate_age(g["date_of_birth"], reference_date) < 18:
+			minor_guardian_names.add(g["name"])
+
+	for n in doc.get("nominees") or []:
+		if n.guardian and n.guardian in minor_guardian_names:
+			display = n.guardian_name_capture or n.guardian
+			frappe.throw(
+				_("Guardian {} for nominee {} is a minor. Guardian must be at least 18 years old.").format(
+					display, get_nominee_display(n)
+				),
+				title=_("Invalid Guardian"),
 			)
 
 

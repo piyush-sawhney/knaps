@@ -14,7 +14,7 @@ class KNAPSLifeInsuranceMember(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		date_of_birth: DF.Date | None
+		is_minor: DF.Check
 		is_primary_member: DF.Check
 		member: DF.Link
 		parent: DF.Data

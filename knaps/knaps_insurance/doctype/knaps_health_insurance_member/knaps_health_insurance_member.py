@@ -17,6 +17,7 @@ class KNAPSHealthInsuranceMember(Document):
 		currency: DF.Link | None
 		date_of_birth: DF.Date | None
 		holder: DF.Link
+		is_minor: DF.Check
 		is_primary: DF.Check
 		order: DF.Literal["", "Proposer", "Insured"]
 		parent: DF.Data

@@ -5,7 +5,7 @@ from frappe import _
 from frappe.model.document import Document
 from frappe.utils import add_months, getdate
 
-from knaps.utils.constants import DOCTYPE_CLIENT, DOCTYPE_INDIVIDUAL
+from knaps.utils.constants import DOCTYPE_CLIENT
 
 
 def _init_holder_cache(doc: Document) -> None:
@@ -18,20 +18,11 @@ def _init_holder_cache(doc: Document) -> None:
 	clients = frappe.db.get_all(
 		DOCTYPE_CLIENT,
 		filters={"name": ["in", holder_names]},
-		fields=["name", "individual"],
+		fields=["name", "date_of_birth"],
 	)
-	individual_names = [c["individual"] for c in clients if c.get("individual")]
-
-	if individual_names:
-		individuals = frappe.db.get_all(
-			DOCTYPE_INDIVIDUAL,
-			filters={"name": ["in", individual_names]},
-			fields=["name", "date_of_birth"],
-		)
-		individual_dob = {i["name"]: i["date_of_birth"] for i in individuals}
-		for c in clients:
-			if c["individual"] and c["individual"] in individual_dob:
-				cache[c["name"]] = individual_dob[c["individual"]]
+	for c in clients:
+		if c.get("date_of_birth"):
+			cache[c["name"]] = c["date_of_birth"]
 
 	doc._holder_cache = cache
 
@@ -67,12 +58,36 @@ def set_primary_client(doc: Document) -> None:
 
 
 def _validate_not_minor(member) -> None:
-	client = frappe.get_cached_doc(DOCTYPE_CLIENT, member.holder)
-	if client.is_minor:
+	if member.is_minor:
 		display = frappe.db.get_value(DOCTYPE_CLIENT, member.holder, "client_name") or member.holder
 		frappe.throw(
 			_("{} is a minor and cannot be the primary member.").format(display),
 			title=_("Minor Primary Member"),
+		)
+
+
+def validate_member_minor_restrictions(doc: Document) -> None:
+	holders = doc.get("holders") or []
+	for h in holders:
+		if not h.is_minor:
+			continue
+		if h.order == "Proposer":
+			display = frappe.db.get_value(DOCTYPE_CLIENT, h.holder, "client_name") or h.holder
+			frappe.throw(
+				_("{} is a minor and cannot be a Proposer.").format(display),
+				title=_("Invalid Member Role"),
+			)
+		if h.is_primary:
+			display = frappe.db.get_value(DOCTYPE_CLIENT, h.holder, "client_name") or h.holder
+			frappe.throw(
+				_("{} is a minor and cannot be a primary member.").format(display),
+				title=_("Minor Primary Member"),
+			)
+	if len(holders) == 1 and holders[0].is_minor:
+		display = frappe.db.get_value(DOCTYPE_CLIENT, holders[0].holder, "client_name") or holders[0].holder
+		frappe.throw(
+			_("{} is a minor and cannot be the sole member.").format(display),
+			title=_("Minor Sole Member"),
 		)
 
 

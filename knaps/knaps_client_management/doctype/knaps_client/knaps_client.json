@@ -15,6 +15,7 @@
   "section_break_mqop",
   "client_type",
   "date_of_birth",
+  "is_minor",
   "column_break_tbeo",
   "non_individual",
   "individual",
@@ -154,12 +155,19 @@
    "fieldtype": "Date",
    "label": "Date of Birth",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_minor",
+   "fieldtype": "Check",
+   "label": "Is Minor?",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-27 14:48:12.422748",
+ "modified": "2026-05-27 15:16:23.496678",
  "modified_by": "Administrator",
  "module": "KNAPS Client Management",
  "name": "KNAPS Client",

@@ -10,6 +10,7 @@ from knaps.utils.insurance import (
 	set_insurance_member_date_of_birth,
 	set_maturity_date,
 	set_primary_client,
+	validate_member_minor_restrictions,
 	validate_premium_positive,
 	validate_start_date_before_maturity,
 	validate_status_requirements,
@@ -87,6 +88,7 @@ class KNAPSHealthInsurance(Document):
 	def validate(self) -> None:
 		self._nominee_name_cache = build_nominee_name_cache(self)
 		self._validate_holders()
+		validate_member_minor_restrictions(self)
 		self._validate_holder_sum_insured()
 		self._validate_floater_sum_insured()
 		validate_premium_positive(self)

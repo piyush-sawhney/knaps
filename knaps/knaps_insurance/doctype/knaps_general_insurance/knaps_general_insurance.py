@@ -10,6 +10,7 @@ from knaps.utils.constants import DOCTYPE_CLIENT, DOCTYPE_GENERAL_INSURANCE
 from knaps.utils.insurance import (
 	set_insurance_member_date_of_birth,
 	set_primary_client,
+	validate_member_minor_restrictions,
 	validate_premium_positive,
 	validate_start_date_before_maturity,
 	validate_status_requirements,
@@ -101,6 +102,7 @@ class KNAPSGeneralInsurance(Document):
 		validate_unique_nominees(self)
 		if self.has_multiple_members:
 			self._validate_holders()
+			validate_member_minor_restrictions(self)
 		if not self.is_existing_policy:
 			validate_payments_required(self)
 		validate_status_requirements(self)

@@ -134,6 +134,61 @@ class IntegrationTestKNAPSLead(IntegrationTestCase):
 		self.assertEqual(lead.preferred_contact_mode, "Phone")
 		self.assertIsNone(lead.primary_contact)
 
+	def test_propagates_individual_name_change_to_lead(self):
+		individual = create_test_individual(
+			first_name="John",
+			last_name="Doe",
+			phone="+91 9999999999",
+			email="john@example.com",
+			preferred_contact_mode="Phone",
+		)
+
+		lead = self._make_lead(
+			lead_type=DOCTYPE_INDIVIDUAL,
+			lead=individual.name,
+			lead_interested_in=[{"product": "Mutual Funds"}],
+		)
+
+		individual.first_name = "Jane"
+		individual.last_name = "Smith"
+		individual.save()
+
+		lead.reload()
+		self.assertEqual(lead.lead_name, "Mr Jane Smith")
+
+	def test_propagates_individual_phone_change_to_lead(self):
+		individual = create_test_individual(
+			first_name="John",
+			last_name="Doe",
+			phone="+91 9999999999",
+			email="john@example.com",
+			preferred_contact_mode="Phone",
+		)
+
+		lead = self._make_lead(
+			lead_type=DOCTYPE_INDIVIDUAL,
+			lead=individual.name,
+			lead_interested_in=[{"product": "Mutual Funds"}],
+		)
+
+		individual.phone_numbers = []
+		individual.append(
+			"phone_numbers",
+			{
+				"number": "+91 8888888888",
+				"is_primary": 1,
+				"is_whatsapp": 1,
+				"is_active": 1,
+				"ownership": "Self",
+				"type": "Mobile",
+			},
+		)
+		individual.save()
+
+		lead.reload()
+		self.assertEqual(lead.phone, "+91 8888888888")
+		self.assertEqual(lead.whatsapp, "+91 8888888888")
+
 	def test_non_individual_lead_syncs_primary_contact_fields(self):
 		individual = create_test_individual(
 			first_name="Jane",

@@ -106,6 +106,48 @@ class IntegrationTestKNAPSOpportunity(IntegrationTestCase):
 		self.assertEqual(opp.whatsapp, client.primary_whatsapp)
 		self.assertEqual(opp.email, client.primary_email)
 
+	def test_propagates_client_name_change_to_opportunity(self):
+		individual = create_test_individual(
+			first_name="Alice",
+			last_name="Brown",
+			phone="+91 6666666666",
+			email="alice@example.com",
+		)
+		client, _ = create_test_client(individual=individual)
+
+		opp = self._make_opportunity(
+			client=client.name,
+			opportunity_type=[{"product": "Mutual Funds"}],
+		)
+
+		client.client_name = "Alice B. Updated"
+		client.save()
+
+		opp.reload()
+		self.assertEqual(opp.client_name, "Alice B. Updated")
+
+	def test_propagates_client_phone_change_to_opportunity(self):
+		individual = create_test_individual(
+			first_name="Bob",
+			last_name="Lee",
+			phone="+91 7777777777",
+			email="bob@example.com",
+		)
+		client, _ = create_test_client(individual=individual)
+
+		opp = self._make_opportunity(
+			client=client.name,
+			opportunity_type=[{"product": "Life Insurance"}],
+		)
+
+		client.primary_phone = "+91 5555555555"
+		client.primary_whatsapp = "+91 5555555555"
+		client.save()
+
+		opp.reload()
+		self.assertEqual(opp.phone, "+91 5555555555")
+		self.assertEqual(opp.whatsapp, "+91 5555555555")
+
 	def test_duplicate_opportunity_rejected(self):
 		client, _ = create_test_client()
 		self._make_opportunity(

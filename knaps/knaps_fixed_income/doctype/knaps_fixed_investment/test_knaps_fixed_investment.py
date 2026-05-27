@@ -325,7 +325,9 @@ class TestKNAPSFixedInvestment(IntegrationTestCase):
 
 		self.assertIsNotNone(doc.maturity_date)
 
+		doc.status = "Submitted"
 		doc.start_date = None
+		doc.account_number = None
 		doc.save()
 
 		self.assertIsNone(doc.maturity_date)

@@ -51,6 +51,58 @@ class IntegrationTestKNAPSClient(IntegrationTestCase):
 		self.assertEqual(client.preferred_contact_mode, self.individual.preferred_contact_mode)
 		self.assertEqual(client.is_minor, 0)
 
+	def test_propagates_individual_name_change_to_client(self):
+		client = self._make_client()
+		client.insert()
+
+		self.individual.first_name = "Jane"
+		self.individual.last_name = "Smith"
+		self.individual.save()
+
+		client.reload()
+		self.assertEqual(client.client_name, "Jane M Smith")
+
+	def test_propagates_individual_pan_change_to_client(self):
+		client = self._make_client()
+		client.insert()
+
+		self.individual.pan = "XYZPD5678K"
+		self.individual.save()
+
+		client.reload()
+		self.assertEqual(client.pan, "XYZPD5678K")
+
+	def test_propagates_individual_status_change_to_client(self):
+		client = self._make_client()
+		client.insert()
+
+		self.individual.status = "Deceased"
+		self.individual.save()
+
+		client.reload()
+		self.assertEqual(client.status, "Deceased")
+
+	def test_propagates_individual_phone_change_to_client(self):
+		client = self._make_client()
+		client.insert()
+
+		self.individual.append(
+			"phone_numbers",
+			{
+				"number": "+91 9876543210",
+				"is_primary": 1,
+				"is_whatsapp": 1,
+				"is_active": 1,
+				"ownership": "Self",
+				"type": "Mobile",
+			},
+		)
+		self.individual.save()
+
+		client.reload()
+		self.assertEqual(client.primary_phone, "+91 9876543210")
+		self.assertEqual(client.primary_whatsapp, "+91 9876543210")
+
 	def test_marks_as_minor_when_individual_is_under_18(self):
 		minor_dob = getdate(today()) - relativedelta(years=16)
 		minor_individual = frappe.get_doc(

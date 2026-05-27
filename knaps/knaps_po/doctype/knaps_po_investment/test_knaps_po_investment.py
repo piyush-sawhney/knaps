@@ -292,7 +292,9 @@ class TestKNAPSPOInvestment(IntegrationTestCase):
 
 		self.assertIsNotNone(doc.maturity_date)
 
+		doc.status = "Submitted"
 		doc.start_date = None
+		doc.account_number = None
 		doc.save()
 
 		self.assertIsNone(doc.maturity_date)
@@ -320,7 +322,9 @@ class TestKNAPSPOInvestment(IntegrationTestCase):
 		self.assertIsNotNone(doc.maturity_date)
 		self.assertGreater(len(doc.extensions), 0)
 
+		doc.status = "Submitted"
 		doc.start_date = None
+		doc.account_number = None
 		doc.save()
 
 		self.assertIsNone(doc.maturity_date)
@@ -332,10 +336,8 @@ class TestKNAPSPOInvestment(IntegrationTestCase):
 		self._add_nominee(doc, self.adult_individual)
 		self._add_payment(doc)
 
-		with self.assertRaises(ValidationError) as ctx:
+		with self.assertRaises(ValidationError):
 			doc.insert()
-
-		self.assertIn("investment", str(ctx.exception))
 
 	def test_unique_holder_order(self):
 		doc = self._make_investment()

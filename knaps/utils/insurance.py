@@ -3,7 +3,7 @@ from datetime import date
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import add_days, add_months, getdate
+from frappe.utils import add_months, getdate
 
 from knaps.utils.constants import DOCTYPE_INDIVIDUAL
 
@@ -79,100 +79,6 @@ def _validate_not_minor(member) -> None:
 def set_maturity_date(doc: Document) -> None:
 	if doc.start_date:
 		doc.maturity_date = add_months(getdate(doc.start_date), doc.period_in_months)
-
-
-def set_maturity_date_general(doc: Document) -> None:
-	if not doc.start_date:
-		return
-	start = getdate(doc.start_date)
-	if doc.period_type == "Days":
-		doc.maturity_date = add_days(start, doc.period)
-	elif doc.period_type == "Months":
-		doc.maturity_date = add_months(start, doc.period)
-	elif doc.period_type == "Years":
-		doc.maturity_date = add_months(start, doc.period * 12)
-
-
-def set_title(doc: Document) -> None:
-	if doc.client_name and doc.insurance_plan_name:
-		doc.title = f"{doc.client_name} - {doc.insurance_plan_name}"
-	elif doc.client_name:
-		doc.title = f"{doc.client_name} - Health Insurance"
-
-
-def validate_holders(doc: Document) -> None:
-	holders = doc.get("holders") or []
-	if not holders:
-		frappe.throw(
-			_("At least one member is required."),
-			title=_("Members Required"),
-		)
-
-	seen_holders: set[str] = set()
-	for h in holders:
-		if h.holder in seen_holders:
-			display = frappe.db.get_value("KNAPS Client", h.holder, "client_name") or h.holder
-			frappe.throw(
-				_("{} appears more than once in the members table.").format(display),
-				title=_("Duplicate Member"),
-			)
-		seen_holders.add(h.holder)
-
-	insured_count = sum(1 for h in holders if h.order == "Insured")
-
-	if doc.policy_type == "Floater":
-		if insured_count < 2:
-			frappe.throw(
-				_("Floater policy requires at least 2 members with role 'Insured'."),
-				title=_("Insufficient Insured Members"),
-			)
-	elif doc.policy_type == "Multi-Individual":
-		if insured_count < 1:
-			frappe.throw(
-				_("Multi-Individual policy requires at least 1 member with role 'Insured'."),
-				title=_("Insufficient Insured Members"),
-			)
-
-
-def validate_holder_sum_insured(doc: Document) -> None:
-	holders = doc.get("holders") or []
-	if doc.policy_type == "Floater":
-		for h in holders:
-			if h.sum_insured and h.sum_insured > 0:
-				display = frappe.db.get_value("KNAPS Client", h.holder, "client_name") or h.holder
-				frappe.throw(
-					_(
-						"Member {} should not have a sum insured in a Floater policy. Use the policy-level Floater Sum Insured instead."
-					).format(display),
-					title=_("Invalid Member Sum Insured"),
-				)
-	elif doc.policy_type == "Multi-Individual":
-		for h in holders:
-			if h.order != "Insured":
-				continue
-			if not h.sum_insured or h.sum_insured <= 0:
-				display = frappe.db.get_value("KNAPS Client", h.holder, "client_name") or h.holder
-				frappe.throw(
-					_("Insured member {} requires a sum insured in a Multi-Individual policy.").format(
-						display
-					),
-					title=_("Missing Member Sum Insured"),
-				)
-
-
-def validate_floater_sum_insured(doc: Document) -> None:
-	if doc.policy_type == "Floater":
-		if not doc.floater_sum_insured or doc.floater_sum_insured <= 0:
-			frappe.throw(
-				_("Floater Sum Insured is required and must be positive for Floater policies."),
-				title=_("Invalid Floater Sum Insured"),
-			)
-	elif doc.policy_type == "Multi-Individual":
-		if doc.floater_sum_insured and doc.floater_sum_insured > 0:
-			frappe.throw(
-				_("Floater Sum Insured should not be set for Multi-Individual policies."),
-				title=_("Invalid Floater Sum Insured"),
-			)
 
 
 def validate_premium_positive(doc: Document) -> None:

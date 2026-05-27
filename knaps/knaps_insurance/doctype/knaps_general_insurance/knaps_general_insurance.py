@@ -4,10 +4,10 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
+from frappe.utils import add_days, add_months, getdate
 
 from knaps.utils.insurance import (
 	set_insurance_member_date_of_birth,
-	set_maturity_date_general,
 	set_primary_client,
 	validate_premium_positive,
 	validate_start_date_before_maturity,
@@ -86,7 +86,7 @@ class KNAPSGeneralInsurance(Document):
 			set_primary_client(self)
 		elif self.primary_client:
 			self.client_name = frappe.db.get_value("KNAPS Client", self.primary_client, "client_name")
-		set_maturity_date_general(self)
+		self._set_maturity_date_general()
 		self._set_title()
 
 	def validate(self) -> None:
@@ -110,6 +110,17 @@ class KNAPSGeneralInsurance(Document):
 			self.title = f"{self.client_name} - {self.policy_type}"
 		elif self.client_name:
 			self.title = self.client_name
+
+	def _set_maturity_date_general(self) -> None:
+		if not self.start_date:
+			return
+		start = getdate(self.start_date)
+		if self.period_type == "Days":
+			self.maturity_date = add_days(start, self.period)
+		elif self.period_type == "Months":
+			self.maturity_date = add_months(start, self.period)
+		elif self.period_type == "Years":
+			self.maturity_date = add_months(start, self.period * 12)
 
 	def _validate_period(self) -> None:
 		if not self.period_type:

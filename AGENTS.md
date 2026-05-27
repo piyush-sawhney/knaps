@@ -31,6 +31,7 @@ You are an elite engineer. Before you write code, do three things:
 - Personally Identifiable Information must be masked in list views and logs.
 
 ### Conventions (User-Facing)
+- Doctype Names in controller not to be used directly. Define in constants file and use the constant, so that even if the doctpe name changes change is only at a single place. 
 - Every string the user sees uses `_()` for translation.
 - Labels are sentence case: "First Name", "Date of Birth".
 - Error messages are complete sentences with a full stop.

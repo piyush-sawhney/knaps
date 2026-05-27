@@ -32,7 +32,7 @@
   "policy_type",
   "insurance_plan_name",
   "insurer",
-  "sum_assured",
+  "base_sum_assured",
   "total_premium",
   "column_break_sbgx",
   "period_type",
@@ -188,12 +188,13 @@
   },
   {
    "fieldname": "policy_type",
-   "fieldtype": "Link",
+   "fieldtype": "Select",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Policy Type",
-   "options": "KNAPS Insurance Type",
-   "reqd": 1
+   "options": "\nTerm\nEndowment\nMoney Back\nULIP\nWhole Life\nPension Plan",
+   "reqd": 1,
+   "sort_options": 1
   },
   {
    "fieldname": "insurance_plan_name",
@@ -202,15 +203,6 @@
    "link_filters": "[[\"KNAPS Insurance Plan\",\"is_active\",\"=\",1]]",
    "options": "KNAPS Insurance Plan",
    "reqd": 1
-  },
-  {
-   "fieldname": "sum_assured",
-   "fieldtype": "Currency",
-   "label": "Sum Assured",
-   "non_negative": 1,
-   "options": "currency",
-   "precision": "2",
-   "read_only_depends_on": "eval: doc.has_multiple_members;"
   },
   {
    "fieldname": "column_break_sbgx",
@@ -353,12 +345,20 @@
    "fieldname": "notes",
    "fieldtype": "Text Editor",
    "label": "Notes"
+  },
+  {
+   "fieldname": "base_sum_assured",
+   "fieldtype": "Currency",
+   "label": "Base Sum Assured",
+   "non_negative": 1,
+   "options": "currency",
+   "precision": "2"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-27 14:46:34.860202",
+ "modified": "2026-05-27 17:08:31.739180",
  "modified_by": "Administrator",
  "module": "KNAPS Insurance",
  "name": "KNAPS Life Insurance",

@@ -21,8 +21,8 @@ class KNAPSClient(Document):
 
 		client_name: DF.Data | None
 		client_type: DF.Literal["Individual", "Sole Proprietor", "Non Individual"]
+		date_of_birth: DF.Date | None
 		individual: DF.Link | None
-		is_minor: DF.Check
 		non_individual: DF.Link | None
 		pan: DF.Data | None
 		preferred_contact_mode: DF.Data | None

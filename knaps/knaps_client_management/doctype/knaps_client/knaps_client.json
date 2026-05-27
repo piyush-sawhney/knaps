@@ -14,7 +14,7 @@
   "status",
   "section_break_mqop",
   "client_type",
-  "is_minor",
+  "date_of_birth",
   "column_break_tbeo",
   "non_individual",
   "individual",
@@ -62,14 +62,6 @@
    "label": "Client Type",
    "options": "Individual\nSole Proprietor\nNon Individual",
    "reqd": 1
-  },
-  {
-   "default": "0",
-   "depends_on": "eval: doc.client_type === \"Individual\"",
-   "fieldname": "is_minor",
-   "fieldtype": "Check",
-   "label": "Is Minor?",
-   "read_only": 1
   },
   {
    "fieldname": "column_break_tbeo",
@@ -156,12 +148,18 @@
    "in_standard_filter": 1,
    "label": "Primary Whatsapp",
    "read_only": 1
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "label": "Date of Birth",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-23 12:38:56.744189",
+ "modified": "2026-05-27 14:48:12.422748",
  "modified_by": "Administrator",
  "module": "KNAPS Client Management",
  "name": "KNAPS Client",

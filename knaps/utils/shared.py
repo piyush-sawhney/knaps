@@ -69,10 +69,11 @@ def validate_nominee_not_holder(doc: Document) -> None:
 	)
 	holder_individuals: set[str] = {c["individual"] for c in client_data if c.get("individual")}
 
+	label = _("policy") if "Insurance" in doc.doctype else _("investment")
 	for n in nominees:
 		if n.nominee_name in holder_individuals:
 			frappe.throw(
-				_("Nominee {} cannot be a holder of this policy.").format(get_nominee_display(n)),
+				_("Nominee {} cannot be a holder of this {}.").format(get_nominee_display(n), label),
 				title=_("Invalid Nominee"),
 			)
 

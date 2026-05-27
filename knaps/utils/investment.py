@@ -19,6 +19,13 @@ def set_primary_client(doc: Document) -> None:
 			doc.client_name = client_name
 
 
+def clear_maturity_if_no_start_date(doc: Document) -> None:
+	if not doc.get("start_date"):
+		doc.maturity_date = None
+		if doc.get("extensions"):
+			doc.set("extensions", [])
+
+
 def set_maturity_date(doc: Document) -> None:
 	if doc.get("extensions") and doc.extend_investment:
 		extensions = doc.get("extensions")

@@ -279,6 +279,64 @@ class TestKNAPSPOInvestment(IntegrationTestCase):
 		expected = add_months(getdate("2027-06-01"), 24)
 		self.assertEqual(getdate(doc.maturity_date), expected)
 
+	def test_no_start_date_clears_maturity(self):
+		doc = self._make_investment(
+			status="Active",
+			start_date="2026-06-01",
+			account_number="123456789",
+		)
+		self._add_holder(doc, self.adult_client, "First")
+		self._add_nominee(doc, self.nominee_individual)
+		self._add_payment(doc)
+		doc.insert()
+
+		self.assertIsNotNone(doc.maturity_date)
+
+		doc.start_date = None
+		doc.save()
+
+		self.assertIsNone(doc.maturity_date)
+
+	def test_no_start_date_clears_extensions(self):
+		doc = self._make_investment(
+			status="Active",
+			start_date="2026-06-01",
+			account_number="123456789",
+			extend_investment=1,
+		)
+		self._add_holder(doc, self.adult_client, "First")
+		self._add_nominee(doc, self.nominee_individual)
+		self._add_payment(doc)
+		doc.append(
+			"extensions",
+			{
+				"extension_date": "2027-06-01",
+				"extension_period": 24,
+				"extension_roi": 8.0,
+			},
+		)
+		doc.insert()
+
+		self.assertIsNotNone(doc.maturity_date)
+		self.assertGreater(len(doc.extensions), 0)
+
+		doc.start_date = None
+		doc.save()
+
+		self.assertIsNone(doc.maturity_date)
+		self.assertEqual(len(doc.extensions), 0)
+
+	def test_nominee_cannot_be_holder(self):
+		doc = self._make_investment()
+		self._add_holder(doc, self.adult_client, "First")
+		self._add_nominee(doc, self.adult_individual)
+		self._add_payment(doc)
+
+		with self.assertRaises(ValidationError) as ctx:
+			doc.insert()
+
+		self.assertIn("investment", str(ctx.exception))
+
 	def test_unique_holder_order(self):
 		doc = self._make_investment()
 		self._add_holder(doc, self.adult_client, "First")

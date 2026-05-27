@@ -5,9 +5,7 @@ from frappe.utils import add_months, formatdate, getdate
 
 from knaps.utils.constants import DOCTYPE_PO_INVESTMENT
 from knaps.utils.investment import (
-	set_maturity_date as set_base_maturity_date,
-)
-from knaps.utils.investment import (
+	clear_maturity_if_no_start_date,
 	set_primary_client,
 	validate_account_number_for_active,
 	validate_amount,
@@ -18,6 +16,9 @@ from knaps.utils.investment import (
 	validate_rate_of_interest,
 	validate_start_date_with_account,
 	validate_unique_holders,
+)
+from knaps.utils.investment import (
+	set_maturity_date as set_base_maturity_date,
 )
 from knaps.utils.shared import (
 	generate_investment_name,
@@ -90,6 +91,7 @@ class KNAPSPOInvestment(Document):
 		set_nominee_minor_status(self)
 
 	def before_save(self) -> None:
+		clear_maturity_if_no_start_date(self)
 		set_primary_client(self)
 		self._set_title()
 		self._set_maturity_date()

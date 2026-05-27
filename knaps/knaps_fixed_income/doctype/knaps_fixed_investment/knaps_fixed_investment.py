@@ -3,6 +3,7 @@ from frappe.model.document import Document
 
 from knaps.utils.constants import DOCTYPE_FIXED_INVESTMENT
 from knaps.utils.investment import (
+	clear_maturity_if_no_start_date,
 	set_maturity_date,
 	set_primary_client,
 	validate_account_number_for_active,
@@ -87,6 +88,7 @@ class KNAPSFixedInvestment(Document):
 		set_nominee_minor_status(self)
 
 	def before_save(self) -> None:
+		clear_maturity_if_no_start_date(self)
 		set_primary_client(self)
 		self._set_title()
 		set_maturity_date(self)

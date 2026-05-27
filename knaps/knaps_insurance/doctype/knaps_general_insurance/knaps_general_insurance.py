@@ -4,12 +4,13 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import getdate
 
 from knaps.utils.insurance import (
 	set_insurance_member_date_of_birth,
 	set_maturity_date_general,
+	set_primary_client,
 	validate_premium_positive,
+	validate_start_date_before_maturity,
 	validate_status_requirements,
 	warn_missing_nominees,
 )
@@ -81,7 +82,10 @@ class KNAPSGeneralInsurance(Document):
 			set_insurance_member_date_of_birth(self)
 
 	def before_save(self) -> None:
-		self._set_primary_client()
+		if self.has_multiple_members:
+			set_primary_client(self)
+		elif self.primary_client:
+			self.client_name = frappe.db.get_value("KNAPS Client", self.primary_client, "client_name")
 		set_maturity_date_general(self)
 		self._set_title()
 
@@ -90,7 +94,7 @@ class KNAPSGeneralInsurance(Document):
 		validate_premium_positive(self)
 		validate_entry_date_not_future(self)
 		self._validate_period()
-		self._validate_start_date_before_maturity()
+		validate_start_date_before_maturity(self)
 		validate_nominee_percent_total(self)
 		validate_nominee_minor_guardian(self)
 		validate_unique_nominees(self)
@@ -100,36 +104,6 @@ class KNAPSGeneralInsurance(Document):
 			validate_payments_required(self)
 		validate_status_requirements(self)
 		warn_missing_nominees(self)
-
-	def _set_primary_client(self) -> None:
-		if self.has_multiple_members:
-			holders = self.get("holders") or []
-			primary_holders = [h for h in holders if h.is_primary]
-			if not primary_holders:
-				self.primary_client = None
-				self.client_name = None
-				return
-			if len(primary_holders) > 1:
-				frappe.throw(
-					_("Only one member can be marked as primary."),
-					title=_("Invalid Primary"),
-				)
-			primary = primary_holders[0]
-			self._validate_not_minor(primary)
-			self.primary_client = primary.holder
-		if self.primary_client:
-			client_name = frappe.db.get_value("KNAPS Client", self.primary_client, "client_name")
-			if client_name:
-				self.client_name = client_name
-
-	def _validate_not_minor(self, member) -> None:
-		client = frappe.get_cached_doc("KNAPS Client", member.holder)
-		if client.is_minor:
-			display = frappe.db.get_value("KNAPS Client", member.holder, "client_name") or member.holder
-			frappe.throw(
-				_("{} is a minor and cannot be the primary member.").format(display),
-				title=_("Minor Primary Member"),
-			)
 
 	def _set_title(self) -> None:
 		if self.client_name and self.policy_type:
@@ -148,14 +122,6 @@ class KNAPSGeneralInsurance(Document):
 				_("Period must be positive."),
 				title=_("Invalid Period"),
 			)
-
-	def _validate_start_date_before_maturity(self) -> None:
-		if self.start_date and self.maturity_date:
-			if getdate(self.start_date) >= getdate(self.maturity_date):
-				frappe.throw(
-					_("Start Date must be before Maturity Date."),
-					title=_("Invalid Date Range"),
-				)
 
 	def _validate_holders(self) -> None:
 		holders = self.get("holders") or []

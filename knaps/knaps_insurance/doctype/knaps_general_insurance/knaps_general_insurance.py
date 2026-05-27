@@ -4,7 +4,7 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import add_days, add_months, getdate
+from frappe.utils import add_days, add_months, add_years, getdate
 
 from knaps.utils.constants import DOCTYPE_CLIENT, DOCTYPE_GENERAL_INSURANCE
 from knaps.utils.insurance import (
@@ -121,7 +121,7 @@ class KNAPSGeneralInsurance(Document):
 		elif self.period_type == "Months":
 			self.maturity_date = add_months(start, self.period)
 		elif self.period_type == "Years":
-			self.maturity_date = add_months(start, self.period * 12)
+			self.maturity_date = add_years(start, self.period)
 
 	def _validate_period(self) -> None:
 		if not self.period_type:

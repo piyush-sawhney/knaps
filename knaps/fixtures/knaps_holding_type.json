@@ -1,0 +1,23 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Holding Type",
+  "holding_type": "Single",
+  "modified": "2026-05-28 16:05:17.740818",
+  "name": "Single"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Holding Type",
+  "holding_type": "Anyone or Survivor",
+  "modified": "2026-05-28 16:37:07.195966",
+  "name": "Anyone or Survivor"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Holding Type",
+  "holding_type": "Joint",
+  "modified": "2026-05-28 16:37:12.353748",
+  "name": "Joint"
+ }
+]

@@ -1,0 +1,72 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Family Role",
+  "modified": "2026-05-28 15:10:52.168956",
+  "name": "Decision Maker",
+  "role_name": "Decision Maker"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Family Role",
+  "modified": "2026-05-28 15:10:56.958094",
+  "name": "Authorized Signatory",
+  "role_name": "Authorized Signatory"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Family Role",
+  "modified": "2026-05-28 15:11:02.638513",
+  "name": "Financial Contributor",
+  "role_name": "Financial Contributor"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Family Role",
+  "modified": "2026-05-28 15:11:06.112930",
+  "name": "Financial Dependent",
+  "role_name": "Financial Dependent"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Family Role",
+  "modified": "2026-05-28 15:11:12.311845",
+  "name": "Power of Attorney Holder",
+  "role_name": "Power of Attorney Holder"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Family Role",
+  "modified": "2026-05-28 15:11:18.381336",
+  "name": "Beneficial Owner",
+  "role_name": "Beneficial Owner"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Family Role",
+  "modified": "2026-05-28 15:11:22.155859",
+  "name": "Trustee",
+  "role_name": "Trustee"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Family Role",
+  "modified": "2026-05-28 15:11:25.903101",
+  "name": "Compliance Contact",
+  "role_name": "Compliance Contact"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Family Role",
+  "modified": "2026-05-28 15:11:30.878049",
+  "name": "Correspondence Contact",
+  "role_name": "Correspondence Contact"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Family Role",
+  "modified": "2026-05-28 15:11:36.219935",
+  "name": "NRI Member",
+  "role_name": "NRI Member"
+ }
+]

@@ -1,0 +1,156 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:52:09.460459",
+  "name": "Spouse",
+  "relationship_name": "Spouse"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:52:15.181374",
+  "name": "Son",
+  "relationship_name": "Son"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:52:20.866284",
+  "name": "Daughter",
+  "relationship_name": "Daughter"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:52:25.383010",
+  "name": "Father",
+  "relationship_name": "Father"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:52:29.277654",
+  "name": "Mother",
+  "relationship_name": "Mother"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:52:34.296943",
+  "name": "Brother",
+  "relationship_name": "Brother"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:52:40.385965",
+  "name": "Sister",
+  "relationship_name": "Sister"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:52:45.132844",
+  "name": "Grandfather",
+  "relationship_name": "Grandfather"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:52:48.174009",
+  "name": "Grandmother",
+  "relationship_name": "Grandmother"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:52:51.474213",
+  "name": "Grandson",
+  "relationship_name": "Grandson"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:52:56.209736",
+  "name": "Granddaughter",
+  "relationship_name": "Granddaughter"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:53:00.412619",
+  "name": "Uncle",
+  "relationship_name": "Uncle"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:53:05.533319",
+  "name": "Aunt",
+  "relationship_name": "Aunt"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:53:10.495753",
+  "name": "Nephew",
+  "relationship_name": "Nephew"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:53:16.579790",
+  "name": "Niece",
+  "relationship_name": "Niece"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:53:19.552735",
+  "name": "Cousin",
+  "relationship_name": "Cousin"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:53:45.496155",
+  "name": "Son-in-law",
+  "relationship_name": "Son-in-law"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:53:53.065971",
+  "name": "Daughter-in-law",
+  "relationship_name": "Daughter-in-law"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:53:57.786350",
+  "name": "Father-in-law",
+  "relationship_name": "Father-in-law"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:54:05.109099",
+  "name": "Mother-in-law",
+  "relationship_name": "Mother-in-law"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:54:10.633470",
+  "name": "Brother-in-law",
+  "relationship_name": "Brother-in-law"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Relationship",
+  "modified": "2026-05-28 14:54:14.137932",
+  "name": "Sister-in-law",
+  "relationship_name": "Sister-in-law"
+ }
+]

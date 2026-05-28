@@ -18,6 +18,7 @@ class KNAPSFamilyMember(Document):
 		member_role: DF.Link | None
 		member_type: DF.Link
 		membership_type: DF.Literal["", "Primary", "Secondary", "Beneficial"]
+		name: DF.Int | None
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data

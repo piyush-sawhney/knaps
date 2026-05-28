@@ -17,6 +17,7 @@ class KNAPSPhoneNumber(Document):
 		is_active: DF.Check
 		is_primary: DF.Check
 		is_whatsapp: DF.Check
+		name: DF.Int | None
 		number: DF.Phone
 		ownership: DF.Literal["Self", "Spouse", "PoA", "Children", "Parent"]
 		parent: DF.Data

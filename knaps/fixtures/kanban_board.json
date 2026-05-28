@@ -4,7 +4,7 @@
    {
     "column_name": "New",
     "indicator": "Pink",
-    "order": "[\"019e25dc-2e6f-72b7-99c1-0881b0141d5a\", \"019e25da-f608-755e-9fb9-2040da9871b7\"]",
+    "order": "[]",
     "status": "Active"
    },
    {
@@ -61,7 +61,7 @@
    {
     "column_name": "New",
     "indicator": "Pink",
-    "order": "[\"019e25d6-b949-7347-a048-a23e303fca2b\"]",
+    "order": "[]",
     "status": "Active"
    },
    {

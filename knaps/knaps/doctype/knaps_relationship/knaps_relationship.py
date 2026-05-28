@@ -14,7 +14,7 @@ class KNAPSRelationship(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		relationship_name: DF.Data | None
+		relationship_name: DF.Data
 	# end: auto-generated types
 
 	pass

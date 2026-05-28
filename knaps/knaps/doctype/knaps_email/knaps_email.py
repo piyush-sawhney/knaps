@@ -17,6 +17,7 @@ class KNAPSEmail(Document):
 		email_address: DF.Data
 		is_active: DF.Check
 		is_primary: DF.Check
+		name: DF.Int | None
 		ownership: DF.Literal["Self", "Spouse", "PoA", "Children", "Parent"]
 		parent: DF.Data
 		parentfield: DF.Data

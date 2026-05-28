@@ -199,13 +199,13 @@
    "label": "Family Name",
    "read_only": 1
   },
-   {
-    "fieldname": "preferred_contact_mode",
-    "fieldtype": "Select",
-    "label": "Preferred Contact Mode",
-    "options": "\nPhone\nWhatsapp\nEmail",
-    "read_only": 1
-   },
+  {
+   "fieldname": "preferred_contact_mode",
+   "fieldtype": "Select",
+   "label": "Preferred Contact Mode",
+   "options": "\nPhone\nWhatsapp\nEmail",
+   "read_only": 1
+  },
   {
    "fieldname": "contacts",
    "fieldtype": "Table",
@@ -216,7 +216,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-20 21:03:44.987486",
+ "modified": "2026-05-28 14:48:43.137752",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Non Individual",
@@ -245,5 +245,6 @@
  "states": [],
  "title_field": "legal_name",
  "track_changes": 1,
+ "track_views": 1,
  "translated_doctype": 1
 }

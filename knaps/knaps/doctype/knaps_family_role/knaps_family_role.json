@@ -16,13 +16,14 @@
    "in_list_view": 1,
    "label": "Name",
    "reqd": 1,
+   "set_only_once": 1,
    "unique": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-19 18:45:09.596097",
+ "modified": "2026-05-28 14:56:49.041908",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Family Role",
@@ -44,8 +45,10 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
- "title_field": "role_name"
+ "title_field": "role_name",
+ "track_changes": 1
 }

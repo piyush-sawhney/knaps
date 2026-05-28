@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "UUID",
  "creation": "2026-04-24 15:32:22.577228",
@@ -261,7 +262,7 @@
  "image_field": "display_picture",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-19 18:05:55.988469",
+ "modified": "2026-05-28 14:41:11.943437",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Individual",
@@ -290,5 +291,6 @@
  "states": [],
  "title_field": "full_name",
  "track_changes": 1,
+ "track_views": 1,
  "translated_doctype": 1
 }

@@ -1,22 +1,29 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
+ "autoname": "autoincrement",
  "creation": "2026-04-25 12:50:02.571437",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "partner_type",
-  "relationship",
-  "column_break_qomj",
   "partner",
-  "partner_name"
+  "column_break_qomj",
+  "relationship",
+  "partner_name",
+  "partner_code"
  ],
  "fields": [
   {
    "fieldname": "partner_type",
    "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Partner Type",
-   "options": "DocType"
+   "link_filters": "[[\"DocType\",\"name\",\"in\",[\"KNAPS Individual\",\"KNAPS Non Individual\"]]]",
+   "options": "DocType",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_qomj",
@@ -25,28 +32,45 @@
   {
    "fieldname": "partner",
    "fieldtype": "Dynamic Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Partner",
-   "options": "partner_type"
+   "options": "partner_type",
+   "reqd": 1
   },
   {
    "fieldname": "partner_name",
    "fieldtype": "Data",
-   "label": "Partner Name"
+   "hidden": 1,
+   "label": "Partner Name",
+   "read_only": 1
   },
   {
    "fieldname": "relationship",
    "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Relationship",
-   "options": "\nPrincipal (Upstream)\nAssociate (Downstream)\nReferral (Horizontal)"
+   "options": "\nPrincipal (Upstream)\nAssociate (Horizontal)\nReferral (Horizontal)\nSub-Agent (Downstream)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "partner_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Partner Code",
+   "unique": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-30 22:18:22.175824",
+ "modified": "2026-05-28 17:21:28.832915",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Channel Partner",
+ "naming_rule": "Autoincrement",
  "owner": "Administrator",
  "permissions": [
   {
@@ -64,7 +88,11 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "relationship, partner_code",
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "partner_name",
+ "track_changes": 1
 }

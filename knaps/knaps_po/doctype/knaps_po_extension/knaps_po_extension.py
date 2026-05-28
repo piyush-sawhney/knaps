@@ -17,6 +17,7 @@ class KNAPSPOExtension(Document):
 		extension_date: DF.Date
 		extension_period: DF.Int
 		extension_roi: DF.Float
+		name: DF.Int | None
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data

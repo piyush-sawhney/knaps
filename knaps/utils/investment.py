@@ -45,7 +45,7 @@ def set_maturity_date(doc: Document) -> None:
 
 
 def _resolve_holder_name(holder) -> str:
-	doctype = getattr(holder, "holder_type", None)
+	doctype = getattr(holder, "holder_type", None) or DOCTYPE_CLIENT
 	meta = frappe.get_meta(doctype)
 	title_field = meta.get("title_field")
 	if title_field:

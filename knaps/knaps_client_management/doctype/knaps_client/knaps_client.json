@@ -167,7 +167,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-27 15:16:23.496678",
+ "modified": "2026-05-28 16:40:20.770806",
  "modified_by": "Administrator",
  "module": "KNAPS Client Management",
  "name": "KNAPS Client",
@@ -189,11 +189,13 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "client_type, pan,primary_phone, primary_email",
  "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
  "title_field": "client_name",
  "track_changes": 1,
+ "track_views": 1,
  "translated_doctype": 1
 }

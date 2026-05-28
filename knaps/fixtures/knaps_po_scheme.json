@@ -1,0 +1,82 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS PO Scheme",
+  "modified": "2026-05-28 16:40:56.509713",
+  "name": "MIS",
+  "scheme_code": "MIS",
+  "scheme_name": "Monthly Income Scheme"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS PO Scheme",
+  "modified": "2026-05-28 16:41:42.369032",
+  "name": "RD",
+  "scheme_code": "RD",
+  "scheme_name": "Recurring Deposit"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS PO Scheme",
+  "modified": "2026-05-28 16:41:54.774462",
+  "name": "SCSS",
+  "scheme_code": "SCSS",
+  "scheme_name": "Senior Citizens Savings Scheme"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS PO Scheme",
+  "modified": "2026-05-28 16:42:31.495697",
+  "name": "TD1",
+  "scheme_code": "TD1",
+  "scheme_name": "Time Deposit 1 Year"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS PO Scheme",
+  "modified": "2026-05-28 16:42:44.260473",
+  "name": "TD2",
+  "scheme_code": "TD2",
+  "scheme_name": "Time Deposit 2 Year"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS PO Scheme",
+  "modified": "2026-05-28 16:42:51.604003",
+  "name": "TD3",
+  "scheme_code": "TD3",
+  "scheme_name": "Time Deposit 3 Year"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS PO Scheme",
+  "modified": "2026-05-28 16:42:57.020636",
+  "name": "TD5",
+  "scheme_code": "TD5",
+  "scheme_name": "Time Deposit 5 Year"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS PO Scheme",
+  "modified": "2026-05-28 16:43:06.896812",
+  "name": "KVP",
+  "scheme_code": "KVP",
+  "scheme_name": "Kisan Vikas Patra"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS PO Scheme",
+  "modified": "2026-05-28 16:43:23.329809",
+  "name": "MSSC",
+  "scheme_code": "MSSC",
+  "scheme_name": "Mahila Samman Savings Certificate"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS PO Scheme",
+  "modified": "2026-05-28 16:43:32.438790",
+  "name": "NSC",
+  "scheme_code": "NSC",
+  "scheme_name": "National Savings Certificates"
+ }
+]

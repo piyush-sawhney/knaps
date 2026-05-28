@@ -261,7 +261,7 @@
    "unique": 1
   },
   {
-   "fetch_from": "bank.bank_account_number",
+   "fetch_from": "bank.account_number",
    "fieldname": "bank_account_number",
    "fieldtype": "Data",
    "label": "Bank Account Number",

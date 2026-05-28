@@ -74,7 +74,7 @@
    "reqd": 1
   },
   {
-   "fetch_from": "payment_bank.bank_account_number",
+   "fetch_from": "payment_bank.account_number",
    "fieldname": "bank_account_number",
    "fieldtype": "Link",
    "in_list_view": 1,

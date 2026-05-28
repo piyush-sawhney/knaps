@@ -8,42 +8,29 @@
   "section_break_nrvt",
   "holding_type",
   "title",
+  "is_active",
+  "is_name_same",
   "column_break_kewm",
+  "primary_holder",
+  "primary_holder_name",
   "holder_type",
-  "column_break_qqmf",
-  "first_holder",
-  "second_holder",
-  "first_holder_name",
-  "second_holder_name",
+  "section_break_oxym",
+  "holders",
   "section_break_iplt",
+  "account_type",
   "bank_name",
-  "bank_account_number",
+  "account_number",
   "column_break_qxaw",
   "ifsc",
-  "bank_branch"
+  "branch"
  ],
  "fields": [
   {
    "fieldname": "bank_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Bank Name",
+   "label": "Name",
    "reqd": 1
-  },
-  {
-   "fieldname": "bank_account_number",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Bank Account Number",
-   "reqd": 1,
-   "unique": 1
-  },
-  {
-   "fieldname": "bank_branch",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Bank Branch"
   },
   {
    "fieldname": "ifsc",
@@ -64,10 +51,6 @@
    "label": "Holder Details"
   },
   {
-   "fieldname": "column_break_qqmf",
-   "fieldtype": "Column Break"
-  },
-  {
    "description": "Single, Anyone or Survivor, Joint",
    "fieldname": "holding_type",
    "fieldtype": "Link",
@@ -77,42 +60,16 @@
    "options": "KNAPS Holding Type"
   },
   {
-   "depends_on": "eval: doc.holding_type != 'Single' && doc.holder_type === 'KNAPS Individual';",
-   "fieldname": "second_holder",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Second Holder",
-   "link_filters": "[[\"KNAPS Individual\",\"name\",\"!=\",\"eval: doc.first_holder\"]]",
-   "mandatory_depends_on": "eval: doc.holding_type != 'Single' && doc.holder_type === 'KNAPS Individual';",
-   "options": "KNAPS Individual"
-  },
-  {
    "fieldname": "section_break_iplt",
    "fieldtype": "Section Break",
    "label": "Bank Details"
   },
   {
-   "description": "Individual or Non Individual",
    "fieldname": "holder_type",
    "fieldtype": "Link",
+   "hidden": 1,
    "label": "Holder Type",
-   "link_filters": "[[\"DocType\",\"name\",\"in\",[\"KNAPS Individual\",\"KNAPS Non Individual\"]]]",
    "options": "DocType",
-   "reqd": 1
-  },
-  {
-   "fieldname": "first_holder_name",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "First Holder Name",
-   "read_only": 1
-  },
-  {
-   "fieldname": "second_holder_name",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Second Holder Name",
    "read_only": 1
   },
   {
@@ -127,19 +84,72 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "first_holder",
+   "fieldname": "section_break_oxym",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "holders",
+   "fieldtype": "Table",
+   "label": "Holders",
+   "options": "KNAPS Bank Holder",
+   "reqd": 1
+  },
+  {
+   "fieldname": "primary_holder",
    "fieldtype": "Dynamic Link",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "First Holder",
+   "label": "Primary Holder",
    "options": "holder_type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "primary_holder_name",
+   "fieldtype": "Data",
+   "label": "Primary Holder Name",
+   "mandatory_depends_on": "eval: !doc.is_name_same;",
+   "read_only_depends_on": "eval: doc.is_name_same;"
+  },
+  {
+   "fieldname": "account_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Account Number",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Branch"
+  },
+  {
+   "default": "Saving",
+   "fieldname": "account_type",
+   "fieldtype": "Select",
+   "label": "Account Type",
+   "options": "\nSaving\nCurrent\nNRO\nNRE\nFCNR",
    "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active?"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_name_same",
+   "fieldtype": "Check",
+   "label": "Is Holder Name same in Bank?"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-21 12:04:11.972636",
+ "modified": "2026-05-28 16:16:06.365633",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Bank",
@@ -161,11 +171,12 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
- "search_fields": "first_holder_name, second_holder_name, bank_name",
+ "search_fields": "holding_type,bank_name, ifsc, account_number",
  "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
  "title_field": "title",
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

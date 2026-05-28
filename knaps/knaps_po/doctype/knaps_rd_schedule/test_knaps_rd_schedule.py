@@ -189,11 +189,17 @@ class TestKNAPSRDSchedule(IntegrationTestCase):
 			{
 				"doctype": DOCTYPE_BANK,
 				"bank_name": bank_name,
-				"bank_account_number": bank_name.replace(" ", "").upper(),
+				"account_number": bank_name.replace(" ", "").upper(),
 				"ifsc": f"{bank_name[:4].upper()}0001234",
+				"account_type": "Saving",
 				"holding_type": self.holding_type_single,
-				"holder_type": DOCTYPE_INDIVIDUAL,
-				"first_holder": self.individual,
+				"holders": [
+					{
+						"order": "First",
+						"holder_type": DOCTYPE_INDIVIDUAL,
+						"holder": self.individual,
+					}
+				],
 			}
 		)
 		doc.insert()

@@ -44,13 +44,26 @@ def set_maturity_date(doc: Document) -> None:
 		)
 
 
+def _resolve_holder_name(holder) -> str:
+	doctype = getattr(holder, "holder_type", None)
+	meta = frappe.get_meta(doctype)
+	title_field = meta.get("title_field")
+	if title_field:
+		name = frappe.db.get_value(doctype, holder.holder, title_field)
+		if name:
+			return str(name)
+	return holder.holder
+
+
 def validate_unique_holders(doc: Document) -> None:
 	seen: set[tuple[str, str]] = set()
 	for holder in doc.get("holders"):
 		key = (holder.holder, holder.order)
 		if key in seen:
 			frappe.throw(
-				_("Holder {} with order '{}' appears more than once.").format(holder.holder, holder.order),
+				_("Holder {} with order '{}' appears more than once.").format(
+					_resolve_holder_name(holder), holder.order
+				),
 				title=_("Duplicate Holder"),
 			)
 		seen.add(key)
@@ -60,7 +73,9 @@ def validate_minor_holder(doc: Document) -> None:
 	for holder in doc.get("holders"):
 		if holder.is_minor and holder.order != "First":
 			frappe.throw(
-				_("Minor holder {} can only be assigned as first holder.").format(holder.holder),
+				_("Minor holder {} can only be assigned as first holder.").format(
+					_resolve_holder_name(holder)
+				),
 				title=_("Invalid Minor Holder"),
 			)
 
@@ -125,7 +140,7 @@ def _validate_single_holding_type(holders: list) -> None:
 	for h in holders:
 		if h.order == "Guardian" and h.is_minor:
 			frappe.throw(
-				_("Guardian holder {} cannot be a minor.").format(h.holder),
+				_("Guardian holder {} cannot be a minor.").format(_resolve_holder_name(h)),
 				title=_("Invalid Guardian"),
 			)
 

@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:rd_account_number",
  "creation": "2026-04-27 12:58:09.548065",
@@ -47,9 +48,9 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "PO RD Investment",
-    "link_filters": "[[\"KNAPS PO Investment\",\"scheme_code\",\"=\",\"RD\"]]",
-    "options": "KNAPS PO Investment",
-    "unique": 1
+   "link_filters": "[[\"KNAPS PO Investment\",\"scheme_code\",\"=\",\"RD\"]]",
+   "options": "KNAPS PO Investment",
+   "unique": 1
   },
   {
    "fetch_from": "po_rd_investment.client_name",
@@ -272,7 +273,7 @@
  "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-25 15:01:48.499528",
+ "modified": "2026-05-29 14:52:07.182621",
  "modified_by": "Administrator",
  "module": "KNAPS PO",
  "name": "KNAPS RD Account",
@@ -294,9 +295,12 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "holder_name, denomination, next_installment_date",
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
  "title_field": "title",
- "track_changes": 1
+ "track_changes": 1,
+ "track_views": 1
 }

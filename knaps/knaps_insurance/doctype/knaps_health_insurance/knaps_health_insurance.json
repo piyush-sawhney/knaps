@@ -29,8 +29,8 @@
   "holders",
   "section_break_xhvx",
   "policy_type",
-  "investment_company",
   "insurance_plan_name",
+  "insurance_company",
   "column_break_sbgx",
   "period_in_months",
   "premium",
@@ -154,13 +154,6 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "investment_company",
-   "fieldtype": "Link",
-   "label": "Insurance Company",
-   "options": "KNAPS Product Provider",
-   "reqd": 1
-  },
-  {
    "fieldname": "column_break_sbgx",
    "fieldtype": "Column Break"
   },
@@ -244,8 +237,11 @@
   },
   {
    "fieldname": "insurance_plan_name",
-   "fieldtype": "Data",
-   "label": "Insurance Plan Name"
+   "fieldtype": "Link",
+   "label": "Insurance Plan Name",
+   "link_filters": "[[\"KNAPS Insurance Plan\",\"is_active\",\"=\",1]]",
+   "options": "KNAPS Insurance Plan",
+   "reqd": 1
   },
   {
    "columns": 1,
@@ -271,13 +267,13 @@
   },
   {
    "columns": 1,
-"depends_on": "eval: doc.policy_type === \"Floater\"",
-    "fieldname": "floater_sum_insured",
-    "fieldtype": "Currency",
-    "in_list_view": 1,
-    "in_standard_filter": 1,
-    "label": "Floater Sum Insured",
-    "mandatory_depends_on": "eval: doc.policy_type === \"Floater\"",
+   "depends_on": "eval: doc.policy_type === \"Floater\"",
+   "fieldname": "floater_sum_insured",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Floater Sum Insured",
+   "mandatory_depends_on": "eval: doc.policy_type === \"Floater\"",
    "non_negative": 1,
    "options": "currency",
    "precision": "2"
@@ -290,12 +286,18 @@
    "label": "Policy Type",
    "options": "Multi-Individual\nFloater",
    "reqd": 1
+  },
+  {
+   "fetch_from": "insurance_plan_name.insurer",
+   "fieldname": "insurance_company",
+   "fieldtype": "Data",
+   "label": "Insurance Company"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-26 17:54:20.418991",
+ "modified": "2026-05-29 16:02:14.839104",
  "modified_by": "Administrator",
  "module": "KNAPS Insurance",
  "name": "KNAPS Health Insurance",
@@ -316,7 +318,7 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
- "search_fields": "client_name, start_date",
+ "search_fields": "client_name, start_date, insurance_plan_name, insurance_company",
  "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
@@ -344,6 +346,5 @@
  ],
  "title_field": "title",
  "track_changes": 1,
- "track_seen": 1,
  "track_views": 1
 }

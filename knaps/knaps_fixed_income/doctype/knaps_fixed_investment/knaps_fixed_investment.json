@@ -321,7 +321,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-25 17:47:00.203309",
+ "modified": "2026-05-29 16:00:07.982108",
  "modified_by": "Administrator",
  "module": "KNAPS Fixed Income",
  "name": "KNAPS Fixed Investment",
@@ -382,6 +382,5 @@
  ],
  "title_field": "title",
  "track_changes": 1,
- "track_seen": 1,
  "track_views": 1
 }

@@ -18,6 +18,7 @@ class KNAPSRDTransaction(Document):
 		cheque_number: DF.Data | None
 		denomination: DF.Float
 		holder_name: DF.Data | None
+		name: DF.Int | None
 		number_of_installments: DF.Int
 		parent: DF.Data
 		parentfield: DF.Data

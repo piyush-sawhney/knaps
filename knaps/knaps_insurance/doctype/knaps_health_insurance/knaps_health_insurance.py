@@ -50,8 +50,8 @@ class KNAPSHealthInsurance(Document):
 		entry_date: DF.Date
 		floater_sum_insured: DF.Currency
 		holders: DF.Table[KNAPSHealthInsuranceMember]
-		insurance_plan_name: DF.Data | None
-		investment_company: DF.Link
+		insurance_company: DF.Data | None
+		insurance_plan_name: DF.Link
 		is_existing_policy: DF.Check
 		maturity_date: DF.Date | None
 		nominees: DF.Table[KNAPSNominee]

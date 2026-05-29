@@ -19,6 +19,7 @@ class KNAPSHealthInsuranceMember(Document):
 		holder: DF.Link
 		is_minor: DF.Check
 		is_primary: DF.Check
+		name: DF.Int | None
 		order: DF.Literal["", "Proposer", "Insured"]
 		parent: DF.Data
 		parentfield: DF.Data

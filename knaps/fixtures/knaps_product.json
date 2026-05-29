@@ -1,73 +1,120 @@
 [
  {
-  "category": "Investment",
   "docstatus": 0,
   "doctype": "KNAPS Product",
-  "modified": "2026-05-01 12:11:00.185320",
+  "modified": "2026-05-29 14:59:47.660483",
   "name": "Mutual Funds",
   "product_name": "Mutual Funds"
  },
  {
-  "category": "Investment",
   "docstatus": 0,
   "doctype": "KNAPS Product",
-  "modified": "2026-05-01 12:13:32.264948",
-  "name": "Post Office Schemes",
-  "product_name": "Post Office Schemes"
+  "modified": "2026-05-29 15:00:00.830818",
+  "name": "Small Savings Schemes",
+  "product_name": "Small Savings Schemes"
  },
  {
-  "category": "Investment",
   "docstatus": 0,
   "doctype": "KNAPS Product",
-  "modified": "2026-05-01 12:13:48.958433",
-  "name": "Corporate FDs",
-  "product_name": "Corporate FDs"
- },
- {
-  "category": "Insurance",
-  "docstatus": 0,
-  "doctype": "KNAPS Product",
-  "modified": "2026-05-01 12:14:13.758894",
+  "modified": "2026-05-29 15:00:07.822443",
   "name": "Life Insurance",
   "product_name": "Life Insurance"
  },
  {
-  "category": "Insurance",
   "docstatus": 0,
   "doctype": "KNAPS Product",
-  "modified": "2026-05-01 12:14:20.924368",
+  "modified": "2026-05-29 15:00:12.273353",
   "name": "Health Insurance",
   "product_name": "Health Insurance"
  },
  {
-  "category": "Insurance",
   "docstatus": 0,
   "doctype": "KNAPS Product",
-  "modified": "2026-05-01 12:14:35.038642",
-  "name": "Overseas Travel Insurance",
-  "product_name": "Overseas Travel Insurance"
+  "modified": "2026-05-29 15:00:19.757862",
+  "name": "General Insurance",
+  "product_name": "General Insurance"
  },
  {
-  "category": "Loans",
   "docstatus": 0,
   "doctype": "KNAPS Product",
-  "modified": "2026-05-01 12:14:48.149081",
+  "modified": "2026-05-29 15:00:32.351325",
+  "name": "National Pension Scheme",
+  "product_name": "National Pension Scheme"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-29 15:00:45.635483",
+  "name": "Specialised Investment Funds",
+  "product_name": "Specialised Investment Funds"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-29 15:00:59.908459",
+  "name": "Bank Account",
+  "product_name": "Bank Account"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-29 15:01:12.202051",
+  "name": "Demat and Equity Services",
+  "product_name": "Demat and Equity Services"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-29 15:01:28.777866",
+  "name": "Fixed Deposits",
+  "product_name": "Fixed Deposits"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-29 15:02:02.628624",
+  "name": "Portfolio Management Services",
+  "product_name": "Portfolio Management Services"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-29 15:02:15.320937",
   "name": "Home Loan",
   "product_name": "Home Loan"
  },
  {
-  "category": "Loans",
   "docstatus": 0,
   "doctype": "KNAPS Product",
-  "modified": "2026-05-01 12:14:59.806328",
+  "modified": "2026-05-29 15:02:22.563442",
   "name": "Loan Against Property",
   "product_name": "Loan Against Property"
  },
  {
-  "category": "Loans",
   "docstatus": 0,
   "doctype": "KNAPS Product",
-  "modified": "2026-05-01 12:15:07.178736",
+  "modified": "2026-05-29 15:02:26.228168",
+  "name": "Car Loan",
+  "product_name": "Car Loan"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-29 15:04:58.573071",
+  "name": "Corporate Bonds",
+  "product_name": "Corporate Bonds"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-29 15:05:04.671745",
+  "name": "Government Bonds",
+  "product_name": "Government Bonds"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Product",
+  "modified": "2026-05-29 15:09:23.685727",
   "name": "Personal Loan",
   "product_name": "Personal Loan"
  }

@@ -7,8 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "product_name",
-  "column_break_avik",
-  "category"
+  "column_break_avik"
  ],
  "fields": [
   {
@@ -17,16 +16,8 @@
    "in_list_view": 1,
    "label": "Name",
    "reqd": 1,
+   "set_only_once": 1,
    "unique": 1
-  },
-  {
-   "fieldname": "category",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Category",
-   "options": "KNAPS Product Category",
-   "reqd": 1
   },
   {
    "fieldname": "column_break_avik",
@@ -36,7 +27,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-11 19:11:37.625454",
+ "modified": "2026-05-29 14:59:18.469037",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Product",
@@ -58,8 +49,10 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
- "title_field": "product_name"
+ "title_field": "product_name",
+ "track_changes": 1
 }

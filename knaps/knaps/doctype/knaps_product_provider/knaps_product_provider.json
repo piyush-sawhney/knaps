@@ -7,7 +7,6 @@
  "engine": "InnoDB",
  "field_order": [
   "product",
-  "category",
   "column_break_oyfs",
   "provider",
   "title"
@@ -40,19 +39,12 @@
    "hidden": 1,
    "label": "Provider Name",
    "read_only": 1
-  },
-  {
-   "fetch_from": "product.category",
-   "fieldname": "category",
-   "fieldtype": "Data",
-   "label": "Category",
-   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-25 17:19:32.405968",
+ "modified": "2026-05-29 15:06:04.928325",
  "modified_by": "Administrator",
  "module": "KNAPS",
  "name": "KNAPS Product Provider",
@@ -74,7 +66,7 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
- "search_fields": "product, category",
+ "search_fields": "product",
  "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",

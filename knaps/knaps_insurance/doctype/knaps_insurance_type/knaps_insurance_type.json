@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:insurance_type",
  "creation": "2026-05-26 17:51:23.126247",
@@ -15,13 +16,14 @@
    "in_list_view": 1,
    "label": "Name",
    "reqd": 1,
+   "set_only_once": 1,
    "unique": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-26 17:51:46.043653",
+ "modified": "2026-05-29 17:03:21.197404",
  "modified_by": "Administrator",
  "module": "KNAPS Insurance",
  "name": "KNAPS Insurance Type",
@@ -43,8 +45,10 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": [],
- "title_field": "insurance_type"
+ "title_field": "insurance_type",
+ "track_changes": 1
 }

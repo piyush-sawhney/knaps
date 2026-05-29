@@ -1,0 +1,114 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:44:39.535841",
+  "name": "Karta",
+  "role_name": "Karta"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:44:46.418426",
+  "name": "Director",
+  "role_name": "Director"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:45:11.463728",
+  "name": "Coparcener",
+  "role_name": "Coparcener"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:45:28.966256",
+  "name": "Shareholder",
+  "role_name": "Shareholder"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:01.383539",
+  "name": "Member",
+  "role_name": "Member"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:10.280082",
+  "name": "Managing Director",
+  "role_name": "Managing Director"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:15.337213",
+  "name": "Whole-Time Director",
+  "role_name": "Whole-Time Director"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:18.425971",
+  "name": "Promoter",
+  "role_name": "Promoter"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:22.405666",
+  "name": "Designated Partner",
+  "role_name": "Designated Partner"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:25.796209",
+  "name": "Partner",
+  "role_name": "Partner"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:28.552191",
+  "name": "Trustee",
+  "role_name": "Trustee"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:32.102102",
+  "name": "Settlor",
+  "role_name": "Settlor"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:34.780230",
+  "name": "Beneficiary",
+  "role_name": "Beneficiary"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:38.750741",
+  "name": "Managing Trustee",
+  "role_name": "Managing Trustee"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:44.621731",
+  "name": "President",
+  "role_name": "President"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Entity Individual Role",
+  "modified": "2026-05-29 15:53:47.384574",
+  "name": "Treasurer",
+  "role_name": "Treasurer"
+ }
+]

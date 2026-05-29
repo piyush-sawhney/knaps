@@ -11,9 +11,9 @@ EXTRA_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 
 
-class IntegrationTestKNAPSEntityRole(IntegrationTestCase):
+class IntegrationTestKNAPSEntityIndividualRole(IntegrationTestCase):
 	"""
-	Integration tests for KNAPSEntityRole.
+	Integration tests for KNAPSEntityIndividualRole.
 	Use this class for testing interactions between multiple components.
 	"""
 

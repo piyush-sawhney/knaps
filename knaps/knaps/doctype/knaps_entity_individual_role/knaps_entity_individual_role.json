@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "field:role_name",
  "creation": "2026-05-20 19:51:29.200055",
@@ -15,16 +16,17 @@
    "in_list_view": 1,
    "label": "Role Name",
    "reqd": 1,
+   "set_only_once": 1,
    "unique": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-20 19:52:03.869319",
+ "modified": "2026-05-29 15:44:30.007257",
  "modified_by": "Administrator",
  "module": "KNAPS",
- "name": "KNAPS Entity Role",
+ "name": "KNAPS Entity Individual Role",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
@@ -43,7 +45,10 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "role_name",
+ "track_changes": 1
 }

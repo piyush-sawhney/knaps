@@ -16,6 +16,7 @@ class KNAPSHolder(Document):
 
 		holder: DF.Link
 		is_minor: DF.Check
+		name: DF.Int | None
 		order: DF.Literal["", "First", "Second", "Third", "Guardian"]
 		parent: DF.Data
 		parentfield: DF.Data

@@ -16,6 +16,7 @@ class KNAPSRDSchedule(Document):
 
 		amended_from: DF.Link | None
 		deposit_amount: DF.Float
+		name: DF.Int | None
 		rd_accounts: DF.Table[KNAPSRDTransaction]
 		schedule_amount: DF.Float
 		schedule_date: DF.Date | None

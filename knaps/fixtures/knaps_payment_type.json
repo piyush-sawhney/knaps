@@ -1,0 +1,65 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Payment Type",
+  "modified": "2026-05-29 14:46:58.213336",
+  "name": "Cheque",
+  "payment_type": "Cheque"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Payment Type",
+  "modified": "2026-05-29 14:47:11.605766",
+  "name": "Internet Banking",
+  "payment_type": "Internet Banking"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Payment Type",
+  "modified": "2026-05-29 14:47:14.500202",
+  "name": "APD",
+  "payment_type": "APD"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Payment Type",
+  "modified": "2026-05-29 14:47:21.229424",
+  "name": "Demand Draft",
+  "payment_type": "Demand Draft"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Payment Type",
+  "modified": "2026-05-29 14:47:25.097281",
+  "name": "NEFT",
+  "payment_type": "NEFT"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Payment Type",
+  "modified": "2026-05-29 14:47:28.815628",
+  "name": "RTGS",
+  "payment_type": "RTGS"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Payment Type",
+  "modified": "2026-05-29 14:47:37.958001",
+  "name": "One Time Mandate",
+  "payment_type": "One Time Mandate"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Payment Type",
+  "modified": "2026-05-29 14:47:41.031778",
+  "name": "Cash",
+  "payment_type": "Cash"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "KNAPS Payment Type",
+  "modified": "2026-05-29 14:48:04.198656",
+  "name": "Card",
+  "payment_type": "Card"
+ }
+]

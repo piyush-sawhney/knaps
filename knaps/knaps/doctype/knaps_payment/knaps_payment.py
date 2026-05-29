@@ -15,6 +15,8 @@ class KNAPSPayment(Document):
 		from frappe.types import DF
 
 		bank_account_number: DF.Link | None
+		failed_reason: DF.TextEditor | None
+		name: DF.Int | None
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data
@@ -24,7 +26,7 @@ class KNAPSPayment(Document):
 		payment_date: DF.Date
 		payment_reference_number: DF.Data | None
 		payment_type: DF.Link
-		status: DF.Literal["", "Pending", "Collected", "Deposited", "Cleared", "Failed", "Refunded"]
+		status: DF.Literal["", "Collected", "Deposited", "Failed", "Refunded"]
 	# end: auto-generated types
 
 	pass

@@ -42,12 +42,10 @@ class KNAPSVehicleInsurance(Document):
 		client_name: DF.Data | None
 		currency: DF.Link | None
 		discount: DF.Float
-		engine_number: DF.Data | None
 		entry_date: DF.Date
-		holding_type: DF.Literal["Private Car", "Two Wheeler", "Commercial"]
 		idv: DF.Currency
-		insurance_plan_name: DF.Data | None
-		investment_company: DF.Link
+		insurance_plan_name: DF.Link
+		investment_company: DF.Link | None
 		is_existing_policy: DF.Check
 		maturity_date: DF.Date | None
 		no_claim_bonus: DF.Float
@@ -57,6 +55,7 @@ class KNAPSVehicleInsurance(Document):
 		period_in_months: DF.Int
 		policy_document: DF.Attach | None
 		policy_number: DF.Data | None
+		policy_type: DF.Literal["Private Car", "Two Wheeler", "Commercial"]
 		premium: DF.Currency
 		primary_client: DF.Link | None
 		quote_number: DF.Data | None

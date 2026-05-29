@@ -23,7 +23,7 @@ NON_INDIVIDUAL_TYPES = [
 	"Trust",
 	"Government Agency",
 	"Local Authority",
-	"Artificial Judicial Individual",
+	"Artificial Judicial Person",
 ]
 
 

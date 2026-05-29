@@ -12,7 +12,6 @@ from knaps.utils.constants import (
 	DOCTYPE_NON_INDIVIDUAL_TYPE,
 	DOCTYPE_PAYMENT_TYPE,
 	DOCTYPE_PRODUCT,
-	DOCTYPE_PRODUCT_CATEGORY,
 	DOCTYPE_PRODUCT_PROVIDER,
 	DOCTYPE_RELATIONSHIP,
 )
@@ -77,12 +76,8 @@ class TestKNAPSLifeInsurance(IntegrationTestCase):
 		return client.name
 
 	def _create_product_provider(self) -> str:
-		if not frappe.db.exists(DOCTYPE_PRODUCT_CATEGORY, "Insurance"):
-			frappe.get_doc({"doctype": DOCTYPE_PRODUCT_CATEGORY, "category_name": "Insurance"}).insert()
 		if not frappe.db.exists(DOCTYPE_PRODUCT, "Life Insurance"):
-			frappe.get_doc(
-				{"doctype": DOCTYPE_PRODUCT, "product_name": "Life Insurance", "category": "Insurance"}
-			).insert()
+			frappe.get_doc({"doctype": DOCTYPE_PRODUCT, "product_name": "Life Insurance"}).insert()
 		if not frappe.db.exists(DOCTYPE_NON_INDIVIDUAL_TYPE, "Company"):
 			frappe.get_doc(
 				{"doctype": DOCTYPE_NON_INDIVIDUAL_TYPE, "non_individual_type": "Company"}
@@ -186,7 +181,7 @@ class TestKNAPSLifeInsurance(IntegrationTestCase):
 				"payment_date": today(),
 				"payment_amount": amount,
 				"payment_type": self.payment_type,
-				"status": "Pending",
+				"status": "Collected",
 			},
 		)
 

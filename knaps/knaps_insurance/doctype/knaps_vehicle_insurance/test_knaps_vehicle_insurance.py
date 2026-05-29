@@ -6,11 +6,11 @@ from frappe.utils import add_months, getdate, today
 from knaps.utils.constants import (
 	DOCTYPE_CLIENT,
 	DOCTYPE_INDIVIDUAL,
+	DOCTYPE_INSURANCE_PLAN,
 	DOCTYPE_NON_INDIVIDUAL,
 	DOCTYPE_NON_INDIVIDUAL_TYPE,
 	DOCTYPE_PAYMENT_TYPE,
 	DOCTYPE_PRODUCT,
-	DOCTYPE_PRODUCT_CATEGORY,
 	DOCTYPE_PRODUCT_PROVIDER,
 	DOCTYPE_RELATIONSHIP,
 	DOCTYPE_VEHICLE_INSURANCE,
@@ -31,6 +31,7 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 		self.adult_client = self._create_client("Individual", self.adult_individual)
 		self.nominee_client = self._create_client("Individual", self.nominee_individual)
 		self.product_provider = self._create_product_provider()
+		self.insurance_plan = self._create_insurance_plan("Gold Plan", "GOLD-001")
 		self.payment_type = self._create_payment_type("Cash")
 		self.relationship = self._create_relationship("Spouse")
 
@@ -70,12 +71,8 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 		return client.name
 
 	def _create_product_provider(self) -> str:
-		if not frappe.db.exists(DOCTYPE_PRODUCT_CATEGORY, "Insurance"):
-			frappe.get_doc({"doctype": DOCTYPE_PRODUCT_CATEGORY, "category_name": "Insurance"}).insert()
 		if not frappe.db.exists(DOCTYPE_PRODUCT, "Vehicle Insurance"):
-			frappe.get_doc(
-				{"doctype": DOCTYPE_PRODUCT, "product_name": "Vehicle Insurance", "category": "Insurance"}
-			).insert()
+			frappe.get_doc({"doctype": DOCTYPE_PRODUCT, "product_name": "Vehicle Insurance"}).insert()
 		if not frappe.db.exists(DOCTYPE_NON_INDIVIDUAL_TYPE, "Company"):
 			frappe.get_doc(
 				{"doctype": DOCTYPE_NON_INDIVIDUAL_TYPE, "non_individual_type": "Company"}
@@ -123,6 +120,19 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 		).insert()
 		return name
 
+	def _create_insurance_plan(self, plan_name: str, uin: str) -> str:
+		plan = frappe.get_doc(
+			{
+				"doctype": DOCTYPE_INSURANCE_PLAN,
+				"insurer": self.product_provider,
+				"plan_name": plan_name,
+				"uin": uin,
+				"is_active": 1,
+			}
+		)
+		plan.insert()
+		return plan.name
+
 	def _make_policy(self, **kwargs):
 		defaults = {
 			"doctype": DOCTYPE_VEHICLE_INSURANCE,
@@ -130,7 +140,7 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 			"status": "Proposal",
 			"holding_type": "Private Car",
 			"investment_company": self.product_provider,
-			"insurance_plan_name": "Gold Plan",
+			"insurance_plan_name": self.insurance_plan,
 			"period_in_months": 12,
 			"premium": 10000,
 			"currency": "INR",
@@ -160,7 +170,7 @@ class TestKNAPSVehicleInsurance(IntegrationTestCase):
 				"payment_date": today(),
 				"payment_amount": amount,
 				"payment_type": self.payment_type,
-				"status": "Pending",
+				"status": "Collected",
 			},
 		)
 

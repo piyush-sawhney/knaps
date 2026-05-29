@@ -147,7 +147,7 @@ class TestKNAPSRDAccount(IntegrationTestCase):
 				"payment_date": today(),
 				"payment_amount": 10000,
 				"payment_type": self.payment_type,
-				"status": "Pending",
+				"status": "Collected",
 			},
 		)
 		doc.insert()

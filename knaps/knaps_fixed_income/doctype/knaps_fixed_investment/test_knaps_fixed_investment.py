@@ -12,7 +12,6 @@ from knaps.utils.constants import (
 	DOCTYPE_NON_INDIVIDUAL_TYPE,
 	DOCTYPE_PAYMENT_TYPE,
 	DOCTYPE_PRODUCT,
-	DOCTYPE_PRODUCT_CATEGORY,
 	DOCTYPE_PRODUCT_PROVIDER,
 	DOCTYPE_RELATIONSHIP,
 )
@@ -26,8 +25,7 @@ class TestKNAPSFixedInvestment(IntegrationTestCase):
 		frappe.db.savepoint("knaps_fixed_investment_sp")
 		self.holding_type_single = self._create_holding_type("Single")
 		self.holding_type_joint = self._create_holding_type("Joint")
-		self.product_category = self._create_product_category("Fixed Income")
-		self.product = self._create_product("Test FD Product", self.product_category)
+		self.product = self._create_product("Test FD Product")
 		self.non_individual_type = self._create_non_individual_type("Company")
 		self.adult_individual = self._create_individual("Adult", "Male", "Mr", "1990-01-01")
 		self.minor_individual = self._create_individual("Minor", "Male", "Mr", "2015-01-01")
@@ -56,21 +54,13 @@ class TestKNAPSFixedInvestment(IntegrationTestCase):
 		doc.insert()
 		return name
 
-	def _create_product_category(self, name: str) -> str:
-		if frappe.db.exists(DOCTYPE_PRODUCT_CATEGORY, name):
-			return name
-		doc = frappe.get_doc({"doctype": DOCTYPE_PRODUCT_CATEGORY, "category_name": name})
-		doc.insert()
-		return name
-
-	def _create_product(self, name: str, category: str) -> str:
+	def _create_product(self, name: str) -> str:
 		if frappe.db.exists(DOCTYPE_PRODUCT, name):
 			return name
 		doc = frappe.get_doc(
 			{
 				"doctype": DOCTYPE_PRODUCT,
 				"product_name": name,
-				"category": category,
 			}
 		)
 		doc.insert()
@@ -217,7 +207,7 @@ class TestKNAPSFixedInvestment(IntegrationTestCase):
 				"payment_date": today(),
 				"payment_amount": 10000,
 				"payment_type": self.payment_type,
-				"status": "Pending",
+				"status": "Collected",
 			},
 		)
 

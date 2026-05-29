@@ -1,7 +1,6 @@
 {
  "actions": [],
-  "allow_import": 1,
-  "autoname": "format:KNAPS-VIN-{#####}",
+ "allow_import": 1,
  "creation": "2026-05-26 15:21:41.412846",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -27,24 +26,23 @@
   "primary_client",
   "client_name",
   "section_break_xhvx",
-  "investment_company",
   "insurance_plan_name",
+  "investment_company",
   "column_break_sbgx",
   "period_in_months",
-   "premium",
-   "currency",
+  "premium",
+  "currency",
   "column_break_vrnn",
   "start_date",
   "maturity_date",
   "section_break_wdzu",
-  "holding_type",
+  "policy_type",
   "vehicle_number",
   "vehicle_model",
   "vehicle_make",
   "idv",
   "column_break_olvr",
   "chassis_number",
-  "engine_number",
   "no_claim_bonus",
   "tp_loading",
   "discount",
@@ -181,25 +179,21 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "holding_type",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Policy Type",
-   "options": "Private Car\nTwo Wheeler\nCommercial",
-   "reqd": 1
-  },
-  {
+   "fetch_from": "insurance_plan_name.insurer",
    "fieldname": "investment_company",
    "fieldtype": "Link",
    "label": "Insurance Company",
    "options": "KNAPS Product Provider",
-   "reqd": 1
+   "read_only": 1
   },
   {
    "fieldname": "insurance_plan_name",
-   "fieldtype": "Data",
-   "label": "Insurance Plan Name"
+   "fieldtype": "Link",
+   "label": "Insurance Plan Name",
+   "link_filters": "[[\"KNAPS Insurance Plan\",\"is_active\",\"=\",1]]",
+   "options": "KNAPS Insurance Plan",
+   "reqd": 1,
+   "search_index": 1
   },
   {
    "fieldname": "column_break_sbgx",
@@ -226,7 +220,6 @@
    "precision": "2",
    "reqd": 1
   },
-
   {
    "fieldname": "currency",
    "fieldtype": "Link",
@@ -296,13 +289,13 @@
    "fieldtype": "Data",
    "label": " Chassis Number "
   },
-   {
-    "fetch_from": "primary_client.client_name",
-    "fieldname": "client_name",
-    "fieldtype": "Data",
-    "label": "Client Name",
-    "read_only": 1
-   },
+  {
+   "fetch_from": "primary_client.client_name",
+   "fieldname": "client_name",
+   "fieldtype": "Data",
+   "label": "Client Name",
+   "read_only": 1
+  },
   {
    "fieldname": "vehicle_model",
    "fieldtype": "Data",
@@ -341,12 +334,21 @@
    "label": "Discount",
    "non_negative": 1,
    "precision": "2"
+  },
+  {
+   "fieldname": "policy_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Policy Type",
+   "options": "Private Car\nTwo Wheeler\nCommercial",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-26 16:03:09.437797",
+ "modified": "2026-05-29 16:06:33.631772",
  "modified_by": "Administrator",
  "module": "KNAPS Insurance",
  "name": "KNAPS Vehicle Insurance",
@@ -367,34 +369,33 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
- "search_fields": "client_name, start_date",
+ "search_fields": "vehicle_number, policy_type, client_name, start_date",
  "show_title_field_in_link": 1,
  "sort_field": "creation",
  "sort_order": "DESC",
-  "states": [
-   {
-    "color": "Purple",
-    "title": "Proposal"
-   },
-   {
-    "color": "Green",
-    "title": "Active"
-   },
-   {
-    "color": "Blue",
-    "title": "Renewed"
-   },
-   {
-    "color": "Gray",
-    "title": "Surrendered"
-   },
-   {
-    "color": "Red",
-    "title": "Rejected"
-   }
-  ],
+ "states": [
+  {
+   "color": "Purple",
+   "title": "Proposal"
+  },
+  {
+   "color": "Green",
+   "title": "Active"
+  },
+  {
+   "color": "Blue",
+   "title": "Renewed"
+  },
+  {
+   "color": "Gray",
+   "title": "Surrendered"
+  },
+  {
+   "color": "Red",
+   "title": "Rejected"
+  }
+ ],
  "title_field": "title",
  "track_changes": 1,
- "track_seen": 1,
  "track_views": 1
 }

@@ -7,11 +7,11 @@ from knaps.utils.constants import (
 	DOCTYPE_CLIENT,
 	DOCTYPE_HEALTH_INSURANCE,
 	DOCTYPE_INDIVIDUAL,
+	DOCTYPE_INSURANCE_PLAN,
 	DOCTYPE_NON_INDIVIDUAL,
 	DOCTYPE_NON_INDIVIDUAL_TYPE,
 	DOCTYPE_PAYMENT_TYPE,
 	DOCTYPE_PRODUCT,
-	DOCTYPE_PRODUCT_CATEGORY,
 	DOCTYPE_PRODUCT_PROVIDER,
 	DOCTYPE_RELATIONSHIP,
 )
@@ -36,6 +36,7 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 		self.nominee_client = self._create_client("Individual", self.nominee_individual)
 		self.other_client = self._create_client("Individual", self.other_individual)
 		self.product_provider = self._create_product_provider()
+		self.insurance_plan = self._create_insurance_plan("Gold Plan", "HLTH-001")
 		self.payment_type = self._create_payment_type("Cash")
 		self.relationship = self._create_relationship("Spouse")
 
@@ -75,12 +76,8 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 		return client.name
 
 	def _create_product_provider(self) -> str:
-		if not frappe.db.exists(DOCTYPE_PRODUCT_CATEGORY, "Insurance"):
-			frappe.get_doc({"doctype": DOCTYPE_PRODUCT_CATEGORY, "category_name": "Insurance"}).insert()
 		if not frappe.db.exists(DOCTYPE_PRODUCT, "Health Insurance"):
-			frappe.get_doc(
-				{"doctype": DOCTYPE_PRODUCT, "product_name": "Health Insurance", "category": "Insurance"}
-			).insert()
+			frappe.get_doc({"doctype": DOCTYPE_PRODUCT, "product_name": "Health Insurance"}).insert()
 		if not frappe.db.exists(DOCTYPE_NON_INDIVIDUAL_TYPE, "Company"):
 			frappe.get_doc(
 				{"doctype": DOCTYPE_NON_INDIVIDUAL_TYPE, "non_individual_type": "Company"}
@@ -128,6 +125,19 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 		).insert()
 		return name
 
+	def _create_insurance_plan(self, plan_name: str, uin: str) -> str:
+		plan = frappe.get_doc(
+			{
+				"doctype": DOCTYPE_INSURANCE_PLAN,
+				"insurer": self.product_provider,
+				"plan_name": plan_name,
+				"uin": uin,
+				"is_active": 1,
+			}
+		)
+		plan.insert()
+		return plan.name
+
 	def _make_policy(self, **kwargs):
 		defaults = {
 			"doctype": DOCTYPE_HEALTH_INSURANCE,
@@ -135,7 +145,7 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 			"status": "Proposal",
 			"policy_type": "Multi-Individual",
 			"investment_company": self.product_provider,
-			"insurance_plan_name": "Gold Plan",
+			"insurance_plan_name": self.insurance_plan,
 			"period_in_months": 12,
 			"premium": 5000,
 			"currency": "INR",
@@ -173,7 +183,7 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 				"payment_date": today(),
 				"payment_amount": amount,
 				"payment_type": self.payment_type,
-				"status": "Pending",
+				"status": "Collected",
 			},
 		)
 
@@ -214,24 +224,14 @@ class TestKNAPSHealthInsurance(IntegrationTestCase):
 		self.assertEqual(parts[3], "26")
 
 	def test_title_computed(self):
-		doc = self._make_policy(insurance_plan_name="Gold Plan")
+		doc = self._make_policy()
 		self._add_member(doc, self.adult_client, "Insured", is_primary=True, sum_insured=500000)
 		self._add_nominee(doc, self.nominee_individual)
 		self._add_payment(doc)
 		doc.insert()
 
 		client_name = frappe.db.get_value(DOCTYPE_CLIENT, self.adult_client, "client_name")
-		self.assertEqual(doc.title, f"{client_name} - Gold Plan")
-
-	def test_title_without_plan_name(self):
-		doc = self._make_policy(insurance_plan_name=None)
-		self._add_member(doc, self.adult_client, "Insured", is_primary=True, sum_insured=500000)
-		self._add_nominee(doc, self.nominee_individual)
-		self._add_payment(doc)
-		doc.insert()
-
-		client_name = frappe.db.get_value(DOCTYPE_CLIENT, self.adult_client, "client_name")
-		self.assertEqual(doc.title, f"{client_name} - Health Insurance")
+		self.assertEqual(doc.title, f"{client_name} - {self.insurance_plan}")
 
 	def test_primary_client_from_is_primary(self):
 		doc = self._make_policy()
